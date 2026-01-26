@@ -1,3 +1,112 @@
+/* Header navbar structure */
+.header-navbar {
+  background: linear-gradient(90deg, #1e293b 0%, #1f2f52 100%);
+  color: #fff;
+  padding: 20px 40px;
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 70px;
+}
+
+.header-accueil-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-center-group {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  flex: 1;
+  justify-content: center;
+}
+
+.header-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.header-link span {
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.header-link img {
+  max-width: 32px;
+  max-height: 32px;
+}
+
+.header-caret {
+  width: 28px;
+  height: 28px;
+}
+
+/* Agrandir le mot Accueil et l'icône maison */
+.header-accueil {
+  font-size: 2.2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.header-accueil-icon {
+  max-width: 40px !important;
+  max-height: 40px !important;
+}
+
+/* Limite la taille des icônes du header */
+header img {
+  max-width: 28px;
+  max-height: 28px;
+  width: auto;
+  height: auto;
+}
+
+header>div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+}
+
+header>div>div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+header form {
+  min-width: 220px;
+}
+
+/* Style personnalisé pour le header */
+header {
+  background: linear-gradient(90deg, #1e293b 0%, #1f2f52 100%);
+  color: #fff;
+  padding: 20px 40px;
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 70px;
+}
+
+main.main-content {
+  margin-top: 0;
+}
+
 .App {
   text-align: center;
 }
@@ -13,16 +122,6 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
 .App-link {
   color: #61dafb;
@@ -32,6 +131,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
