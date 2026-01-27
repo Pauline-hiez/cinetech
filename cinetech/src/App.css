@@ -1,3 +1,61 @@
+/* Tableau derniers ajouts */
+.last-added-table-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 96px;
+  margin: 48px auto 0 auto;
+  max-width: 1200px;
+}
+
+.last-added-table-col {
+  background: #111827;
+  border-radius: 6px;
+  padding: 18px 12px 18px 12px;
+  min-width: 340px;
+  box-shadow: 0 2px 16px #000a;
+}
+
+.last-added-table-title {
+  color: #4e8fae;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 3px solid #4e8fae;
+  padding-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+.last-added-table-list {
+  margin-top: 8px;
+}
+
+.last-added-table-item {
+  background: #1e293b;
+  color: #fff;
+  border-radius: 3px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.2s;
+}
+
+.last-added-table-item:last-child {
+  margin-bottom: 0;
+}
+
+.last-added-table-item span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Effet glow radial derrière le slider */
 .stellar-slider {
   width: 100vw;
