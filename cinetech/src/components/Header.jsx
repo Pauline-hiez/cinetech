@@ -9,8 +9,11 @@ import manIcon from "../img/man-svgrepo-com.svg";
 import heartIcon from "../img/heart-svgrepo-com.svg";
 import caretIcon from "../img/caret-bottom-svgrepo-com.svg";
 import SearchBar from "./SearchBar";
+import { FilterIcon } from "./FilterIcon";
+import SearchFilters from "./SearchFilters";
 export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [showFilters, setShowFilters] = useState(false);
     const navigate = useNavigate();
 
     // Gestion de la recherche globale
@@ -42,7 +45,6 @@ export default function Header() {
             <div className="header-accueil-group">
                 <Link to="/" className="header-link" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
                     <img src={houseIcon} alt="Accueil" className="header-accueil-icon" />
-                    <span className="header-accueil">Accueil</span>
                 </Link>
             </div>
             <div className="header-center-group">
@@ -55,7 +57,7 @@ export default function Header() {
                     <span className="header-accueil">Séries</span>
                 </Link>
             </div>
-            <div className="header-actions">
+            <div className="header-actions" style={{ position: 'relative' }}>
                 {isLoggedIn && (
                     <>
                         <button onClick={handleLogout} style={{
@@ -92,7 +94,21 @@ export default function Header() {
                         <img src={manIcon} alt="User" className="header-accueil-icon" />
                     </Link>
                 )}
-                <SearchBar onSearch={handleSearch} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative' }}>
+                    <button
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', marginRight: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4 }}
+                        title="Filtres de recherche"
+                        onClick={() => setShowFilters(f => !f)}
+                    >
+                        <FilterIcon size={28} />
+                    </button>
+                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                        <SearchBar onSearch={handleSearch} />
+                        <div style={{ position: 'absolute', top: 56, left: 0, width: '100%', minWidth: 0, maxWidth: 340, zIndex: 200, boxSizing: 'border-box' }}>
+                            <SearchFilters visible={showFilters} />
+                        </div>
+                    </div>
+                </div>
             </div>
         </header>
     );
