@@ -3,10 +3,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { fetchPopularMovies, fetchPopularSeries } from "../services/tmdb";
 import MovieCard from "../components/MovieCard";
 
-const SLIDES_VISIBLE = 7; // nombre de slides visibles (doit être impair pour un effet centré)
+const SLIDES_VISIBLE = 7;
 
 function getCarouselStyle(idx, activeIdx, total) {
-    // Wrap-around pour que les slides à gauche/droite soient toujours visibles
     const angleStep = 55;
     let offset = idx - activeIdx;
     if (offset > total / 2) offset -= total;
@@ -69,7 +68,7 @@ const Slider = ({ type }) => {
             } else {
                 data = await fetchPopularSeries(1);
             }
-            setItems(data.results.slice(0, 12)); // 12 pour un effet circulaire correct
+            setItems(data.results.slice(0, 12));
             setActiveIdx(0);
         }
         fetchData();
