@@ -13,7 +13,7 @@ import PrivateRoute from './components/PrivateRoute';
 function App() {
   return (
     <Router>
-      <div className="App" style={{ minHeight: '100vh', background: '#f8fafc' }}>
+      <div className="App">
         <Header />
         <main className="main-content" style={{ maxWidth: '1200px', margin: '40px auto 0 auto', padding: '24px' }}>
           <Routes>
