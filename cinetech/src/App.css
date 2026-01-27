@@ -1,3 +1,28 @@
+.logout-icon {
+  width: 44px !important;
+  height: 44px !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Surcharge pour que le logout ne soit pas limité par .header-accueil-icon */
+button .logout-icon {
+  width: 44px !important;
+  height: 44px !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
+}
+
+/* Espace entre les actions (logout, favoris, user) et la searchbar */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-right: 32px;
+}
+
 /* Header navbar structure */
 .header-navbar {
   background: linear-gradient(90deg, #1e293b 0%, #1f2f52 100%);
@@ -22,8 +47,17 @@
   display: flex;
   align-items: center;
   gap: 36px;
-  flex: 1;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  transform: translateX(-50%);
   justify-content: center;
+  z-index: 1;
+}
+
+.header-navbar {
+  position: relative;
 }
 
 .header-link {
@@ -58,9 +92,13 @@
   letter-spacing: 1px;
 }
 
-.header-accueil-icon {
-  max-width: 40px !important;
-  max-height: 40px !important;
+.header-accueil-icon,
+.header-accueil-icon svg {
+  width: 32px !important;
+  height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  display: inline-block;
 }
 
 /* Limite la taille des icônes du header */

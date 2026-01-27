@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Movies from './pages/Movies';
 import Series from './pages/Series';
 import Favoris from './pages/Favoris';
+import Login from './pages/Login';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -23,7 +25,12 @@ function App() {
             } />
             <Route path="/movies" element={<Movies />} />
             <Route path="/series" element={<Series />} />
-            <Route path="/favoris" element={<Favoris />} />
+            <Route path="/favoris" element={
+              <PrivateRoute>
+                <Favoris />
+              </PrivateRoute>
+            } />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </main>
       </div>
