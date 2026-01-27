@@ -9,10 +9,16 @@ import manIcon from "../img/man-svgrepo-com.svg";
 import heartIcon from "../img/heart-svgrepo-com.svg";
 import caretIcon from "../img/caret-bottom-svgrepo-com.svg";
 import SearchBar from "./SearchBar";
-
 export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
+
+    // Gestion de la recherche globale
+    const handleSearch = (query) => {
+        if (query && query.length > 1) {
+            navigate(`/search?q=${encodeURIComponent(query)}`);
+        }
+    };
 
     useEffect(() => {
         const checkLogin = () => {
@@ -43,12 +49,10 @@ export default function Header() {
                 <Link to="/movies" className="header-link" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
                     <img src={filmIcon} alt="Films" className="header-accueil-icon" />
                     <span className="header-accueil">Films</span>
-                    <img src={caretIcon} alt="dropdown" className="header-caret" />
                 </Link>
                 <Link to="/series" className="header-link" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
                     <img src={imacIcon} alt="Séries" className="header-accueil-icon" />
                     <span className="header-accueil">Séries</span>
-                    <img src={caretIcon} alt="dropdown" className="header-caret" />
                 </Link>
             </div>
             <div className="header-actions">
@@ -88,7 +92,7 @@ export default function Header() {
                         <img src={manIcon} alt="User" className="header-accueil-icon" />
                     </Link>
                 )}
-                <SearchBar />
+                <SearchBar onSearch={handleSearch} />
             </div>
         </header>
     );

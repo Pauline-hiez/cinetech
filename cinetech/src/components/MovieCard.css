@@ -86,20 +86,56 @@
     margin: 0 0 8px 0;
 }
 
+
 .favorite-btn {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
+    top: 14px;
+    right: 14px;
+    background: rgba(30, 41, 59, 0.45);
     border: none;
     cursor: pointer;
-    z-index: 3;
-    padding: 0;
-    transition: transform 0.15s;
+    z-index: 4;
+    padding: 6px;
+    border-radius: 50%;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.22), 0 1.5px 6px 0 rgba(230, 57, 70, 0.12);
+    backdrop-filter: blur(2.5px);
+    transition: transform 0.18s cubic-bezier(.4, 2, .6, 1), background 0.18s;
+    outline: none;
+}
+
+.favorite-btn:hover {
+    background: rgba(230, 57, 70, 0.13);
+    transform: scale(1.13);
 }
 
 .favorite-btn:active {
-    transform: scale(1.1);
+    animation: heart-beat 0.32s cubic-bezier(.4, 2, .6, 1);
+}
+
+@keyframes heart-beat {
+    0% {
+        transform: scale(1);
+    }
+
+    20% {
+        transform: scale(1.25);
+    }
+
+    40% {
+        transform: scale(0.92);
+    }
+
+    60% {
+        transform: scale(1.18);
+    }
+
+    80% {
+        transform: scale(0.98);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .movie-card-year {

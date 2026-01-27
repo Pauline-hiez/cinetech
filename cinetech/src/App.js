@@ -1,4 +1,3 @@
-
 import './App.css';
 
 import Header from './components/Header';
@@ -9,6 +8,7 @@ import Series from './pages/Series';
 import Favoris from './pages/Favoris';
 import Login from './pages/Login';
 import PrivateRoute from './components/PrivateRoute';
+import SearchResults from './pages/SearchResults';
 
 function App() {
   return (
@@ -31,6 +31,7 @@ function App() {
               </PrivateRoute>
             } />
             <Route path="/login" element={<Login />} />
+            <Route path="/search" element={<SearchResults />} />
           </Routes>
         </main>
       </div>
