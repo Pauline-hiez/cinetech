@@ -38,7 +38,7 @@ export default function Header() {
     };
 
     return (
-        <header className="header-navbar">
+        <header className="header-navbar" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: '#111827' }}>
             <div className="header-accueil-group">
                 <Link to="/" className="header-link" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
                     <img src={houseIcon} alt="Accueil" className="header-accueil-icon" />

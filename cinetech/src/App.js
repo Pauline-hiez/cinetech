@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import './App.css';
 
 import Header from './components/Header';
@@ -11,11 +12,15 @@ import PrivateRoute from './components/PrivateRoute';
 import SearchResults from './pages/SearchResults';
 
 function App() {
+  useEffect(() => {
+    document.body.style.color = '#fff';
+    return () => { document.body.style.color = null; };
+  }, []);
   return (
     <Router>
       <div className="App">
         <Header />
-        <main className="main-content" style={{ maxWidth: '1200px', margin: '40px auto 0 auto', padding: '24px' }}>
+        <main className="main-content" style={{ maxWidth: '1200px', margin: '130px auto 0 auto', padding: '24px' }}>
           <Routes>
             <Route path="/" element={
               <>

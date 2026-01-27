@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { searchMovies } from '../services/tmdb';
+import { searchMoviesAndSeries } from '../services/tmdb';
 import MovieCard from '../components/MovieCard';
 
 function useQuery() {
@@ -20,10 +20,28 @@ export default function SearchResults() {
         }
         setLoading(true);
         setError(null);
-        searchMovies(query)
-            .then(res => setResults(res.filter(m => m.poster_path)))
-            .catch(() => setError('Erreur lors de la recherche.'))
-            .finally(() => setLoading(false));
+        // Récupère toutes les pages de résultats TMDB (max 1000 résultats)
+        async function fetchAllResults() {
+            let allResults = [];
+            let page = 1;
+            let totalPages = 1;
+            try {
+                do {
+                    const { results, total_pages } = await searchMoviesAndSeries(query, page);
+                    if (Array.isArray(results)) {
+                        allResults = allResults.concat(results.filter(m => m.poster_path));
+                        totalPages = total_pages;
+                        if (results.length < 20) break;
+                    }
+                    page++;
+                } while (page <= totalPages && page <= 10); // Limite à 10 pages (200 résultats max)
+            } catch (e) {
+                setError('Erreur lors de la recherche.');
+            }
+            setResults(allResults);
+            setLoading(false);
+        }
+        fetchAllResults();
     }, [query]);
 
     if (!query || query.length < 2) return <div>Veuillez entrer au moins 2 caractères.</div>;
@@ -33,7 +51,7 @@ export default function SearchResults() {
 
     return (
         <div>
-            <h2>Résultats pour "{query}"</h2>
+            <h2 style={{ marginBottom: '48px' }}>Résultats pour "{query}"</h2>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px' }}>
                 {results.map(movie => (
                     <MovieCard key={movie.id} movie={movie} />

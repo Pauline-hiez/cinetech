@@ -1,19 +1,50 @@
-// Recherche de films par titre (pour l'autocomplétion)
-export async function searchMovies(query) {
-  if (!query) return [];
+// Recherche films ET séries (combine movie et tv)
+export async function searchMoviesAndSeries(query, page = 1) {
+  if (!query) return { results: [], total_pages: 1 };
   const API_KEY = process.env.REACT_APP_API_KEY;
   const BASE_URL = 'https://api.themoviedb.org/3';
-  const response = await fetch(`${BASE_URL}/search/movie?query=${encodeURIComponent(query)}`, {
+  // Appel films
+  const movieRes = await fetch(`${BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page}`, {
+    headers: {
+      Authorization: `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  // Appel séries
+  const tvRes = await fetch(`${BASE_URL}/search/tv?query=${encodeURIComponent(query)}&page=${page}`, {
+    headers: {
+      Authorization: `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  let movieData = { results: [], total_pages: 1 };
+  let tvData = { results: [], total_pages: 1 };
+  if (movieRes.ok) movieData = await movieRes.json();
+  if (tvRes.ok) tvData = await tvRes.json();
+  // Ajoute un champ media_type pour différencier
+  const movies = (movieData.results || []).map(m => ({ ...m, media_type: 'movie' }));
+  const series = (tvData.results || []).map(s => ({ ...s, media_type: 'tv' }));
+  return {
+    results: [...movies, ...series],
+    total_pages: Math.max(movieData.total_pages || 1, tvData.total_pages || 1)
+  };
+}
+// Recherche de films par titre (pour l'autocomplétion)
+export async function searchMovies(query, page = 1) {
+  if (!query) return { results: [], total_pages: 1 };
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const BASE_URL = 'https://api.themoviedb.org/3';
+  const response = await fetch(`${BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page}`, {
     headers: {
       Authorization: `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
     },
   });
   if (!response.ok) {
-    return [];
+    return { results: [], total_pages: 1 };
   }
   const data = await response.json();
-  return data.results || [];
+  return { results: data.results || [], total_pages: data.total_pages || 1 };
 }
 
 // Récupérer les séries populaires

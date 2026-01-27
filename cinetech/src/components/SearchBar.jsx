@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { searchMovies } from "../services/tmdb";
+import { searchMoviesAndSeries } from "../services/tmdb";
 
 const SearchBar = ({ onSelectMovie, onSearch }) => {
     const [query, setQuery] = useState("");
@@ -42,8 +42,9 @@ const SearchBar = ({ onSelectMovie, onSearch }) => {
         setLoading(true);
         debounceTimeout.current = setTimeout(async () => {
             try {
-                const results = await searchMovies(query);
-                if (results && results.length > 0) {
+                const res = await searchMoviesAndSeries(query);
+                const results = res.results || [];
+                if (results.length > 0) {
                     // Séparation intelligente
                     const startsWith = [];
                     const includes = [];
@@ -56,8 +57,8 @@ const SearchBar = ({ onSelectMovie, onSearch }) => {
                         }
                     });
                     setSuggestions([
-                        ...startsWith.slice(0, 5),
-                        ...includes.slice(0, 5)
+                        ...startsWith,
+                        ...includes
                     ]);
                     setShowSuggestions(true);
                 } else {
