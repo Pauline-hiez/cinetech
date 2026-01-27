@@ -86,7 +86,53 @@ header>div>div {
 }
 
 header form {
-  min-width: 220px;
+  display: flex;
+  align-items: center;
+  min-width: 320px;
+  background: #fff;
+  border-radius: 32px !important;
+  height: 48px;
+  padding: 0 8px 0 18px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+  border: 2px solid #e2e8f0;
+  position: relative;
+}
+
+header form input[type="text"] {
+  height: 38px;
+  border-radius: 24px;
+  font-size: 1.1rem;
+  border: none;
+  outline: none;
+  flex: 1;
+  background: transparent;
+  color: #1e293b;
+}
+
+header form button {
+  height: 38px;
+  width: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e2e8f0;
+  border: none;
+  margin-left: 8px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+header form button:hover {
+  background: #cbd5e1;
+}
+
+header form button svg {
+  width: 22px;
+  height: 22px;
+  color: #1e293b;
+  display: block;
 }
 
 /* Style personnalisé pour le header */
