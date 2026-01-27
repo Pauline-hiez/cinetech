@@ -1,3 +1,16 @@
+// Récupérer toutes les séries (discover, triées par date de première diffusion décroissante)
+export async function fetchAllSeries(page = 1) {
+  const response = await fetch(`${BASE_URL}/discover/tv?page=${page}&sort_by=first_air_date.desc`, {
+    headers: {
+      Authorization: `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Erreur lors de la récupération de toutes les séries');
+  }
+  return response.json();
+}
 // Recherche films ET séries (combine movie et tv)
 export async function searchMoviesAndSeries(query, page = 1) {
   if (!query) return { results: [], total_pages: 1 };

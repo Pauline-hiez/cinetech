@@ -10,6 +10,7 @@ import Favoris from './pages/Favoris';
 import Login from './pages/Login';
 import PrivateRoute from './components/PrivateRoute';
 import SearchResults from './pages/SearchResults';
+import Home from './pages/Home';
 
 function App() {
   useEffect(() => {
@@ -22,12 +23,7 @@ function App() {
         <Header />
         <main className="main-content" style={{ maxWidth: '1200px', margin: '130px auto 0 auto', padding: '24px' }}>
           <Routes>
-            <Route path="/" element={
-              <>
-                <h1>Bienvenue sur Cinetech</h1>
-                <p>Votre contenu principal s'affichera ici.</p>
-              </>
-            } />
+            <Route path="/" element={<Home />} />
             <Route path="/movies" element={<Movies />} />
             <Route path="/series" element={<Series />} />
             <Route path="/favoris" element={
