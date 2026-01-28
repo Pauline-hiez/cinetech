@@ -50,6 +50,7 @@ export default function Header() {
 
     const handleLogout = () => {
         localStorage.removeItem("user");
+        localStorage.removeItem("pseudo"); // Supprime aussi le pseudo
         setIsLoggedIn(false);
         window.dispatchEvent(new Event("storage"));
         navigate("/login");

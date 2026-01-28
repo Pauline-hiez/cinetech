@@ -22,6 +22,12 @@ function MovieCard({ movie }) {
 
     const handleFavoriteClick = (e) => {
         e.stopPropagation();
+        // Vérifie si l'utilisateur est connecté (clé 'user' dans localStorage)
+        const user = localStorage.getItem('user');
+        if (!user) {
+            alert('Vous devez être connecté pour ajouter ou retirer un favori.');
+            return;
+        }
         let favoris = JSON.parse(localStorage.getItem('favoris') || '[]');
         if (isFavorite) {
             favoris = favoris.filter((fav) => fav.id !== movie.id);

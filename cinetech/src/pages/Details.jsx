@@ -27,19 +27,49 @@ const Details = () => {
     // Simule un utilisateur connecté (à remplacer par votre auth)
     // Récupère le pseudo de l'utilisateur connecté (à remplacer par votre logique d'authentification réelle)
     // Récupère le pseudo de l'utilisateur connecté (ne met pas 'Utilisateur' si vide)
-    const pseudo = localStorage.getItem('pseudo');
-    const user = pseudo && pseudo.trim() ? { name: pseudo } : null;
+    // On ne considère l'utilisateur connecté que si 'user' existe dans le localStorage
+    const userData = localStorage.getItem('user');
+    const user = userData ? JSON.parse(userData) : null;
 
     // Ajout d'un commentaire
     const handleAddComment = ({ comment, rating, user: userName }) => {
+        if (!user) return; // Sécurité : ne rien faire si non connecté
         setUserComments(prev => {
             const now = new Date();
             const date = now.toLocaleDateString('fr-FR');
             const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             const newComments = [
-                { comment, rating, user: userName || user.name, date, time },
+                { comment, rating, user: user.name, date, time },
                 ...prev
             ];
+            try {
+                localStorage.setItem(commentsKey, JSON.stringify(newComments));
+            } catch { }
+            return newComments;
+        });
+    };
+
+    // Suppression d'un commentaire (par index)
+    const handleDeleteComment = (idx) => {
+        if (!user) return;
+        setUserComments(prev => {
+            // Ne supprimer que si l'utilisateur est propriétaire
+            if (prev[idx]?.user !== user.name) return prev;
+            const newComments = prev.filter((_, i) => i !== idx);
+            try {
+                localStorage.setItem(commentsKey, JSON.stringify(newComments));
+            } catch { }
+            return newComments;
+        });
+    };
+
+    // Modification d'un commentaire (par index)
+    const handleEditComment = (idx, updatedComment) => {
+        if (!user) return;
+        setUserComments(prev => {
+            // Ne modifier que si l'utilisateur est propriétaire
+            if (prev[idx]?.user !== user.name) return prev;
+            const newComments = prev.map((c, i) => i === idx ? { ...c, ...updatedComment } : c);
             try {
                 localStorage.setItem(commentsKey, JSON.stringify(newComments));
             } catch { }
@@ -83,6 +113,12 @@ const Details = () => {
     }, [details, type]);
 
     const handleFavoriteClick = () => {
+        // Vérifie si l'utilisateur est connecté (clé 'user' dans localStorage)
+        const user = localStorage.getItem('user');
+        if (!user) {
+            alert('Vous devez être connecté pour ajouter ou retirer un favori.');
+            return;
+        }
         if (!details) return;
         let favoris = JSON.parse(localStorage.getItem('favoris') || '[]');
         const exists = favoris.some(f => f.id === details.id && (f.media_type === type || f.media_type === details.media_type));
@@ -234,6 +270,8 @@ const Details = () => {
             <CommentSection
                 comments={userComments}
                 onSubmit={handleAddComment}
+                onDelete={handleDeleteComment}
+                onEdit={handleEditComment}
                 user={user}
             />
         </div>

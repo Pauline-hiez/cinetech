@@ -89,6 +89,8 @@ export default function Login() {
                 return;
             }
             setSuccess("Connexion réussie !");
+            // Nettoie tout pseudo résiduel avant de connecter
+            localStorage.removeItem("pseudo");
             localStorage.setItem("user", JSON.stringify(user)); // utilisateur courant
             localStorage.setItem("pseudo", user.username); // Enregistre le pseudo pour l'affichage
             setTimeout(() => {
