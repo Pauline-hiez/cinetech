@@ -98,13 +98,21 @@ const Details = () => {
                         <div className="movie-infos-row">
                             <span className="movie-info movie-actors">
                                 <span className="movie-info-icon">⭐</span>
-                                <span className="movie-info-label">Acteurs :</span> {credits.cast?.slice(0, 3).map(a => a.name).join(', ')}
+                                <span className="movie-info-label">Acteurs :</span> {credits.cast?.slice(0, 3).map((a, i, arr) => (
+                                    <>
+                                        <Link to={`/person/${a.id}`} style={{ color: '#aee1f9', textDecoration: 'underline', cursor: 'pointer' }}>{a.name}</Link>{i < arr.length - 1 ? ', ' : ''}
+                                    </>
+                                ))}
                             </span>
                         </div>
                         <div className="movie-infos-row">
                             <span className="movie-info movie-crew">
                                 <span className="movie-info-icon">🛠️</span>
-                                <span className="movie-info-label">Équipe technique :</span> {credits.crew?.slice(0, 2).map(c => `${c.name} (${c.job})`).join(', ')}
+                                <span className="movie-info-label">Équipe technique :</span> {credits.crew?.slice(0, 2).map((c, i, arr) => (
+                                    <>
+                                        <Link to={`/person/${c.id}`} style={{ color: '#aee1f9', textDecoration: 'underline', cursor: 'pointer' }}>{c.name}</Link> ({c.job}){i < arr.length - 1 ? ', ' : ''}
+                                    </>
+                                ))}
                             </span>
                         </div>
                     </div>

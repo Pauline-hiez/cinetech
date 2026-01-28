@@ -12,6 +12,7 @@ import PrivateRoute from './components/PrivateRoute';
 import SearchResults from './pages/SearchResults';
 import Home from './pages/Home';
 import Details from './pages/Details';
+import PersonFilmography from './pages/PersonFilmography';
 
 function App() {
   useEffect(() => {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/search" element={<SearchResults />} />
             <Route path="/:type/:id" element={<Details />} />
+            <Route path="/person/:personId" element={<PersonFilmography />} />
           </Routes>
         </main>
       </div>
