@@ -116,9 +116,12 @@ const Details = () => {
                             title={`Affiche de ${details.title || details.name} (${type === 'movie' ? 'film' : 'série'})`}
                         />
                     ) : (
-                        <div style={{ width: 260, height: 400, background: '#111827', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aee1f9', fontSize: '1.5rem' }}>
-                            Pas d'image
-                        </div>
+                        <img
+                            src={require('../img/defaut.jpg')}
+                            alt="Image par défaut"
+                            style={{ width: 260, height: 400, borderRadius: 16, objectFit: 'cover', boxShadow: '0 6px 32px #000b', background: '#111827' }}
+                            title="Image par défaut"
+                        />
                     )}
                 </div>
                 <div className="details-info">
@@ -166,9 +169,9 @@ const Details = () => {
                             <span className="movie-info movie-actors">
                                 <span className="movie-info-icon">⭐</span>
                                 <span className="movie-info-label">Acteurs :</span> {credits.cast?.slice(0, 3).map((a, i, arr) => (
-                                    <>
+                                    <React.Fragment key={a.id}>
                                         <Link to={`/person/${a.id}`} style={{ color: '#aee1f9', textDecoration: 'underline', cursor: 'pointer' }}>{a.name}</Link>{i < arr.length - 1 ? ', ' : ''}
-                                    </>
+                                    </React.Fragment>
                                 ))}
                             </span>
                         </div>
@@ -176,9 +179,9 @@ const Details = () => {
                             <span className="movie-info movie-crew">
                                 <span className="movie-info-icon">🛠️</span>
                                 <span className="movie-info-label">Équipe technique :</span> {credits.crew?.slice(0, 2).map((c, i, arr) => (
-                                    <>
+                                    <React.Fragment key={c.id}>
                                         <Link to={`/person/${c.id}`} style={{ color: '#aee1f9', textDecoration: 'underline', cursor: 'pointer' }}>{c.name}</Link> ({c.job}){i < arr.length - 1 ? ', ' : ''}
-                                    </>
+                                    </React.Fragment>
                                 ))}
                             </span>
                         </div>

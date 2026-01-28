@@ -38,7 +38,7 @@ function MovieCard({ movie }) {
                 <Link to={`/${getMediaType(movie)}/${movie.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
                     <img
                         className="movie-card-img"
-                        src={movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : '/img/no-image.png'}
+                        src={movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : require('../img/defaut.jpg')}
                         alt={movie.title || movie.name || movie.original_name || 'Titre inconnu'}
                         title={`${getMediaType(movie) === 'movie' ? 'Film' : 'Série'}\n${movie.title || movie.name || movie.original_name || 'Titre inconnu'}`}
                         style={{
@@ -72,4 +72,5 @@ function MovieCard({ movie }) {
 }
 
 export default MovieCard;
+
 
