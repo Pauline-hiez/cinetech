@@ -60,30 +60,6 @@ export default function Header() {
             <div className="header-actions" style={{ position: 'relative' }}>
                 {isLoggedIn && (
                     <>
-                        <button onClick={handleLogout} style={{
-                            background: 'none',
-                            color: '#f3f4f8',
-                            border: 'none',
-                            borderRadius: '8px',
-                            padding: '6px',
-                            cursor: 'pointer',
-                            marginRight: 0,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            transition: 'background 0.2s',
-                        }} title="Déconnexion">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="white"
-                                strokeWidth="2"
-                                className="header-accueil-icon logout-icon"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />
-                            </svg>
-                        </button>
                         <Link to="/favoris">
                             <img src={heartIcon} alt="Favoris" className="header-accueil-icon" />
                         </Link>
@@ -110,6 +86,21 @@ export default function Header() {
                     </div>
                 </div>
             </div>
+            {/* Bouton de déconnexion flottant */}
+            {isLoggedIn && (
+                <button onClick={handleLogout} className="floating-logout-btn" title="Déconnexion">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="2"
+                        className="header-accueil-icon logout-icon"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />
+                    </svg>
+                </button>
+            )}
         </header>
     );
 }

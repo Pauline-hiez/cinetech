@@ -86,7 +86,7 @@ export default function SearchFilters({ onChange, visible }) {
                         {countries.map(c => <option key={c.code} value={c.code}>{c.name}</option>)}
                     </select>
                 </div>
-                <button onClick={handleFilterSearch} style={{ width: '100%', background: '#4e8fae', color: '#fff', border: 'none', borderRadius: 24, padding: '12px 0', fontWeight: 600, cursor: 'pointer', fontSize: 18, marginTop: 6, textAlign: 'center' }}>
+                <button onClick={handleFilterSearch} className="search-filters-btn">
                     Rechercher
                 </button>
             </div>

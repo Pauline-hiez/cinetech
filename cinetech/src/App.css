@@ -1,3 +1,54 @@
+/* Bouton de déconnexion flottant en bas à droite */
+.floating-logout-btn {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  background: #e53e3e;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 24px #000a;
+  cursor: pointer;
+  z-index: 9999;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.floating-logout-btn:hover {
+  background: #c53030;
+  box-shadow: 0 0 32px #e53e3e99;
+  transform: scale(1.08);
+}
+
+/* Hover effet slider pour bouton rechercher des filtres */
+.search-filters-btn {
+  width: 100%;
+  background: #4e8fae;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 0;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 18px;
+  margin-top: 6px;
+  text-align: center;
+  box-shadow: 0 2px 12px #222;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.search-filters-btn:hover,
+.search-filters-btn:focus {
+  background: #133e52;
+  color: #fff;
+  box-shadow: 0 0 24px #4e8fae;
+  transform: scale(1.04);
+}
+
 /* Tableau derniers ajouts */
 .last-added-table-row {
   display: flex;
