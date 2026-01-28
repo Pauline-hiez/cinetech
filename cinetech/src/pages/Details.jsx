@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import FavoriteButton from "../components/FavoriteButton";
 import { useParams, Link } from "react-router-dom";
 import { getMovieDetails, getSimilarMovies, getMovieCredits, getMovieReviews } from "../services/tmdb";
+import { getMovieVideos } from "../services/tmdb";
 import "../App.css";
 
 const Details = () => {
@@ -10,6 +11,7 @@ const Details = () => {
     const [credits, setCredits] = useState(null);
     const [similar, setSimilar] = useState([]);
     const [reviews, setReviews] = useState([]);
+    const [videos, setVideos] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
@@ -21,6 +23,8 @@ const Details = () => {
             setSimilar(sim?.results?.slice(0, 7) || []);
             const rev = await getMovieReviews(id, type);
             setReviews(rev?.results || []);
+            const vid = await getMovieVideos(id, type);
+            setVideos(vid?.results || []);
         }
         fetchData();
     }, [id, type]);
@@ -69,6 +73,12 @@ const Details = () => {
                                             : ''
                                 }
                             </span>
+                            {type === 'movie' && details.runtime && (
+                                <span className="movie-info movie-runtime">
+                                    <span className="movie-info-icon">⏱️</span>
+                                    <span className="movie-info-label">Durée :</span> {details.runtime} min
+                                </span>
+                            )}
                             {type === 'tv' && (
                                 <>
                                     <span className="movie-info movie-seasons">
@@ -101,6 +111,33 @@ const Details = () => {
 
                 </div>
             </div>
+            {/* Vidéo du film ou de la série */}
+            {videos && videos.length > 0 && (
+                <div className="video-section" style={{ margin: '32px 0', textAlign: 'center' }}>
+                    <h3 style={{ color: '#fff', marginBottom: 16 }}>Bande-annonce</h3>
+                    {(() => {
+                        // On cherche une vidéo YouTube de type Trailer ou Teaser
+                        const yt = videos.find(v => v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser'))
+                            || videos.find(v => v.site === 'YouTube');
+                        return yt ? (
+                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <iframe
+                                    width="560"
+                                    height="315"
+                                    src={`https://www.youtube.com/embed/${yt.key}`}
+                                    title={yt.name}
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    style={{ borderRadius: 12, boxShadow: '0 4px 24px #0004', maxWidth: '100%' }}
+                                ></iframe>
+                            </div>
+                        ) : (
+                            <div style={{ color: '#aee1f9', fontSize: 18 }}>Aucune vidéo disponible</div>
+                        );
+                    })()}
+                </div>
+            )}
             <div className="similar-section">
                 <div className="similar-title-wrapper">
                     <h3 className="similar-title-centered">

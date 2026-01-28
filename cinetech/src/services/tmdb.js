@@ -1,3 +1,17 @@
+// Récupérer les vidéos d'un film ou d'une série (bande-annonce, teaser, etc.)
+export async function getMovieVideos(id, type = 'movie') {
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const BASE_URL = 'https://api.themoviedb.org/3';
+  const url = `${BASE_URL}/${type}/${id}/videos?language=fr-FR`;
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) throw new Error('Erreur lors de la récupération des vidéos');
+  return response.json();
+}
 // Détail d'un film ou série
 export async function getMovieDetails(id, type = 'movie') {
   const API_KEY = process.env.REACT_APP_API_KEY;
