@@ -37,6 +37,7 @@ const CommentSection = ({ comments = [], onSubmit, user }) => {
     const [comment, setComment] = useState("");
     const [rating, setRating] = useState(0);
     const [error, setError] = useState("");
+    // Toujours utiliser le pseudo de l'utilisateur connecté si présent
     const [username, setUsername] = useState(user?.name || "");
 
     const handleSubmit = (e) => {
@@ -45,11 +46,13 @@ const CommentSection = ({ comments = [], onSubmit, user }) => {
             setError("Veuillez indiquer votre nom ou être connecté.");
             return;
         }
-        if (!comment.trim() || rating === 0) {
-            setError("Veuillez écrire un commentaire et donner une note.");
+        if (rating === 0) {
+            setError("Veuillez donner une note.");
             return;
         }
-        onSubmit && onSubmit({ comment, rating, user: username || (user && user.name) || "Utilisateur" });
+        // Si l'utilisateur est connecté, on force le pseudo à user.name
+        const finalUser = user && user.name ? user.name : username || "Utilisateur";
+        onSubmit && onSubmit({ comment, rating, user: finalUser });
         setComment("");
         setRating(0);
         setError("");
@@ -74,29 +77,31 @@ const CommentSection = ({ comments = [], onSubmit, user }) => {
                 <div style={{ marginBottom: 8 }}>
                     <StarRating rating={rating} setRating={setRating} />
                 </div>
-                <input
-                    type="text"
-                    value={username}
-                    onChange={e => setUsername(e.target.value)}
-                    placeholder="Votre nom"
-                    style={{
-                        width: "100%",
-                        minWidth: 0,
-                        borderRadius: 8,
-                        padding: 12,
-                        marginBottom: 12,
-                        fontWeight: 500,
-                        fontSize: 17,
-                        background: '#22304a',
-                        color: '#aee1f9',
-                        border: '1.5px solid #4ee1ff',
-                        boxSizing: 'border-box',
-                        boxShadow: '0 0 8px #4ee1ff44',
-                        outline: 'none',
-                        transition: 'border 0.2s, box-shadow 0.2s'
-                    }}
-                    disabled={!!user?.name}
-                />
+                {/* Si l'utilisateur est connecté, on n'affiche pas le champ nom */}
+                {!user?.name && (
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        placeholder="Votre nom"
+                        style={{
+                            width: "100%",
+                            minWidth: 0,
+                            borderRadius: 8,
+                            padding: 12,
+                            marginBottom: 12,
+                            fontWeight: 500,
+                            fontSize: 17,
+                            background: '#22304a',
+                            color: '#aee1f9',
+                            border: '1.5px solid #4ee1ff',
+                            boxSizing: 'border-box',
+                            boxShadow: '0 0 8px #4ee1ff44',
+                            outline: 'none',
+                            transition: 'border 0.2s, box-shadow 0.2s'
+                        }}
+                    />
+                )}
                 <textarea
                     value={comment}
                     onChange={e => setComment(e.target.value)}
@@ -120,7 +125,11 @@ const CommentSection = ({ comments = [], onSubmit, user }) => {
                     }}
                 />
                 {error && <div style={{ color: "#ff7675", margin: "8px 0" }}>{error}</div>}
-                <button type="submit" style={{ marginTop: 8, background: "#2d8cff", color: "#fff", border: "none", borderRadius: 6, padding: "8px 20px", cursor: "pointer" }}>
+                <button
+                    type="submit"
+                    className="search-filters-btn"
+                    style={{ maxWidth: 220, margin: '12px auto 0 auto', display: 'block' }}
+                >
                     Publier
                 </button>
             </form>
@@ -137,12 +146,20 @@ const CommentSection = ({ comments = [], onSubmit, user }) => {
                             width: '100%',
                             boxSizing: 'border-box',
                             boxShadow: '0 0 8px #4ee1ff22',
+                            textAlign: 'left',
                         }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                                <StarRating rating={c.rating} setRating={() => { }} />
-                                <span style={{ fontWeight: 600 }}>{c.user || "Utilisateur"}</span>
-                            </div>
-                            <div style={{ marginTop: 6 }}>{c.comment}</div>
+                            <>
+                                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                    <span style={{ fontWeight: 600, fontSize: 18 }}>{c.user || "Utilisateur"}</span>
+                                    <StarRating rating={c.rating} setRating={() => { }} />
+                                </div>
+                                {c.date && c.time && (
+                                    <div style={{ fontSize: 13, color: '#aee1f9', marginBottom: 4, marginLeft: 2 }}>
+                                        {c.date} à {c.time}
+                                    </div>
+                                )}
+                                <div style={{ marginTop: 6 }}>{c.comment}</div>
+                            </>
                         </div>
                     ))
                 )}

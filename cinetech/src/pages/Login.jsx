@@ -90,6 +90,7 @@ export default function Login() {
             }
             setSuccess("Connexion réussie !");
             localStorage.setItem("user", JSON.stringify(user)); // utilisateur courant
+            localStorage.setItem("pseudo", user.username); // Enregistre le pseudo pour l'affichage
             setTimeout(() => {
                 window.dispatchEvent(new Event("storage"));
                 navigate("/favoris");
@@ -109,6 +110,7 @@ export default function Login() {
                 return;
             }
             saveUser(username, password);
+            localStorage.setItem("pseudo", username); // Enregistre le pseudo pour l'affichage
             setSuccess("Inscription réussie ! Vous pouvez vous connecter.");
             setIsLogin(true);
             setUsername("");

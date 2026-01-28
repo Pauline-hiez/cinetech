@@ -25,13 +25,19 @@ const Details = () => {
     });
 
     // Simule un utilisateur connecté (à remplacer par votre auth)
-    const user = { name: "Moi" };
+    // Récupère le pseudo de l'utilisateur connecté (à remplacer par votre logique d'authentification réelle)
+    // Récupère le pseudo de l'utilisateur connecté (ne met pas 'Utilisateur' si vide)
+    const pseudo = localStorage.getItem('pseudo');
+    const user = pseudo && pseudo.trim() ? { name: pseudo } : null;
 
     // Ajout d'un commentaire
     const handleAddComment = ({ comment, rating, user: userName }) => {
         setUserComments(prev => {
+            const now = new Date();
+            const date = now.toLocaleDateString('fr-FR');
+            const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             const newComments = [
-                { comment, rating, user: userName || user.name },
+                { comment, rating, user: userName || user.name, date, time },
                 ...prev
             ];
             try {
@@ -67,9 +73,31 @@ const Details = () => {
         fetchData();
     }, [id, type]);
 
-    // Simule l'état favori (à remplacer par votre logique réelle)
+    // Gestion réelle des favoris dans le localStorage
     const [isFavorite, setIsFavorite] = useState(false);
-    const handleFavoriteClick = () => setIsFavorite(fav => !fav);
+    // Vérifie si le film/série est déjà en favori au chargement
+    useEffect(() => {
+        const favoris = JSON.parse(localStorage.getItem('favoris') || '[]');
+        const exists = favoris.some(f => f.id === details?.id && (f.media_type === type || f.media_type === details?.media_type));
+        setIsFavorite(exists);
+    }, [details, type]);
+
+    const handleFavoriteClick = () => {
+        if (!details) return;
+        let favoris = JSON.parse(localStorage.getItem('favoris') || '[]');
+        const exists = favoris.some(f => f.id === details.id && (f.media_type === type || f.media_type === details.media_type));
+        if (exists) {
+            favoris = favoris.filter(f => !(f.id === details.id && (f.media_type === type || f.media_type === details.media_type)));
+            setIsFavorite(false);
+        } else {
+            // Ajoute le type si absent
+            const toSave = { ...details, media_type: type };
+            favoris.push(toSave);
+            setIsFavorite(true);
+        }
+        localStorage.setItem('favoris', JSON.stringify(favoris));
+        window.dispatchEvent(new Event('storage'));
+    };
 
     if (!details || !credits) return <div className="spinner">Chargement...</div>;
 
