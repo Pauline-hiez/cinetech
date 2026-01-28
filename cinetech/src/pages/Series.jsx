@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import Spinner from '../components/Spinner';
 import { fetchPopularSeries } from '../services/tmdb';
 import MovieCard from '../components/MovieCard';
 import Pagination from '../components/Pagination';
@@ -46,7 +47,7 @@ export default function Series() {
         return () => { isMounted = false; };
     }, [page]);
 
-    if (loading) return <div>Chargement des séries...</div>;
+    if (loading) return <Spinner />;
     if (error) return <div>{error}</div>;
 
     return (

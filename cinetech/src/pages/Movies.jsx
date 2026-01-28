@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import Spinner from '../components/Spinner';
 import { fetchPopularMovies } from '../services/tmdb';
 import MovieCard from '../components/MovieCard';
 import Pagination from '../components/Pagination';
@@ -48,7 +49,7 @@ function Movies() {
         return () => { isMounted = false; };
     }, [page]);
 
-    if (loading) return <div>Chargement des films...</div>;
+    if (loading) return <Spinner />;
     if (error) return <div>{error}</div>;
 
     return (

@@ -7,7 +7,6 @@ import filmIcon from "../img/film-camera-svgrepo-com.svg";
 import imacIcon from "../img/imac-svgrepo-com.svg";
 import manIcon from "../img/man-svgrepo-com.svg";
 import heartIcon from "../img/heart-svgrepo-com.svg";
-import caretIcon from "../img/caret-bottom-svgrepo-com.svg";
 import SearchBar from "./SearchBar";
 import { FilterIcon } from "./FilterIcon";
 import SearchFilters from "./SearchFilters";
@@ -21,6 +20,22 @@ export default function Header() {
         if (query && query.length > 1) {
             navigate(`/search?q=${encodeURIComponent(query)}`);
         }
+    };
+
+    // Gestion de la recherche par filtres
+    const handleFilterSearch = (filters) => {
+        // Si tous les filtres sont vides, afficher tous les films
+        if (!filters.type && !filters.year && !filters.genre && !filters.country) {
+            navigate('/movies');
+            return;
+        }
+        // Construction de l'URL avec les filtres sélectionnés
+        const params = new URLSearchParams();
+        if (filters.type) params.append('type', filters.type);
+        if (filters.year) params.append('year', filters.year);
+        if (filters.genre) params.append('genre', filters.genre);
+        if (filters.country) params.append('country', filters.country);
+        navigate(`/search?${params.toString()}`);
     };
 
     useEffect(() => {
@@ -81,7 +96,7 @@ export default function Header() {
                     <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                         <SearchBar onSearch={handleSearch} />
                         <div style={{ position: 'absolute', top: 56, left: 0, width: '100%', minWidth: 0, maxWidth: 340, zIndex: 200, boxSizing: 'border-box' }}>
-                            <SearchFilters visible={showFilters} />
+                            <SearchFilters visible={showFilters} onChange={handleFilterSearch} />
                         </div>
                     </div>
                 </div>

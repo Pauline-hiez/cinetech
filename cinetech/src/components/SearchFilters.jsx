@@ -46,8 +46,17 @@ export default function SearchFilters({ onChange, visible }) {
         setSelectedCountry(e.target.value);
     };
 
+
     const handleFilterSearch = () => {
         onChange && onChange({ type: selectedType, year: selectedYear, genre: selectedGenre, country: selectedCountry });
+    };
+
+    const handleResetFilters = () => {
+        setSelectedType("");
+        setSelectedYear("");
+        setSelectedGenre("");
+        setSelectedCountry("");
+        onChange && onChange({ type: "", year: "", genre: "", country: "" });
     };
 
     if (!visible) return null;
@@ -88,6 +97,9 @@ export default function SearchFilters({ onChange, visible }) {
                 </div>
                 <button onClick={handleFilterSearch} className="search-filters-btn">
                     Rechercher
+                </button>
+                <button onClick={handleResetFilters} className="search-filters-btn" style={{ marginTop: 8, background: '#64748b', color: '#fff' }}>
+                    Réinitialiser
                 </button>
             </div>
         </div>
