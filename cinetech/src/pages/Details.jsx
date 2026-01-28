@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import CommentSection from "../components/CommentSection";
 import FavoriteButton from "../components/FavoriteButton";
+import MovieCard from "../components/MovieCard";
 import { useParams, Link } from "react-router-dom";
 import { getMovieDetails, getSimilarMovies, getMovieCredits, getMovieReviews } from "../services/tmdb";
 import { getMovieVideos } from "../services/tmdb";
@@ -11,6 +13,42 @@ const Details = () => {
     const [credits, setCredits] = useState(null);
     const [similar, setSimilar] = useState([]);
     const [reviews, setReviews] = useState([]);
+    // Pour stocker les commentaires utilisateurs locaux (persistés par film/série)
+    const commentsKey = `comments_${type}_${id}`;
+    const [userComments, setUserComments] = useState(() => {
+        try {
+            const saved = localStorage.getItem(commentsKey);
+            return saved ? JSON.parse(saved) : [];
+        } catch {
+            return [];
+        }
+    });
+
+    // Simule un utilisateur connecté (à remplacer par votre auth)
+    const user = { name: "Moi" };
+
+    // Ajout d'un commentaire
+    const handleAddComment = ({ comment, rating, user: userName }) => {
+        setUserComments(prev => {
+            const newComments = [
+                { comment, rating, user: userName || user.name },
+                ...prev
+            ];
+            try {
+                localStorage.setItem(commentsKey, JSON.stringify(newComments));
+            } catch { }
+            return newComments;
+        });
+    };
+    // Synchronise les commentaires si on change de film/série
+    useEffect(() => {
+        try {
+            const saved = localStorage.getItem(commentsKey);
+            setUserComments(saved ? JSON.parse(saved) : []);
+        } catch {
+            setUserComments([]);
+        }
+    }, [commentsKey]);
     const [videos, setVideos] = useState([]);
 
     useEffect(() => {
@@ -20,7 +58,7 @@ const Details = () => {
             const cred = await getMovieCredits(id, type);
             setCredits(cred);
             const sim = await getSimilarMovies(id, type);
-            setSimilar(sim?.results?.slice(0, 7) || []);
+            setSimilar(sim?.results?.slice(0, 5) || []);
             const rev = await getMovieReviews(id, type);
             setReviews(rev?.results || []);
             const vid = await getMovieVideos(id, type);
@@ -47,6 +85,7 @@ const Details = () => {
                             src={`https://image.tmdb.org/t/p/w780${details.poster_path}`}
                             alt={details.title || details.name}
                             style={{ width: 260, height: 400, borderRadius: 16, objectFit: 'cover', boxShadow: '0 6px 32px #000b' }}
+                            title={`Affiche de ${details.title || details.name} (${type === 'movie' ? 'film' : 'série'})`}
                         />
                     ) : (
                         <div style={{ width: 260, height: 400, background: '#111827', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aee1f9', fontSize: '1.5rem' }}>
@@ -153,36 +192,19 @@ const Details = () => {
                     </h3>
                 </div>
                 <div className="similar-list" style={{ gap: 40 }}>
-                    {similar.slice(0, 6).map((item) => {
-                        const mediaType = item.media_type || (item.first_air_date ? 'tv' : 'movie');
-                        return (
-                            <Link
-                                to={`/${mediaType}/${item.id}`}
-                                key={item.id}
-                                style={{ textDecoration: 'none', color: 'inherit' }}
-                            >
-                                <div className="similar-card" style={{ flexDirection: 'column', padding: 6, background: 'transparent', boxShadow: 'none' }}>
-                                    {item.poster_path ? (
-                                        <img
-                                            src={`https://image.tmdb.org/t/p/w185${item.poster_path}`}
-                                            alt={item.title || item.name}
-                                            style={{ width: 145, height: 205, borderRadius: 14, objectFit: 'cover', marginBottom: 12 }}
-                                        />
-                                    ) : (
-                                        <div style={{ width: 95, height: 135, background: '#cbd5e1', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#232f4b', fontSize: '0.95rem', marginBottom: 8 }}>
-                                            Pas d'image
-                                        </div>
-                                    )}
-                                    <div className="similar-placeholder" style={{ fontSize: 13, textAlign: 'center', color: '#232f4b', fontWeight: 500, maxWidth: 90, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                        {item.title || item.name}
-                                    </div>
-                                </div>
-                            </Link>
-                        );
-                    })}
+                    {similar.map((item) => (
+                        <div key={item.id} style={{ width: 180 }}>
+                            <MovieCard movie={item} />
+                        </div>
+                    ))}
                 </div>
             </div>
-            {/* Section avis et commentaires supprimée */}
+            {/* Section avis et commentaires */}
+            <CommentSection
+                comments={userComments}
+                onSubmit={handleAddComment}
+                user={user}
+            />
         </div>
     );
 };

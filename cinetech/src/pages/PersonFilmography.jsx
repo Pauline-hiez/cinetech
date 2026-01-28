@@ -59,14 +59,20 @@ export default function PersonFilmography() {
                             <div className="movie-card-img-container">
                                 <img
                                     src={poster}
-                                    alt={item.title || item.name}
+                                    alt={item.title || item.name || item.original_name || 'Titre inconnu'}
                                     className="movie-card-img"
+                                    title={`${type === 'movie' ? 'Film' : 'Série'}\n${item.title || item.name || item.original_name || 'Titre inconnu'}`}
                                 />
                                 <div className="movie-card-info">
-                                    <h3>{item.title || item.name}</h3>
-                                    {item.release_date || item.first_air_date ? (
-                                        <div className="movie-card-year">{(item.release_date || item.first_air_date || '').slice(0, 4)}</div>
-                                    ) : null}
+                                    <div style={{ fontSize: 12, color: '#aee1f9', fontWeight: 700, marginBottom: 2 }}>
+                                        {type === 'movie' ? 'Film' : 'Série'}
+                                    </div>
+                                    <h3>{item.title || item.name || item.original_name || 'Titre inconnu'}</h3>
+                                    <div className="movie-card-type-year" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                        {(item.release_date || item.first_air_date) && (
+                                            <span className="movie-card-year">{(item.release_date || item.first_air_date || '').slice(0, 4)}</span>
+                                        )}
+                                    </div>
                                     {item.vote_average ? (
                                         <div className="movie-card-vote">⭐ {item.vote_average}</div>
                                     ) : null}

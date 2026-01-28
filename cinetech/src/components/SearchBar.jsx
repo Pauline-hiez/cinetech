@@ -183,9 +183,12 @@ const SearchBar = ({ onSelectMovie, onSearch }) => {
                                     }}
                                 >
                                     {movie.poster_path && (
-                                        <img src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} alt={movie.title || movie.name} style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 4 }} />
+                                        <img src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} alt={movie.title || movie.name} style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 4 }} title={`${movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}\n${movie.title || movie.name}`} />
                                     )}
-                                    <span style={{ color: '#111' }}>{movie.title || movie.name}</span>
+                                    <span style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <span style={{ fontSize: 11, color: '#aee1f9', fontWeight: 700, lineHeight: 1 }}>{movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}</span>
+                                        <span style={{ color: '#111' }}>{movie.title || movie.name}</span>
+                                    </span>
                                 </li>
                             ))}
                         </>
@@ -212,9 +215,12 @@ const SearchBar = ({ onSelectMovie, onSearch }) => {
                                     }}
                                 >
                                     {movie.poster_path && (
-                                        <img src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} alt={movie.title || movie.name} style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 4 }} />
+                                        <img src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} alt={movie.title || movie.name} style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 4 }} title={`${movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}\n${movie.title || movie.name}`} />
                                     )}
-                                    <span>{movie.title || movie.name}</span>
+                                    <span style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <span style={{ fontSize: 11, color: '#aee1f9', fontWeight: 700, lineHeight: 1 }}>{movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}</span>
+                                        <span>{movie.title || movie.name}</span>
+                                    </span>
                                 </li>
                             ))}
                         </>

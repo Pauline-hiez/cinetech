@@ -33,21 +33,41 @@ function MovieCard({ movie }) {
     };
 
     return (
-        <Link to={`/${getMediaType(movie)}/${movie.id}`} className="movie-card" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <div className="movie-card" style={{ position: 'relative' }}>
             <div className="movie-card-img-container">
-                <img
-                    className="movie-card-img"
-                    src={movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : '/img/no-image.png'}
-                    alt={movie.title}
-                />
-                <FavoriteButton isFavorite={isFavorite} onClick={handleFavoriteClick} />
+                <Link to={`/${getMediaType(movie)}/${movie.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+                    <img
+                        className="movie-card-img"
+                        src={movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : '/img/no-image.png'}
+                        alt={movie.title || movie.name || movie.original_name || 'Titre inconnu'}
+                        title={`${getMediaType(movie) === 'movie' ? 'Film' : 'Série'}\n${movie.title || movie.name || movie.original_name || 'Titre inconnu'}`}
+                        style={{
+                            width: '100%',
+                            height: 260,
+                            objectFit: 'cover',
+                            borderRadius: 12,
+                            background: '#182033',
+                            border: '2.5px solid #4ee1ff',
+                            boxShadow: '0 0 12px #4ee1ff99',
+                            display: 'block',
+                        }}
+                    />
+                </Link>
+                <div style={{ position: 'absolute', top: 8, right: 8, zIndex: 2 }}>
+                    <FavoriteButton isFavorite={isFavorite} onClick={handleFavoriteClick} />
+                </div>
                 <div className="movie-card-info">
-                    <h3>{movie.title}</h3>
-                    <div className="movie-card-year">{movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</div>
+                    <div style={{ fontSize: 12, color: '#aee1f9', fontWeight: 700, marginBottom: 2 }}>
+                        {getMediaType(movie) === 'movie' ? 'Film' : 'Série'}
+                    </div>
+                    <h3>{movie.title || movie.name || movie.original_name || 'Titre inconnu'}</h3>
+                    <div className="movie-card-type-year" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span className="movie-card-year">{(movie.release_date || movie.first_air_date) ? (movie.release_date || movie.first_air_date).slice(0, 4) : 'N/A'}</span>
+                    </div>
                     <div className="movie-card-vote">⭐ {movie.vote_average}</div>
                 </div>
             </div>
-        </Link>
+        </div>
     );
 }
 
