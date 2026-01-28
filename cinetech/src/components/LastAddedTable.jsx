@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchAllMovies, fetchAllSeries } from "../services/tmdb";
+import { Link } from 'react-router-dom';
 
 const LastAddedTable = () => {
     const [latestMovies, setLatestMovies] = useState([]);
@@ -24,7 +25,9 @@ const LastAddedTable = () => {
                 <div className="last-added-table-list">
                     {latestMovies.map((movie) => (
                         <div className="last-added-table-item" key={movie.id}>
-                            <span>{movie.title} {movie.release_date ? `(${movie.release_date.slice(0, 4)})` : ''}</span>
+                            <Link to={`/movie/${movie.id}`} style={{ color: '#fff', textDecoration: 'underline' }}>
+                                {movie.title} {movie.release_date ? `(${movie.release_date.slice(0, 4)})` : ''}
+                            </Link>
                         </div>
                     ))}
                 </div>
@@ -36,7 +39,9 @@ const LastAddedTable = () => {
                 <div className="last-added-table-list">
                     {latestSeries.map((serie) => (
                         <div className="last-added-table-item" key={serie.id}>
-                            <span>{serie.name} {serie.first_air_date ? `(${serie.first_air_date.slice(0, 4)})` : ''}</span>
+                            <Link to={`/tv/${serie.id}`} style={{ color: '#fff', textDecoration: 'underline' }}>
+                                {serie.name} {serie.first_air_date ? `(${serie.first_air_date.slice(0, 4)})` : ''}
+                            </Link>
                         </div>
                     ))}
                 </div>

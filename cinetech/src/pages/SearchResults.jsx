@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { genres as GENRES } from '../components/SearchFilters';
 import Spinner from '../components/Spinner';
 import { useLocation } from 'react-router-dom';
 import { searchMoviesAndSeries } from '../services/tmdb';
@@ -91,7 +92,12 @@ export default function SearchResults() {
     } else {
         let t = type === 'tv' ? 'Séries' : type === 'movie' ? 'Films' : 'Films et séries';
         let y = year ? ` de ${year}` : '';
-        let g = genre ? `, genre ${genre}` : '';
+        let genreName = '';
+        if (genre) {
+            const found = GENRES.find(g => String(g.id) === String(genre));
+            genreName = found ? found.name : genre;
+        }
+        let g = genreName ? `, genre ${genreName}` : '';
         let c = country ? `, pays ${country}` : '';
         titre = `${t}${y}${g}${c}`;
     }

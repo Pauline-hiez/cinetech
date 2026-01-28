@@ -1,3 +1,232 @@
+/* Bouton favoris en haut à droite du bloc détails */
+.details-page-fav {
+  position: relative;
+}
+
+.favorite-btn-wrapper {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  z-index: 10;
+}
+
+.favorite-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.13s;
+}
+
+.favorite-btn:active {
+  transform: scale(0.92);
+}
+
+/* Bloc infos film façon capture */
+.movie-infos-block {
+  margin: 24px 0 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.movie-infos-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.movie-info {
+  background: #1e293b;
+  color: #aee1f9;
+  border-radius: 8px;
+  padding: 7px 18px 7px 12px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 10px #0005;
+}
+
+.movie-info-icon {
+  margin-right: 7px;
+  font-size: 1.15em;
+}
+
+.movie-info-label {
+  font-weight: 700;
+  color: #aee1f9;
+  margin-right: 4px;
+}
+
+.similar-title-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.similar-title-centered {
+  background: rgba(30, 41, 59, 0.96);
+  display: inline-block;
+  padding: 6px 22px;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #aee1f9;
+  font-size: 1.2rem;
+  margin: 0;
+  z-index: 2;
+  text-align: center;
+}
+
+/* ---- PAGE DETAIL FILM/SERIE ---- */
+.details-page {
+  background: linear-gradient(120deg, #232f4b 0%, #1a2340 100%);
+  border-radius: 18px;
+  box-shadow: 0 8px 48px #000a;
+  padding: 40px 32px 64px 32px;
+  margin: 0 auto 48px auto;
+  max-width: 1100px;
+  color: #fff;
+}
+
+.details-header {
+  display: flex;
+  gap: 56px;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.cover-image-placeholder {
+  width: 260px;
+  height: 400px;
+  background: #111827;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #aee1f9;
+  box-shadow: 0 6px 32px #000b;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.details-info {
+  flex: 1;
+  text-align: left;
+}
+
+.details-info h2 {
+  font-size: 2.1rem;
+  margin-bottom: 10px;
+  color: #aee1f9;
+}
+
+.details-info p {
+  font-size: 1.1rem;
+  margin-bottom: 18px;
+}
+
+.details-cast {
+  margin-top: 10px;
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 12px 18px;
+  box-shadow: 0 2px 12px #0005;
+}
+
+.details-cast ul {
+  margin: 0;
+  padding: 0 0 0 12px;
+  list-style: disc;
+}
+
+.details-cast li {
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: #e0e7ef;
+}
+
+.similar-section {
+  margin: 36px 0 0 0;
+}
+
+.similar-section h3 {
+  font-size: 1.2rem;
+  color: #aee1f9;
+  margin-bottom: 12px;
+}
+
+.similar-list {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.similar-card {
+  width: 110px;
+  height: 110px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #232f4b;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 2px 12px #0003;
+}
+
+.similar-placeholder {
+  text-align: center;
+}
+
+.reviews-section {
+  margin-top: 38px;
+  background: #1e293b;
+  border-radius: 10px;
+  padding: 18px 22px 10px 22px;
+  box-shadow: 0 2px 12px #0005;
+  text-align: left;
+}
+
+.reviews-section h3 {
+  color: #aee1f9;
+  font-size: 1.15rem;
+  margin-bottom: 10px;
+}
+
+.review-item {
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}
+
+.review-rating {
+  margin-top: 4px;
+}
+
+.star {
+  color: #aee1f9;
+  font-size: 1.3rem;
+  margin-right: 2px;
+  opacity: 0.5;
+}
+
+.star.filled {
+  color: #aee1f9;
+  opacity: 1;
+}
+
+.spinner {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 80px 0;
+}
+
 /* Animation pour le spinner */
 .animate-spin {
   animation: spin 1s linear infinite;
@@ -468,6 +697,158 @@ main.main-content {
 
 .App-link {
   color: #61dafb;
+}
+
+/* === MovieCard.css déplacé ici === */
+.movie-card {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: unset;
+  width: 180px;
+  height: 270px;
+  transition: box-shadow 0.2s;
+  overflow: visible;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+.movie-card-img-container {
+  position: relative;
+  width: 180px;
+  height: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.movie-card-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.3s cubic-bezier(.4, 2, .6, 1), filter 0.3s;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.movie-card-img {
+  width: 180px;
+  height: 270px;
+  border-radius: 12px;
+  object-fit: cover;
+  transition: transform 0.3s cubic-bezier(.4, 2, .6, 1), filter 0.3s;
+  z-index: 1;
+}
+
+.movie-card-info {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(30, 41, 59, 0.92);
+  color: #fff;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 18px;
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  border-radius: 12px;
+  z-index: 2;
+  width: max-content;
+  max-width: 90%;
+  min-width: 120px;
+  box-shadow: 0 4px 16px rgba(30, 41, 59, 0.18);
+}
+
+.movie-card:hover .movie-card-img {
+  transform: scale(1.08);
+  filter: brightness(1.08) saturate(1.1);
+}
+
+.movie-card:hover .movie-card-info {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.movie-card-info h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+
+.favorite-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(30, 41, 59, 0.45);
+  border: none;
+  cursor: pointer;
+  z-index: 4;
+  padding: 6px;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.22), 0 1.5px 6px 0 rgba(230, 57, 70, 0.12);
+  backdrop-filter: blur(2.5px);
+  transition: transform 0.18s cubic-bezier(.4, 2, .6, 1), background 0.18s;
+  outline: none;
+}
+
+.favorite-btn:hover {
+  background: rgba(230, 57, 70, 0.13);
+  transform: scale(1.13);
+}
+
+.favorite-btn:active {
+  animation: heart-beat 0.32s cubic-bezier(.4, 2, .6, 1);
+}
+
+@keyframes heart-beat {
+  0% {
+    transform: scale(1);
+  }
+
+  20% {
+    transform: scale(1.25);
+  }
+
+  40% {
+    transform: scale(0.92);
+  }
+
+  60% {
+    transform: scale(1.18);
+  }
+
+  80% {
+    transform: scale(0.98);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.movie-card-year {
+  font-size: 14px;
+  color: #cbd5e1;
+  margin: 0 0 8px 0;
+}
+
+.movie-card-vote {
+  font-size: 15px;
+  color: #fbbf24;
+  margin: 0;
 }
 
 @keyframes App-logo-spin {

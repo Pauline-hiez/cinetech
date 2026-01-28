@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import PrivateRoute from './components/PrivateRoute';
 import SearchResults from './pages/SearchResults';
 import Home from './pages/Home';
+import Details from './pages/Details';
 
 function App() {
   useEffect(() => {
@@ -33,6 +34,7 @@ function App() {
             } />
             <Route path="/login" element={<Login />} />
             <Route path="/search" element={<SearchResults />} />
+            <Route path="/:type/:id" element={<Details />} />
           </Routes>
         </main>
       </div>

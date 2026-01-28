@@ -1,12 +1,15 @@
 
 
 import React, { useState, useEffect } from 'react';
-import './MovieCard.css';
-
+import '../App.css';
 import FavoriteButton from './FavoriteButton';
+import { Link } from 'react-router-dom';
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
+function getMediaType(movie) {
+    return movie.media_type || (movie.first_air_date ? 'tv' : 'movie');
+}
 
 function MovieCard({ movie }) {
     // Utilisation du localStorage pour stocker les favoris
@@ -30,7 +33,7 @@ function MovieCard({ movie }) {
     };
 
     return (
-        <div className="movie-card">
+        <Link to={`/${getMediaType(movie)}/${movie.id}`} className="movie-card" style={{ textDecoration: 'none', color: 'inherit' }}>
             <div className="movie-card-img-container">
                 <img
                     className="movie-card-img"
@@ -44,7 +47,7 @@ function MovieCard({ movie }) {
                     <div className="movie-card-vote">⭐ {movie.vote_average}</div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 

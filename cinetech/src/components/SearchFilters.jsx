@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const years = Array.from({ length: 2026 - 1950 }, (_, i) => 2025 - i);
-const genres = [
+export const genres = [
     { id: 28, name: "Action" },
     { id: 35, name: "Comédie" },
     { id: 18, name: "Drame" },

@@ -1,3 +1,62 @@
+// Détail d'un film ou série
+export async function getMovieDetails(id, type = 'movie') {
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const BASE_URL = 'https://api.themoviedb.org/3';
+  const url = `${BASE_URL}/${type}/${id}?language=fr-FR`;
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) throw new Error('Erreur lors de la récupération du détail');
+  return response.json();
+}
+
+// Casting et équipe technique
+export async function getMovieCredits(id, type = 'movie') {
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const BASE_URL = 'https://api.themoviedb.org/3';
+  const url = `${BASE_URL}/${type}/${id}/credits`;
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) throw new Error('Erreur lors de la récupération du casting');
+  return response.json();
+}
+
+// Films ou séries similaires
+export async function getSimilarMovies(id, type = 'movie') {
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const BASE_URL = 'https://api.themoviedb.org/3';
+  const url = `${BASE_URL}/${type}/${id}/similar`;
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) throw new Error('Erreur lors de la récupération des similaires');
+  return response.json();
+}
+
+// Avis et commentaires
+export async function getMovieReviews(id, type = 'movie') {
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const BASE_URL = 'https://api.themoviedb.org/3';
+  const url = `${BASE_URL}/${type}/${id}/reviews`;
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) throw new Error('Erreur lors de la récupération des avis');
+  return response.json();
+}
 // Récupérer toutes les séries (discover, triées par date de première diffusion décroissante)
 export async function fetchAllSeries(page = 1) {
   const response = await fetch(`${BASE_URL}/discover/tv?page=${page}&sort_by=first_air_date.desc`, {
