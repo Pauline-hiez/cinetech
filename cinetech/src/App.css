@@ -59,19 +59,15 @@ header .header-actions .favoris-large {
 }
 
 /* Force le logo à s'afficher en grand même avec les règles restrictives du header */
-header .header-accueil-group .header-logo-large {
-  width: 80px !important;
-  height: 80px !important;
-  max-width: 80px !important;
-  max-height: 80px !important;
-}
 
 /* Permet d'agrandir le logo du header sans impacter les autres icônes */
 .header-logo-large {
-  width: 80px !important;
-  height: 80px !important;
-  max-width: 80px !important;
-  max-height: 80px !important;
+  width: 180px !important;
+  height: 180px !important;
+  max-width: 180px !important;
+  max-height: 180px !important;
+  object-fit: contain;
+  margin-left: 32px;
 }
 
 /* Wrapper pour l'espacement du tableau des derniers ajouts aligné slider */
@@ -598,7 +594,7 @@ button .logout-icon {
 .header-navbar {
   background: linear-gradient(0deg, #020617 0%, #1f2937 100%);
   color: #fff;
-  padding: 20px 40px;
+  padding: 8px 20px;
   border-radius: 0 0 18px 18px;
   box-shadow: 0 8px 32px 0 rgba(30, 41, 59, 0.25), 0 1.5px 8px 0 rgba(0, 0, 0, 0.12);
   margin-bottom: 32px;
@@ -664,32 +660,11 @@ button .logout-icon {
 }
 
 
-.header-accueil-icon,
-.header-accueil-icon svg {
-  width: 56px !important;
-  height: 56px !important;
-  max-width: 56px !important;
-  max-height: 56px !important;
-  display: inline-block;
-  filter: drop-shadow(0 0 2px #222);
-}
 
 
-header .header-accueil-icon {
-  width: 56px !important;
-  height: 56px !important;
-  max-width: 56px !important;
-  max-height: 56px !important;
-}
 
 /* Limite la taille des icônes du header */
 
-header img {
-  max-width: 56px;
-  max-height: 56px;
-  width: auto;
-  height: auto;
-}
 
 header>div {
   display: flex;
@@ -757,11 +732,11 @@ header form button svg {
 
 /* Style personnalisé pour le header */
 header {
-  background: linear-gradient(90deg, #1e293b 0%, #1f2f52 100%);
+  background: none;
   color: #fff;
   padding: 20px 40px;
-  border-radius: 0 0 18px 18px;
-  box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
+  border-radius: 0;
+  box-shadow: none;
   margin-bottom: 32px;
   display: flex;
   align-items: center;

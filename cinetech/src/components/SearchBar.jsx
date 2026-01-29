@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import { FilterIcon } from "./FilterIcon";
 import { searchMoviesAndSeries } from "../services/tmdb";
 
-const SearchBar = ({ onSelectMovie, onSearch }) => {
+const SearchBar = ({ onSelectMovie, onSearch, onToggleFilters }) => {
     const [query, setQuery] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -146,6 +147,11 @@ const SearchBar = ({ onSelectMovie, onSearch }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4-4m0 0A7 7 0 104 4a7 7 0 0013 13z" stroke="currentColor" />
                 </svg>
             </button>
+            {onToggleFilters && (
+                <button type="button" aria-label="Filtres de recherche" onClick={onToggleFilters} style={{ background: 'none', border: 'none', cursor: 'pointer', marginLeft: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4 }}>
+                    <FilterIcon size={28} />
+                </button>
+            )}
             {loading && <div style={{ marginLeft: 8 }}>Chargement...</div>}
             {showSuggestions && (startsWith.length > 0 || includes.length > 0) && (
                 <ul
