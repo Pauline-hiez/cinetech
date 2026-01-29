@@ -54,7 +54,7 @@ function Movies() {
 
     return (
         <div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'center' }}>
                 {movies.map((movie) => (
                     <MovieCard key={movie.id} movie={movie} />
                 ))}

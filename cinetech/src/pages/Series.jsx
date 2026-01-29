@@ -52,7 +52,7 @@ export default function Series() {
 
     return (
         <div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'center' }}>
                 {series.map((serie) => (
                     <MovieCard key={serie.id} movie={{
                         ...serie,

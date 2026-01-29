@@ -38,11 +38,11 @@ export default function PersonFilmography() {
     if (!person) return <div>Personne non trouvée.</div>;
 
     return (
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: 24 }}>
+        <div className="max-w-[1200px] mx-auto p-6">
             <h2>{person.name}</h2>
             <p>{person.biography}</p>
             <h3>Filmographie</h3>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, justifyContent: 'center' }}>
+            <div className="flex flex-wrap gap-6 justify-center">
                 {credits.map((item) => {
                     const poster = item.poster_path
                         ? `https://image.tmdb.org/t/p/w300${item.poster_path}`
@@ -53,8 +53,7 @@ export default function PersonFilmography() {
                         <Link
                             key={item.credit_id}
                             to={`/${type}/${item.id}`}
-                            className="movie-card"
-                            style={{ width: 180, textAlign: 'center', textDecoration: 'none', color: '#fff', background: 'none', boxShadow: 'none', padding: 0 }}
+                            className="movie-card text-center no-underline text-white bg-none shadow-none p-0"
                         >
                             <div className="movie-card-img-container">
                                 <img

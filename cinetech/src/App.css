@@ -5,8 +5,8 @@
 
 .favorite-btn-wrapper {
   position: absolute;
-  top: 24px;
-  right: 32px;
+  top: 1.5rem;
+  right: 2rem;
   z-index: 10;
 }
 
@@ -15,49 +15,50 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  transition: transform 0.13s;
+  transition: transform 150ms;
 }
 
 .favorite-btn:active {
-  transform: scale(0.92);
+  transform: scale(0.95);
 }
 
 /* Bloc infos film façon capture */
 .movie-infos-block {
-  margin: 24px 0 18px 0;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .movie-infos-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 1.5rem;
 }
 
 .movie-info {
   background: #1e293b;
   color: #aee1f9;
-  border-radius: 8px;
-  padding: 7px 18px 7px 12px;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
   font-size: 1.08rem;
   font-weight: 500;
   display: flex;
   align-items: center;
-  margin-bottom: 6px;
-  box-shadow: 0 2px 10px #0005;
+  margin-bottom: 0.375rem;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.18);
 }
 
 .movie-info-icon {
-  margin-right: 7px;
+  margin-right: 0.5rem;
   font-size: 1.15em;
 }
 
 .movie-info-label {
-  font-weight: 700;
+  font-weight: bold;
   color: #aee1f9;
-  margin-right: 4px;
+  margin-right: 0.25rem;
 }
 
 .similar-title-wrapper {
@@ -588,6 +589,14 @@ button .logout-icon {
   max-width: 32px !important;
   max-height: 32px !important;
   display: inline-block;
+  filter: drop-shadow(0 0 2px #222);
+}
+
+header .header-accueil-icon {
+  width: 32px !important;
+  height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
 }
 
 /* Limite la taille des icônes du header */
@@ -850,14 +859,4 @@ main.main-content {
   font-size: 15px;
   color: #fbbf24;
   margin: 0;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
 }

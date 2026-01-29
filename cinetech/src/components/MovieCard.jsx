@@ -57,6 +57,10 @@ function MovieCard({ movie }) {
                             boxShadow: '0 0 12px #4ee1ff99',
                             display: 'block',
                         }}
+                        onError={e => {
+                            e.target.onerror = null;
+                            e.target.src = 'https://via.placeholder.com/260x390?text=Image+indisponible';
+                        }}
                     />
                 </Link>
                 <div style={{ position: 'absolute', top: 8, right: 8, zIndex: 2 }}>
