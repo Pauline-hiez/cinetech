@@ -352,9 +352,10 @@
 }
 
 /* Effet glow radial derrière le slider */
+
 .stellar-slider {
   width: 100vw;
-  max-width: 900px;
+  max-width: 1300px;
   margin: 0 auto 48px auto;
   position: relative;
   min-height: 340px;
@@ -366,8 +367,8 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
-  height: 400px;
+  width: 900px;
+  height: 500px;
   background: radial-gradient(circle, rgba(174, 225, 249, 0.18) 0%, rgba(108, 63, 209, 0.12) 60%, transparent 100%);
   z-index: 0;
   pointer-events: none;
@@ -376,7 +377,7 @@
 
 .stellar-carousel {
   position: relative;
-  width: 600px;
+  width: 1100px;
   height: 320px;
   perspective: 1600px;
   margin: 0 auto;

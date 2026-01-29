@@ -79,7 +79,7 @@ const Slider = ({ type }) => {
     const next = () => setActiveIdx((prev) => (prev + 1) % items.length);
 
     return (
-        <div className="stellar-slider" style={{ position: "relative", perspective: "1200px", minHeight: 340, maxWidth: 900, margin: '0 auto' }}>
+        <div className="stellar-slider" style={{ position: "relative", perspective: "1200px", minHeight: 340, maxWidth: 1300, margin: '0 auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                 <button className="slider-arrow nav-btn left" onClick={prev} aria-label="Précédent" style={{ left: 0, position: 'relative', marginRight: 8 }}>
                     ‹
@@ -89,7 +89,7 @@ const Slider = ({ type }) => {
                     ref={carouselRef}
                     style={{
                         position: "relative",
-                        width: 700,
+                        width: 1100,
                         height: 320,
                         display: "flex",
                         alignItems: "center",
@@ -104,8 +104,8 @@ const Slider = ({ type }) => {
                             className={`carousel-slide${idx === activeIdx ? " active" : ""}`}
                             style={{
                                 position: "absolute",
-                                width: 140,
-                                height: 210,
+                                width: 180,
+                                height: 270,
                                 ...getCarouselStyle(idx, activeIdx, items.length)
                             }}
                             tabIndex={idx === activeIdx ? 0 : -1}
@@ -120,7 +120,7 @@ const Slider = ({ type }) => {
                     ›
                 </button>
             </div>
-            <div className="dot-nav" style={{ display: "flex", justifyContent: "center", marginTop: 80, marginBottom: 0, position: 'relative', zIndex: 2 }}>
+            <div className="dot-nav" style={{ display: "flex", justifyContent: "center", marginTop: 24, marginBottom: 0, position: 'relative', zIndex: 2 }}>
                 {items.map((_, idx) => (
                     <button
                         key={idx}
