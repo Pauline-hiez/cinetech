@@ -1,3 +1,79 @@
+/* Force la taille des images Films/Séries dans la navbar comme l'étoile favoris */
+.header-center-group .header-accueil-icon {
+  width: 56px !important;
+  height: 56px !important;
+  max-width: 56px !important;
+  max-height: 56px !important;
+  background: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  box-sizing: content-box;
+}
+
+.favoris-active {
+  /* Plus de fond jaune, uniquement le glow bleu du SVG */
+}
+
+.movie-card .favoris-large {
+  width: 36px !important;
+  height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+  padding: 6px;
+  margin-top: -6px;
+  margin-right: -6px;
+  vertical-align: top;
+}
+
+/* Ajoute un fond noir circulaire à l'icône favoris */
+.favoris-large {
+  background: rgba(17, 17, 17, 0.55);
+  border-radius: 50%;
+  padding: 8px;
+  box-sizing: content-box;
+  width: 56px !important;
+  height: 56px !important;
+  max-width: 56px !important;
+  max-height: 56px !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Forcer la taille de l'icône favoris même avec les règles restrictives du header */
+header .header-actions .favoris-large {
+  background: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  width: 56px !important;
+  height: 56px !important;
+  max-width: 56px !important;
+  max-height: 56px !important;
+}
+
+/* Agrandir l'icône favoris (étoile) dans la navbar */
+.favoris-large {
+  width: 48px !important;
+  height: 48px !important;
+  max-width: 48px !important;
+  max-height: 48px !important;
+}
+
+/* Force le logo à s'afficher en grand même avec les règles restrictives du header */
+header .header-accueil-group .header-logo-large {
+  width: 80px !important;
+  height: 80px !important;
+  max-width: 80px !important;
+  max-height: 80px !important;
+}
+
+/* Permet d'agrandir le logo du header sans impacter les autres icônes */
+.header-logo-large {
+  width: 80px !important;
+  height: 80px !important;
+  max-width: 80px !important;
+  max-height: 80px !important;
+}
+
 /* Wrapper pour l'espacement du tableau des derniers ajouts aligné slider */
 .last-added-table-wrapper {
   margin-top: 100px;
@@ -253,12 +329,12 @@
   position: fixed;
   right: 32px;
   bottom: 32px;
-  background: #e53e3e;
+  background: #111827;
   color: #fff;
   border: none;
   border-radius: 50%;
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -269,8 +345,8 @@
 }
 
 .floating-logout-btn:hover {
-  background: #c53030;
-  box-shadow: 0 0 32px #e53e3e99;
+  background: #222;
+  box-shadow: 0 0 32px #11182799;
   transform: scale(1.08);
 }
 
@@ -587,27 +663,30 @@ button .logout-icon {
   letter-spacing: 1px;
 }
 
+
 .header-accueil-icon,
 .header-accueil-icon svg {
-  width: 32px !important;
-  height: 32px !important;
-  max-width: 32px !important;
-  max-height: 32px !important;
+  width: 56px !important;
+  height: 56px !important;
+  max-width: 56px !important;
+  max-height: 56px !important;
   display: inline-block;
   filter: drop-shadow(0 0 2px #222);
 }
 
+
 header .header-accueil-icon {
-  width: 32px !important;
-  height: 32px !important;
-  max-width: 32px !important;
-  max-height: 32px !important;
+  width: 56px !important;
+  height: 56px !important;
+  max-width: 56px !important;
+  max-height: 56px !important;
 }
 
 /* Limite la taille des icônes du header */
+
 header img {
-  max-width: 28px;
-  max-height: 28px;
+  max-width: 56px;
+  max-height: 56px;
   width: auto;
   height: auto;
 }

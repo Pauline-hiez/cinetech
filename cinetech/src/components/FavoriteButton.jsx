@@ -1,30 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-// Un simple bouton coeur SVG, blanc par défaut, rouge si actif
+
+// Bouton étoile favoris (remplace le coeur)
 export default function FavoriteButton({ isFavorite = false, onClick }) {
     return (
         <button
             className="favorite-btn"
             onClick={onClick}
             aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
         >
             <svg
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill={isFavorite ? '#e63946' : 'white'}
-                stroke="#e63946"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                className={isFavorite ? 'favoris-large favoris-active' : 'favoris-large'}
+                width="36" height="36" viewBox="0 0 24 24"
+                aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
                 style={{
                     filter: isFavorite
-                        ? 'drop-shadow(0 2px 8px #e6394680) drop-shadow(0 1.5px 6px #e6394620)'
-                        : 'drop-shadow(0 2px 8px rgba(0,0,0,0.22))',
+                        ? 'drop-shadow(0 0 8px #00c3ff) drop-shadow(0 0 16px #00c3ff80)'
+                        : 'drop-shadow(0 0 6px #00c3ff80)',
                     transition: 'filter 0.18s',
                 }}
             >
-                <path d="M12 21s-6.2-5.3-8.5-8.1C1.7 10.2 2.2 7.1 5 5.6c2.1-1.1 4.2-.1 5.5 1.3C11.8 5.5 13.9 4.5 16 5.6c2.8 1.5 3.3 4.6 1.5 7.3C18.2 15.7 12 21 12 21z" />
+                <defs>
+                    <linearGradient id="star-gradient" x1="0" y1="1" x2="1" y2="0">
+                        <stop offset="0%" stopColor="#00c3ff" stopOpacity="0.55" />
+                        <stop offset="80%" stopColor="#ffe066" stopOpacity="0.55" />
+                    </linearGradient>
+                </defs>
+                <polygon
+                    points="12,2 15,9 22,9.3 17,14.1 18.5,21 12,17.5 5.5,21 7,14.1 2,9.3 9,9"
+                    fill={isFavorite ? '#00c3ff' : 'transparent'}
+                    stroke="url(#star-gradient)"
+                    strokeWidth="1.7"
+                    style={{
+                        filter: isFavorite
+                            ? 'drop-shadow(0 0 8px #00c3ff) drop-shadow(0 0 16px #00c3ff80)'
+                            : 'drop-shadow(0 0 6px #00c3ff80)',
+                        transition: 'filter 0.18s',
+                    }}
+                />
             </svg>
         </button>
     );

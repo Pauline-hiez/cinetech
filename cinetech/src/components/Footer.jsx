@@ -69,7 +69,7 @@ const Footer = () => {
                                 Bienvenue sur notre cinetech, site préféré des français en terme de référencement de films et de séries. <br></br>
                                 Découvrez les dernières nouveautés ainsi que les programmes les plus populaires.<br></br>
                                 Promenez-vous sur le site, découvrez notre contenu, apprenez-en plus sur vos films et séries préférées, ajoutez-les à vos favoris, laissez des avis et commentaires.
-                                <h2 className="text-lg font-bold mb-4" style={{ color: '#aee1f9' }}>Pourquoi nous choisir ?</h2>
+                                <h2 className="text-lg font-bold mb-4" style={{ color: '#aee1f9' }}>Pourquoi sommes-nous les meilleurs ?</h2>
                                 Notre site a été pensé pour faciliter vos recherches, retrouvez toutes les informations dont vous avez besoin en seulement quelques clics ! <br></br> <br></br>
                                 Nous vous souhaitons une bonne découverte !
                             </div>

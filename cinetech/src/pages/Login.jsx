@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import userIcon from '../img/login.png';
 import { useNavigate } from "react-router-dom";
 
 const darkBlue = {
@@ -126,9 +127,7 @@ export default function Login() {
             <div style={cardStyle}>
                 <div style={{ textAlign: "center", padding: "32px 0 16px 0" }}>
                     <div style={{ display: "inline-block", padding: 16, background: "#0f172a", borderRadius: "50%", marginBottom: 16, boxShadow: "0 0 16px #22336655" }}>
-                        <svg width="40" height="40" fill="none" stroke="#60a5fa" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
+                        <img src={userIcon} alt="User" style={{ width: 56, height: 56, display: 'block', margin: '0 auto' }} />
                     </div>
                     <h2 style={{ fontSize: 32, fontWeight: 700, color: "#fff", marginBottom: 8, textShadow: "0 0 8px #223366" }}>
                         {isLogin ? "Connexion" : "Inscription"}

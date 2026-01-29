@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import houseIcon from "../img/house-svgrepo-com.svg";
-import filmIcon from "../img/film-camera-svgrepo-com.svg";
-import imacIcon from "../img/imac-svgrepo-com.svg";
-import manIcon from "../img/man-svgrepo-com.svg";
-import heartIcon from "../img/heart-svgrepo-com.svg";
+import logo from "../img/logo.png";
+import cinemaIcon from "../img/cinema.png";
+import seriesIcon from "../img/series.png";
+import userIcon from "../img/login.png";
+import favorisIcon from "../img/favoris.png";
+import logoutIcon from "../img/logout.png";
 import SearchBar from "./SearchBar";
 import { FilterIcon } from "./FilterIcon";
 import SearchFilters from "./SearchFilters";
@@ -60,30 +61,31 @@ export default function Header() {
         <header className="header-navbar" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: '#111827' }}>
             <div className="header-accueil-group">
                 <Link to="/" className="header-link" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
-                    <img src={houseIcon} alt="Accueil" className="header-accueil-icon" />
+                    <img src={logo} alt="Accueil" className="header-accueil-icon header-logo-large" style={{ marginLeft: 16, width: 50, height: 50 }} />
                 </Link>
             </div>
             <div className="header-center-group">
                 <Link to="/movies" className="header-link" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
-                    <img src={filmIcon} alt="Films" className="header-accueil-icon" />
+                    <img src={cinemaIcon} alt="Films" className="header-accueil-icon" />
                     <span className="header-accueil">Films</span>
                 </Link>
                 <Link to="/series" className="header-link" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
-                    <img src={imacIcon} alt="Séries" className="header-accueil-icon" />
+                    <img src={seriesIcon} alt="Séries" className="header-accueil-icon" />
                     <span className="header-accueil">Séries</span>
                 </Link>
             </div>
+
             <div className="header-actions" style={{ position: 'relative' }}>
                 {isLoggedIn && (
                     <>
                         <Link to="/favoris">
-                            <img src={heartIcon} alt="Favoris" className="header-accueil-icon" />
+                            <img src={favorisIcon} alt="Favoris" className="header-accueil-icon favoris-large" />
                         </Link>
                     </>
                 )}
                 {!isLoggedIn && (
                     <Link to="/login">
-                        <img src={manIcon} alt="User" className="header-accueil-icon" />
+                        <img src={userIcon} alt="User" className="header-accueil-icon" />
                     </Link>
                 )}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative' }}>
@@ -105,16 +107,7 @@ export default function Header() {
             {/* Bouton de déconnexion flottant */}
             {isLoggedIn && (
                 <button onClick={handleLogout} className="floating-logout-btn" title="Déconnexion">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="white"
-                        strokeWidth="2"
-                        className="header-accueil-icon logout-icon"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" />
-                    </svg>
+                    <img src={logoutIcon} alt="Déconnexion" className="header-accueil-icon logout-icon" />
                 </button>
             )}
         </header>
