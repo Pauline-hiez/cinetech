@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import './App.css';
 
 import Header from './components/Header';
+import Footer from './components/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Movies from './pages/Movies';
@@ -21,9 +22,9 @@ function App() {
   }, []);
   return (
     <Router>
-      <div className="App">
+      <div className="App min-h-screen flex flex-col justify-between">
         <Header />
-        <main className="main-content" style={{ maxWidth: '1200px', margin: '130px auto 0 auto', padding: '24px' }}>
+        <main className="main-content flex-1" style={{ maxWidth: '1200px', margin: '130px auto 0 auto', padding: '24px' }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/movies" element={<Movies />} />
@@ -39,6 +40,7 @@ function App() {
             <Route path="/person/:personId" element={<PersonFilmography />} />
           </Routes>
         </main>
+        <Footer />
       </div>
     </Router>
   );

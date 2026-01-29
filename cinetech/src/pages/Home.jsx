@@ -19,7 +19,9 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            <LastAddedTable />
+            <div className="w-full max-w-[1300px] mx-auto last-added-table-wrapper">
+                <LastAddedTable />
+            </div>
         </div>
     );
 };

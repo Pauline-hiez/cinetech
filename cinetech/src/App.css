@@ -1,3 +1,8 @@
+/* Wrapper pour l'espacement du tableau des derniers ajouts aligné slider */
+.last-added-table-wrapper {
+  margin-top: 100px;
+}
+
 /* Bouton favoris en haut à droite du bloc détails */
 .details-page-fav {
   position: relative;
@@ -355,7 +360,7 @@
 /* Effet glow radial derrière le slider */
 
 .stellar-slider {
-  width: 100vw;
+  width: 100%;
   max-width: 1300px;
   margin: 0 auto 48px auto;
   position: relative;
