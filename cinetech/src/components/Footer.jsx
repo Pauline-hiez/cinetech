@@ -47,13 +47,36 @@ const Footer = () => {
                         API TMDB
                     </a>
                     <a
+                        href="#quisommesnous"
+                        role="button"
+                        tabIndex={0}
                         className="hover:text-[#4e8fae] transition-colors duration-200 underline"
-                        style={{ color: '#fff' }}
+                        style={{ color: '#fff', background: 'none', border: 'none', cursor: 'pointer', display: 'inline', font: 'inherit', padding: 0, textDecoration: 'underline' }}
+                        onClick={e => {
+                            e.preventDefault();
+                            const modal = document.getElementById('quisommes-modal');
+                            if (modal) modal.style.display = 'flex';
+                        }}
                     >
                         Qui sommes-nous ?
                     </a>
+                    {/* Modal Qui sommes-nous ? */}
+                    <div id="quisommes-modal" style={{ display: 'none', position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.6)', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+                        <div style={{ background: '#1e293b', padding: '2rem', borderRadius: '12px', minWidth: 320, maxWidth: 500, color: '#fff', position: 'relative', maxHeight: '80vh', overflowY: 'auto' }}>
+                            <button onClick={() => { document.getElementById('quisommes-modal').style.display = 'none'; }} style={{ position: 'absolute', top: 8, right: 12, background: 'none', border: 'none', color: '#fff', fontSize: 22, cursor: 'pointer' }}>&times;</button>
+                            <h2 className="text-lg font-bold mb-4" style={{ color: '#aee1f9' }}>Qui sommes-nous ?</h2>
+                            <div style={{ lineHeight: '1.7', fontSize: '1rem', color: '#e0e0e0' }}>
+                                Bienvenue sur notre cinetech, site préféré des français en terme de référencement de films et de séries. <br></br>
+                                Découvrez les dernières nouveautés ainsi que les programmes les plus populaires.<br></br>
+                                Promenez-vous sur le site, découvrez notre contenu, apprenez-en plus sur vos films et séries préférées, ajoutez-les à vos favoris, laissez des avis et commentaires.
+                                <h2 className="text-lg font-bold mb-4" style={{ color: '#aee1f9' }}>Pourquoi nous choisir ?</h2>
+                                Notre site a été pensé pour faciliter vos recherches, retrouvez toutes les informations dont vous avez besoin en seulement quelques clics ! <br></br> <br></br>
+                                Nous vous souhaitons une bonne découverte !
+                            </div>
+                        </div>
+                    </div>
                 </nav>
-                <div className="text-center font-bold text-white tracking-wide" style={{ marginTop: '2.5rem', marginBottom: '2.5rem', fontSize: '2rem' }}>
+                <div className="text-center font-bold text-white tracking-wide" style={{ marginTop: '2.5rem', marginBottom: '2.5rem', fontSize: '1.5rem' }}>
                     Site n°1 dans le référencement de films et séries !
                 </div>
                 <hr style={{ border: 0, height: '1px', background: '#1e293b', opacity: 0.7, width: '100%', margin: '0 auto 2.5rem auto' }} />
