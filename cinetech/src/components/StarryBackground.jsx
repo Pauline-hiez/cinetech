@@ -24,10 +24,15 @@ const StarryBackground = () => {
             reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = (Math.random() - 0.5) * 0.5;
-                this.opacity = Math.random();
+                // Étoiles plus petites sur mobile
+                const isMobile = window.innerWidth < 768;
+                this.size = isMobile
+                    ? Math.random() * 1 + 0.3
+                    : Math.random() * 2.5 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                // Opacité minimale plus élevée
+                this.opacity = Math.random() * 0.5 + 0.5;
                 this.fadeSpeed = (Math.random() * 0.02) + 0.005;
                 this.fadeDirection = Math.random() > 0.5 ? 1 : -1;
             }
@@ -38,7 +43,8 @@ const StarryBackground = () => {
 
                 // Effet de scintillement
                 this.opacity += this.fadeSpeed * this.fadeDirection;
-                if (this.opacity <= 0.2 || this.opacity >= 1) {
+                // Opacité min/max ajustée pour meilleure visibilité
+                if (this.opacity <= 0.4 || this.opacity >= 1) {
                     this.fadeDirection *= -1;
                 }
 
@@ -60,7 +66,8 @@ const StarryBackground = () => {
         // Initialiser les étoiles
         const initStars = () => {
             stars = [];
-            const starCount = Math.floor((canvas.width * canvas.height) / 3000);
+            // Plus d'étoiles sur mobile pour meilleure visibilité
+            const starCount = Math.floor((canvas.width * canvas.height) / 2000);
             for (let i = 0; i < starCount; i++) {
                 stars.push(new Star());
             }
