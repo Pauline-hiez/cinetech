@@ -4,22 +4,22 @@ import LastAddedTable from '../components/LastAddedTable';
 
 const Home = () => {
     return (
-        <div>
+        <div className="px-2 md:px-4">
             <div className="w-full max-w-[1300px] mx-auto">
-                <div className="mb-[100px]">
-                    <h2 className="text-center mb-6">Films les plus populaires</h2>
+                <div className="mb-12 md:mb-16 lg:mb-[100px]">
+                    <h2 className="text-center mb-4 md:mb-6 text-xl md:text-2xl">Films les plus populaires</h2>
                     <div className="flex justify-center">
                         <Slider type="movie" />
                     </div>
                 </div>
-                <div className="mb-[100px]">
-                    <h2 className="text-center mb-6">Séries les plus populaires</h2>
+                <div className="mb-12 md:mb-16 lg:mb-[100px]">
+                    <h2 className="text-center mb-4 md:mb-6 text-xl md:text-2xl">Séries les plus populaires</h2>
                     <div className="flex justify-center">
                         <Slider type="series" />
                     </div>
                 </div>
             </div>
-            <div className="w-full max-w-[1300px] mx-auto last-added-table-wrapper">
+            <div className="w-full max-w-[1300px] mx-auto mt-12 md:mt-16 lg:mt-[100px]">
                 <LastAddedTable />
             </div>
         </div>

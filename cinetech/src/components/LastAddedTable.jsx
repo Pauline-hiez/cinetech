@@ -17,29 +17,29 @@ const LastAddedTable = () => {
     }, []);
 
     return (
-        <div className="last-added-table-row">
-            <div className="last-added-table-col">
-                <div className="last-added-table-title">
+        <div className="flex flex-col md:flex-row justify-center items-start gap-6 md:gap-12 lg:gap-24 mx-auto max-w-[1200px] px-2">
+            <div className="w-full md:w-auto bg-gray-900 rounded-md p-4 md:p-[18px_12px] min-w-0 md:min-w-[320px] lg:min-w-[340px] shadow-[0_2px_16px_#000a]">
+                <div className="text-[#4e8fae] text-base md:text-lg lg:text-xl font-bold mb-3 flex items-center gap-2 border-b-2 md:border-b-3 border-[#4e8fae] pb-1.5 md:pb-2 tracking-wide">
                     <span role="img" aria-label="film">🎬</span> DERNIERS FILMS AJOUTÉS
                 </div>
-                <div className="last-added-table-list">
+                <div className="mt-2">
                     {latestMovies.map((movie) => (
-                        <div className="last-added-table-item" key={movie.id}>
-                            <Link to={`/movie/${movie.id}`} style={{ color: '#fff', textDecoration: 'underline' }}>
+                        <div className="bg-slate-800 text-white rounded p-2 md:p-[10px_12px] mb-2 text-sm md:text-base flex items-center justify-between transition-colors duration-200 hover:bg-slate-700 last:mb-0" key={movie.id}>
+                            <Link to={`/movie/${movie.id}`} className="text-white underline truncate">
                                 {movie.title} {movie.release_date ? `(${movie.release_date.slice(0, 4)})` : ''}
                             </Link>
                         </div>
                     ))}
                 </div>
             </div>
-            <div className="last-added-table-col">
-                <div className="last-added-table-title">
+            <div className="w-full md:w-auto bg-gray-900 rounded-md p-4 md:p-[18px_12px] min-w-0 md:min-w-[320px] lg:min-w-[340px] shadow-[0_2px_16px_#000a]">
+                <div className="text-[#4e8fae] text-base md:text-lg lg:text-xl font-bold mb-3 flex items-center gap-2 border-b-2 md:border-b-3 border-[#4e8fae] pb-1.5 md:pb-2 tracking-wide">
                     <span role="img" aria-label="tv">📺</span> DERNIÈRES SÉRIES AJOUTÉES
                 </div>
-                <div className="last-added-table-list">
+                <div className="mt-2">
                     {latestSeries.map((serie) => (
-                        <div className="last-added-table-item" key={serie.id}>
-                            <Link to={`/tv/${serie.id}`} style={{ color: '#fff', textDecoration: 'underline' }}>
+                        <div className="bg-slate-800 text-white rounded p-2 md:p-[10px_12px] mb-2 text-sm md:text-base flex items-center justify-between transition-colors duration-200 hover:bg-slate-700 last:mb-0" key={serie.id}>
+                            <Link to={`/tv/${serie.id}`} className="text-white underline truncate">
                                 {serie.name} {serie.first_air_date ? `(${serie.first_air_date.slice(0, 4)})` : ''}
                             </Link>
                         </div>

@@ -5,7 +5,7 @@ import MovieCard from "../components/MovieCard";
 import { useParams, Link } from "react-router-dom";
 import { getMovieDetails, getSimilarMovies, getMovieCredits, getMovieReviews } from "../services/tmdb";
 import { getMovieVideos } from "../services/tmdb";
-import "../App.css";
+import "../App.tailwind.css";
 
 const Details = () => {
     const { id, type } = useParams(); // type: 'movie' or 'tv'
@@ -135,43 +135,43 @@ const Details = () => {
         window.dispatchEvent(new Event('storage'));
     };
 
-    if (!details || !credits) return <div className="spinner">Chargement...</div>;
+    if (!details || !credits) return <div className="text-center text-xl my-20 animate-spin">⏳</div>;
 
     return (
-        <div className="details-page details-page-fav">
-            <div className="favorite-btn-wrapper">
+        <div className="relative bg-gradient-to-br from-[#232f4b] to-[#1a2340] rounded-[18px] shadow-[0_8px_48px_#000a] pt-6 md:pt-10 px-4 md:px-8 pb-8 md:pb-16 mx-auto mb-8 md:mb-12 max-w-[1100px] text-white">
+            <div className="absolute top-4 md:top-6 right-4 md:right-8 z-10">
                 <FavoriteButton isFavorite={isFavorite} onClick={handleFavoriteClick} />
             </div>
-            <div className="details-header">
-                <div className="cover-image-placeholder" style={{ padding: 0, background: 'none', boxShadow: 'none' }}>
+            <div className="flex flex-col md:flex-row gap-6 md:gap-14 items-center md:items-start mb-6 md:mb-10">
+                <div className="w-[180px] h-[270px] md:w-[220px] md:h-[330px] lg:w-[260px] lg:h-[400px] bg-gray-900 rounded-2xl flex items-center justify-center text-2xl text-[#aee1f9] shadow-[0_6px_32px_#000b] text-center mb-2 shrink-0">
                     {details.poster_path ? (
                         <img
                             src={`https://image.tmdb.org/t/p/w780${details.poster_path}`}
                             alt={details.title || details.name}
-                            style={{ width: 260, height: 400, borderRadius: 16, objectFit: 'cover', boxShadow: '0 6px 32px #000b' }}
+                            className="w-full h-full rounded-2xl object-cover shadow-[0_6px_32px_#000b]"
                             title={`Affiche de ${details.title || details.name} (${type === 'movie' ? 'film' : 'série'})`}
                         />
                     ) : (
                         <img
                             src={require('../img/defaut.jpg')}
                             alt="Image par défaut"
-                            style={{ width: 260, height: 400, borderRadius: 16, objectFit: 'cover', boxShadow: '0 6px 32px #000b', background: '#111827' }}
+                            className="w-full h-full rounded-2xl object-cover shadow-[0_6px_32px_#000b] bg-gray-900"
                             title="Image par défaut"
                         />
                     )}
                 </div>
-                <div className="details-info">
-                    <h2>{details.title || details.name}</h2>
-                    <p><strong>Synopsis :</strong> {details.original_language === 'fr' ? details.overview : (details.overview_fr || details.overview)}</p>
-                    <div className="movie-infos-block">
-                        <div className="movie-infos-row">
-                            <span className="movie-info movie-genre">
-                                <span className="movie-info-icon">🎬</span>
-                                <span className="movie-info-label">Genre :</span> {details.genres?.map(g => g.name).join(', ')}
+                <div className="flex-1 text-left w-full">
+                    <h2 className="text-xl md:text-2xl lg:text-[2.1rem] mb-2 md:mb-2.5 text-[#aee1f9]">{details.title || details.name}</h2>
+                    <p className="text-sm md:text-base lg:text-[1.1rem] mb-3 md:mb-[18px]"><strong>Synopsis :</strong> {details.original_language === 'fr' ? details.overview : (details.overview_fr || details.overview)}</p>
+                    <div className="mt-4 md:mt-6 mb-3 md:mb-4 flex flex-col gap-2 md:gap-3">
+                        <div className="flex flex-wrap gap-2 md:gap-4 lg:gap-6">
+                            <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)]">
+                                <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">🎬</span>
+                                <span className="font-bold text-[#aee1f9] mr-1">Genre :</span> {details.genres?.map(g => g.name).join(', ')}
                             </span>
-                            <span className="movie-info movie-year">
-                                <span className="movie-info-icon">📅</span>
-                                <span className="movie-info-label">Année :</span> {
+                            <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)]">
+                                <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">📅</span>
+                                <span className="font-bold text-[#aee1f9] mr-1">Année :</span> {
                                     details.release_date
                                         ? new Date(details.release_date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })
                                         : details.first_air_date
@@ -180,45 +180,51 @@ const Details = () => {
                                 }
                             </span>
                             {type === 'movie' && details.runtime && (
-                                <span className="movie-info movie-runtime">
-                                    <span className="movie-info-icon">⏱️</span>
-                                    <span className="movie-info-label">Durée :</span> {details.runtime} min
+                                <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)]">
+                                    <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">⏱️</span>
+                                    <span className="font-bold text-[#aee1f9] mr-1">Durée :</span> {details.runtime} min
                                 </span>
                             )}
                             {type === 'tv' && (
                                 <>
-                                    <span className="movie-info movie-seasons">
-                                        <span className="movie-info-icon">📺</span>
-                                        <span className="movie-info-label">Saisons :</span> {details.number_of_seasons}
-                                        <span style={{ marginLeft: 12, fontWeight: 400, color: '#aee1f9', fontSize: '0.98em' }}>
+                                    <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)]">
+                                        <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">📺</span>
+                                        <span className="font-bold text-[#aee1f9] mr-1">Saisons :</span> {details.number_of_seasons}
+                                        <span className="ml-2 md:ml-3 font-normal text-[#aee1f9] text-xs md:text-[0.98em]">
                                             {details.status === 'Ended' ? '(Terminée)' : details.status === 'Returning Series' ? '(En cours)' : details.status ? `(${details.status})` : ''}
                                         </span>
                                     </span>
-                                    <span className="movie-info movie-episodes">
-                                        <span className="movie-info-icon">🎞️</span>
-                                        <span className="movie-info-label">Épisodes :</span> {details.number_of_episodes}
+                                    <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)]">
+                                        <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">🎞️</span>
+                                        <span className="font-bold text-[#aee1f9] mr-1">Épisodes :</span> {details.number_of_episodes}
                                     </span>
                                 </>
                             )}
                         </div>
-                        <div className="movie-infos-row">
-                            <span className="movie-info movie-actors">
-                                <span className="movie-info-icon">⭐</span>
-                                <span className="movie-info-label">Acteurs :</span> {credits.cast?.slice(0, 3).map((a, i, arr) => (
-                                    <React.Fragment key={a.id}>
-                                        <Link to={`/person/${a.id}`} style={{ color: '#aee1f9', textDecoration: 'underline', cursor: 'pointer' }}>{a.name}</Link>{i < arr.length - 1 ? ', ' : ''}
-                                    </React.Fragment>
-                                ))}
+                        <div className="flex flex-wrap gap-2 md:gap-4 lg:gap-6">
+                            <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)] flex-wrap">
+                                <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">⭐</span>
+                                <span className="font-bold text-[#aee1f9] mr-1">Acteurs :</span>
+                                <span className="flex flex-wrap gap-1">
+                                    {credits.cast?.slice(0, 3).map((a, i, arr) => (
+                                        <React.Fragment key={a.id}>
+                                            <Link to={`/person/${a.id}`} className="text-[#aee1f9] underline cursor-pointer">{a.name}</Link>{i < arr.length - 1 ? ', ' : ''}
+                                        </React.Fragment>
+                                    ))}
+                                </span>
                             </span>
                         </div>
-                        <div className="movie-infos-row">
-                            <span className="movie-info movie-crew">
-                                <span className="movie-info-icon">🛠️</span>
-                                <span className="movie-info-label">Équipe technique :</span> {credits.crew?.slice(0, 2).map((c, i, arr) => (
-                                    <React.Fragment key={c.id}>
-                                        <Link to={`/person/${c.id}`} style={{ color: '#aee1f9', textDecoration: 'underline', cursor: 'pointer' }}>{c.name}</Link> ({c.job}){i < arr.length - 1 ? ', ' : ''}
-                                    </React.Fragment>
-                                ))}
+                        <div className="flex flex-wrap gap-2 md:gap-4 lg:gap-6">
+                            <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)] flex-wrap">
+                                <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">🛠️</span>
+                                <span className="font-bold text-[#aee1f9] mr-1">Équipe technique :</span>
+                                <span className="flex flex-wrap gap-1">
+                                    {credits.crew?.slice(0, 2).map((c, i, arr) => (
+                                        <React.Fragment key={c.id}>
+                                            <Link to={`/person/${c.id}`} className="text-[#aee1f9] underline cursor-pointer">{c.name}</Link> ({c.job}){i < arr.length - 1 ? ', ' : ''}
+                                        </React.Fragment>
+                                    ))}
+                                </span>
                             </span>
                         </div>
                     </div>
@@ -227,40 +233,40 @@ const Details = () => {
             </div>
             {/* Vidéo du film ou de la série */}
             {videos && videos.length > 0 && (
-                <div className="video-section" style={{ margin: '32px 0', textAlign: 'center' }}>
-                    <h3 style={{ color: '#fff', marginBottom: 16 }}>Bande-annonce</h3>
+                <div className="my-6 md:my-8 text-center">
+                    <h3 className="text-white mb-3 md:mb-4 text-lg md:text-xl">Bande-annonce</h3>
                     {(() => {
                         // On cherche une vidéo YouTube de type Trailer ou Teaser
                         const yt = videos.find(v => v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser'))
                             || videos.find(v => v.site === 'YouTube');
                         return yt ? (
-                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <div className="flex justify-center px-2">
                                 <iframe
-                                    width="560"
-                                    height="315"
+                                    width="100%"
+                                    height="200"
                                     src={`https://www.youtube.com/embed/${yt.key}`}
                                     title={yt.name}
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
-                                    style={{ borderRadius: 12, boxShadow: '0 4px 24px #0004', maxWidth: '100%' }}
+                                    className="rounded-xl shadow-[0_4px_24px_#0004] max-w-full md:h-[315px] md:w-[560px]"
                                 ></iframe>
                             </div>
                         ) : (
-                            <div style={{ color: '#aee1f9', fontSize: 18 }}>Aucune vidéo disponible</div>
+                            <div className="text-[#aee1f9] text-base md:text-lg">Aucune vidéo disponible</div>
                         );
                     })()}
                 </div>
             )}
-            <div className="similar-section">
-                <div className="similar-title-wrapper">
-                    <h3 className="similar-title-centered">
+            <div className="mt-6 md:mt-9">
+                <div className="w-full flex justify-center items-center mb-6 md:mb-10">
+                    <h3 className="bg-slate-800/95 inline-block py-1.5 px-4 md:py-2 md:px-[22px] rounded-xl font-bold text-[#aee1f9] text-base md:text-lg lg:text-xl m-0 z-[2] text-center">
                         Vous aimerez peut-être :
                     </h3>
                 </div>
-                <div className="similar-list" style={{ gap: 40 }}>
+                <div className="flex gap-4 md:gap-6 lg:gap-10 flex-wrap justify-center">
                     {similar.map((item) => (
-                        <div key={item.id} style={{ width: 180 }}>
+                        <div key={item.id} className="w-[140px] md:w-[160px] lg:w-[180px]">
                             <MovieCard movie={item} />
                         </div>
                     ))}

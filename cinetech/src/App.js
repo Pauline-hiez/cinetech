@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import './App.css';
+import './App.tailwind.css';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -22,9 +22,9 @@ function App() {
   }, []);
   return (
     <Router>
-      <div className="App min-h-screen flex flex-col justify-between">
+      <div className="App min-h-screen flex flex-col justify-between bg-gradient-to-b from-[#020617] to-[#1f2937]">
         <Header />
-        <main className="main-content flex-1" style={{ maxWidth: '1200px', margin: '130px auto 0 auto', padding: '24px' }}>
+        <main className="flex-1 w-full max-w-[1200px] mx-auto mt-[70px] md:mt-[130px] mb-0 px-3 md:px-6">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/movies" element={<Movies />} />

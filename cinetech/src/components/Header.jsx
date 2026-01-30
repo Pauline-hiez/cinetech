@@ -60,71 +60,58 @@ export default function Header() {
 
     return (
         <>
-            <div
-                className="logo-blur-bg"
-                style={{
-                    position: 'fixed',
-                    top: 18,
-                    left: 36,
-                    width: 190,
-                    height: 190,
-                    zIndex: 199,
-                    pointerEvents: 'none',
-                    borderRadius: '50%',
-                }}
-            />
-            <Link to="/" style={{ position: 'fixed', top: 38, left: 32, zIndex: 201, display: 'block' }}>
+            {/* Logo blur background - hidden on mobile */}
+            <div className="hidden md:block fixed top-[18px] left-9 w-[120px] h-[120px] lg:w-[190px] lg:h-[190px] z-[199] pointer-events-none rounded-full bg-slate-800/30 backdrop-blur-[40px] border-[2.5px] border-[#4ee1ff] shadow-[0_0_12px_#4ee1ff99]" />
+            {/* Logo - smaller on mobile */}
+            <Link to="/" className="hidden md:block fixed top-[28px] md:top-[38px] left-4 md:left-8 z-[201]">
                 <img
                     src={logo}
                     alt="Accueil"
-                    className="header-accueil-icon header-logo-large"
-                    style={{
-                        width: 150,
-                        height: 150,
-                        maxWidth: 150,
-                        maxHeight: 150,
-                        pointerEvents: 'auto',
-                        cursor: 'pointer',
-                    }}
+                    className="w-[90px] h-[90px] md:w-[100px] md:h-[100px] lg:w-[150px] lg:h-[150px] pointer-events-auto cursor-pointer object-contain"
                 />
             </Link>
-            <header className="header-navbar" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                <div className="header-center-group" style={{ display: 'flex', alignItems: 'center', gap: 32, justifyContent: 'flex-end', width: '100%' }}>
-                    <Link to="/" className="header-link" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', gap: 8 }}>
-                        <img src={homeIcon} alt="Home" className="header-accueil-icon" style={{ width: 70, height: 'auto', display: 'block', alignSelf: 'center' }} />
-                        <span className="header-accueil">Accueil</span>
+            <header className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between md:justify-end bg-gradient-to-t from-[#020617] to-[#1f2937] text-white px-3 md:px-5 py-2 rounded-b-[18px] shadow-[0_8px_32px_0_rgba(30,41,59,0.25),0_1.5px_8px_0_rgba(0,0,0,0.12)] min-h-[60px] md:min-h-[70px]">
+                {/* Mobile logo */}
+                <Link to="/" className="md:hidden flex items-center">
+                    <img src={logo} alt="Logo" className="w-12 h-12" />
+                </Link>
+
+                {/* Navigation - horizontal scroll on mobile */}
+                <div className="flex items-center gap-2 md:gap-4 lg:gap-8 justify-end flex-1 md:w-full overflow-x-auto scrollbar-hide">
+                    <Link to="/" className="flex items-center no-underline text-inherit gap-1 md:gap-2 shrink-0">
+                        <img src={homeIcon} alt="Home" className="w-8 h-8 md:w-12 lg:w-[70px] md:h-12 lg:h-auto block" />
+                        <span className="text-sm md:text-xl lg:text-[2.2rem] font-bold tracking-wide hidden sm:inline">Accueil</span>
                     </Link>
-                    <Link to="/movies" className="header-link" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', gap: 8 }}>
-                        <img src={cinemaIcon} alt="Films" className="header-accueil-icon" />
-                        <span className="header-accueil">Films</span>
+                    <Link to="/movies" className="flex items-center no-underline text-inherit gap-1 md:gap-2 shrink-0">
+                        <img src={cinemaIcon} alt="Films" className="w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14" />
+                        <span className="text-sm md:text-xl lg:text-[2.2rem] font-bold tracking-wide hidden sm:inline">Films</span>
                     </Link>
-                    <Link to="/series" className="header-link" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', gap: 8 }}>
-                        <img src={seriesIcon} alt="Séries" className="header-accueil-icon" />
-                        <span className="header-accueil">Séries</span>
+                    <Link to="/series" className="flex items-center no-underline text-inherit gap-1 md:gap-2 shrink-0">
+                        <img src={seriesIcon} alt="Séries" className="w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14" />
+                        <span className="text-sm md:text-xl lg:text-[2.2rem] font-bold tracking-wide hidden sm:inline">Séries</span>
                     </Link>
                     {isLoggedIn ? (
-                        <Link to="/favoris" className="header-link" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', gap: 12, minWidth: 0 }}>
-                            <img src={favorisIcon} alt="Favoris" className="header-accueil-icon favoris-large" style={{ flexShrink: 0 }} />
-                            <span className="header-accueil" style={{ whiteSpace: 'nowrap' }}>Mes favoris</span>
+                        <Link to="/favoris" className="inline-flex items-center no-underline text-inherit gap-1 md:gap-3 min-w-0 shrink-0">
+                            <img src={favorisIcon} alt="Favoris" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" />
+                            <span className="text-sm md:text-xl lg:text-[2.2rem] font-bold tracking-wide whitespace-nowrap hidden lg:inline">Mes favoris</span>
                         </Link>
                     ) : (
-                        <Link to="/login" className="header-link" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', gap: 12, minWidth: 0 }}>
-                            <img src={userIcon} alt="Login" className="header-accueil-icon favoris-large" style={{ flexShrink: 0 }} />
-                            <span className="header-accueil" style={{ whiteSpace: 'nowrap' }}>Connexion</span>
+                        <Link to="/login" className="inline-flex items-center no-underline text-inherit gap-1 md:gap-3 min-w-0 shrink-0">
+                            <img src={userIcon} alt="Login" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" />
+                            <span className="text-sm md:text-xl lg:text-[2.2rem] font-bold tracking-wide whitespace-nowrap hidden lg:inline">Connexion</span>
                         </Link>
                     )}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative', marginLeft: 32 }}>
+                    <div className="flex items-center gap-2 md:gap-3 relative md:ml-8 shrink-0">
                         <SearchBar onSearch={handleSearch} onToggleFilters={() => setShowFilters(f => !f)} />
-                        <div style={{ position: 'absolute', top: 56, left: 0, width: '100%', minWidth: 0, maxWidth: 340, zIndex: 200, boxSizing: 'border-box' }}>
+                        <div className="absolute top-14 left-0 md:left-auto md:right-0 w-[90vw] md:w-full min-w-0 max-w-[340px] z-[200] box-border">
                             <SearchFilters visible={showFilters} onChange={handleFilterSearch} />
                         </div>
                     </div>
-                    {/* Lien login déplacé à la place de l'étoile favoris */}
                 </div>
                 {/* Bouton de déconnexion flottant */}
                 {isLoggedIn && (
-                    <button onClick={handleLogout} className="floating-logout-btn" title="Déconnexion">
-                        <img src={logoutIcon} alt="Déconnexion" className="header-accueil-icon logout-icon" />
+                    <button onClick={handleLogout} className="fixed right-4 md:right-8 bottom-4 md:bottom-8 bg-gray-900 text-white border-none rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center shadow-[0_4px_24px_#000a] cursor-pointer z-[9999] transition-all duration-200 hover:bg-gray-800 hover:shadow-[0_0_32px_#11182799] hover:scale-110" title="Déconnexion">
+                        <img src={logoutIcon} alt="Déconnexion" className="w-8 h-8 md:w-11 md:h-11" />
                     </button>
                 )}
             </header>

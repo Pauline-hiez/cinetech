@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect } from 'react';
-import '../App.css';
+import '../App.tailwind.css';
 import FavoriteButton from './FavoriteButton';
 import { Link } from 'react-router-dom';
 
@@ -39,42 +39,32 @@ function MovieCard({ movie }) {
     };
 
     return (
-        <div className="movie-card" style={{ position: 'relative' }}>
-            <div className="movie-card-img-container">
-                <Link to={`/${getMediaType(movie)}/${movie.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+        <div className="movie-card relative flex flex-col items-center w-[180px] h-[270px] overflow-visible">
+            <div className="movie-card-img-container relative w-[180px] h-[270px] flex items-center justify-center">
+                <Link to={`/${getMediaType(movie)}/${movie.id}`} className="no-underline block">
                     <img
-                        className="movie-card-img"
+                        className="movie-card-img w-full h-[270px] rounded-xl object-cover block cursor-pointer border-[2.5px] border-[#4ee1ff] shadow-[0_0_12px_#4ee1ff99] bg-[#182033]"
                         src={movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : require('../img/defaut.jpg')}
                         alt={movie.title || movie.name || movie.original_name || 'Titre inconnu'}
                         title={`${getMediaType(movie) === 'movie' ? 'Film' : 'Série'}\n${movie.title || movie.name || movie.original_name || 'Titre inconnu'}`}
-                        style={{
-                            width: '100%',
-                            height: 260,
-                            objectFit: 'cover',
-                            borderRadius: 12,
-                            background: '#182033',
-                            border: '2.5px solid #4ee1ff',
-                            boxShadow: '0 0 12px #4ee1ff99',
-                            display: 'block',
-                        }}
                         onError={e => {
                             e.target.onerror = null;
                             e.target.src = 'https://via.placeholder.com/260x390?text=Image+indisponible';
                         }}
                     />
                 </Link>
-                <div style={{ position: 'absolute', top: 8, right: 8, zIndex: 2 }}>
+                <div className="absolute top-2 right-2 z-[2]">
                     <FavoriteButton isFavorite={isFavorite} onClick={handleFavoriteClick} />
                 </div>
-                <div className="movie-card-info">
-                    <div style={{ fontSize: 12, color: '#aee1f9', fontWeight: 700, marginBottom: 2 }}>
+                <div className="movie-card-info absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-800/92 text-white opacity-0 flex flex-col items-center justify-center px-[18px] py-4 text-center pointer-events-none rounded-xl z-[2] w-max max-w-[90%] min-w-[120px] shadow-[0_4px_16px_rgba(30,41,59,0.18)]">
+                    <div className="text-xs text-[#aee1f9] font-bold mb-0.5">
                         {getMediaType(movie) === 'movie' ? 'Film' : 'Série'}
                     </div>
-                    <h3>{movie.title || movie.name || movie.original_name || 'Titre inconnu'}</h3>
-                    <div className="movie-card-type-year" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span className="movie-card-year">{(movie.release_date || movie.first_air_date) ? (movie.release_date || movie.first_air_date).slice(0, 4) : 'N/A'}</span>
+                    <h3 className="text-xl font-bold m-0 mb-2">{movie.title || movie.name || movie.original_name || 'Titre inconnu'}</h3>
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-slate-300">{(movie.release_date || movie.first_air_date) ? (movie.release_date || movie.first_air_date).slice(0, 4) : 'N/A'}</span>
                     </div>
-                    <div className="movie-card-vote">⭐ {movie.vote_average}</div>
+                    <div className="text-[15px] text-amber-300 mt-0">⭐ {movie.vote_average}</div>
                 </div>
             </div>
         </div>

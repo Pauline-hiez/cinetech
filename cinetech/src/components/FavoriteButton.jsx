@@ -5,20 +5,18 @@ import React from 'react';
 export default function FavoriteButton({ isFavorite = false, onClick }) {
     return (
         <button
-            className="favorite-btn"
+            className="favorite-btn bg-none border-none p-0 cursor-pointer"
             onClick={onClick}
             aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
         >
             <svg
-                className={isFavorite ? 'favoris-large favoris-active' : 'favoris-large'}
+                className="w-9 h-9 transition-[filter] duration-[180ms]"
                 width="36" height="36" viewBox="0 0 24 24"
                 aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
                 style={{
                     filter: isFavorite
                         ? 'drop-shadow(0 0 8px #00c3ff) drop-shadow(0 0 16px #00c3ff80)'
                         : 'drop-shadow(0 0 6px #00c3ff80)',
-                    transition: 'filter 0.18s',
                 }}
             >
                 <defs>

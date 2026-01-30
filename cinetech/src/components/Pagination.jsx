@@ -15,11 +15,11 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
     }
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, margin: '32px 0' }}>
+        <div className="flex justify-center gap-1 md:gap-2 my-6 md:my-8 flex-wrap px-2">
             <button
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                style={{ padding: '8px 14px', borderRadius: 6, border: 'none', background: '#1e293b', color: '#fff', cursor: currentPage === 1 ? 'not-allowed' : 'pointer', opacity: currentPage === 1 ? 0.5 : 1 }}
+                className={`px-2 py-1.5 md:px-3 md:py-2 rounded border-none bg-slate-800 text-white text-sm md:text-base transition-opacity ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer opacity-100 hover:bg-slate-700'}`}
             >
                 &lt;
             </button>
@@ -27,17 +27,10 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
                 <button
                     key={page}
                     onClick={() => onPageChange(page)}
-                    style={{
-                        padding: '8px 14px',
-                        borderRadius: 6,
-                        border: 'none',
-                        background: page === currentPage ? '#24f7fb' : '#1e293b',
-                        color: page === currentPage ? '#1e293b' : '#fff',
-                        fontWeight: page === currentPage ? 700 : 400,
-                        cursor: 'pointer',
-                        boxShadow: page === currentPage ? '0 2px 8px #fbbf2433' : 'none',
-                        transition: 'background 0.2s',
-                    }}
+                    className={`px-2 py-1.5 md:px-3 md:py-2 rounded border-none text-sm md:text-base cursor-pointer transition-all ${page === currentPage
+                            ? 'bg-[#24f7fb] text-slate-900 font-bold shadow-[0_2px_8px_#fbbf2433]'
+                            : 'bg-slate-800 text-white font-normal hover:bg-slate-700'
+                        }`}
                 >
                     {page}
                 </button>
@@ -45,7 +38,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
             <button
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                style={{ padding: '8px 14px', borderRadius: 6, border: 'none', background: '#1e293b', color: '#fff', cursor: currentPage === totalPages ? 'not-allowed' : 'pointer', opacity: currentPage === totalPages ? 0.5 : 1 }}
+                className={`px-2 py-1.5 md:px-3 md:py-2 rounded border-none bg-slate-800 text-white text-sm md:text-base transition-opacity ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : 'cursor-pointer opacity-100 hover:bg-slate-700'}`}
             >
                 &gt;
             </button>

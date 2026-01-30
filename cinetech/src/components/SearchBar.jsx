@@ -130,46 +130,34 @@ const SearchBar = ({ onSelectMovie, onSearch, onToggleFilters }) => {
     }
 
     return (
-        <form onSubmit={handleSubmit} style={{ position: 'relative', width: '340px', display: 'flex', alignItems: 'center', gap: '8px' }} autoComplete="off">
+        <form onSubmit={handleSubmit} className="relative w-[200px] sm:w-[280px] md:w-[320px] lg:w-[340px] flex items-center gap-2" autoComplete="off">
             <input
                 type="text"
                 value={query}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
-                placeholder="Rechercher un film..."
-                style={{ flex: 1, padding: '8px', borderRadius: '6px' }}
+                placeholder="Rechercher..."
+                className="flex-1 p-1.5 md:p-2 rounded-md text-sm md:text-base"
                 ref={inputRef}
                 aria-autocomplete="list"
                 aria-activedescendant={activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined}
             />
-            <button type="submit" className="main-btn" aria-label="Rechercher" style={{ background: 'none', border: 'none', padding: 0 }}>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'currentColor', width: 24, height: 24, display: 'block' }}>
+            <button type="submit" className="bg-none border-none p-0" aria-label="Rechercher">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6 block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4-4m0 0A7 7 0 104 4a7 7 0 0013 13z" stroke="currentColor" />
                 </svg>
             </button>
             {onToggleFilters && (
-                <button type="button" aria-label="Filtres de recherche" onClick={onToggleFilters} style={{ background: 'none', border: 'none', cursor: 'pointer', marginLeft: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4 }}>
-                    <FilterIcon size={28} />
+                <button type="button" aria-label="Filtres de recherche" onClick={onToggleFilters} className="bg-none border-none cursor-pointer ml-0 flex items-center justify-center p-1">
+                    <FilterIcon size={24} className="md:hidden" />
+                    <FilterIcon size={28} className="hidden md:block" />
                 </button>
             )}
-            {loading && <div style={{ marginLeft: 8 }}>Chargement...</div>}
+            {loading && <div className="ml-2">Chargement...</div>}
             {showSuggestions && (startsWith.length > 0 || includes.length > 0) && (
                 <ul
                     ref={suggestionsRef}
-                    style={{
-                        position: 'absolute',
-                        top: '36px',
-                        left: 0,
-                        right: 0,
-                        background: 'white',
-                        border: '1px solid #ccc',
-                        listStyle: 'none',
-                        margin: 0,
-                        padding: 0,
-                        zIndex: 10,
-                        maxHeight: 320,
-                        overflowY: 'auto'
-                    }}
+                    className="absolute top-9 left-0 right-0 bg-white border border-gray-300 list-none m-0 p-0 z-10 max-h-80 overflow-y-auto"
                 >
                     {startsWith.length > 0 && (
                         <>
@@ -178,29 +166,21 @@ const SearchBar = ({ onSelectMovie, onSearch, onToggleFilters }) => {
                                     key={movie.id}
                                     id={`suggestion-${idx}`}
                                     onClick={() => handleSelect(movie)}
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 8,
-                                        padding: '8px',
-                                        cursor: 'pointer',
-                                        background: activeIndex === idx ? '#e6f7ee' : 'white',
-                                        fontWeight: 'bold'
-                                    }}
+                                    className={`flex items-center gap-2 p-2 cursor-pointer font-bold ${activeIndex === idx ? 'bg-emerald-50' : 'bg-white'}`}
                                 >
                                     {movie.poster_path && (
-                                        <img src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} alt={movie.title || movie.name} style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 4 }} title={`${movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}\n${movie.title || movie.name}`} />
+                                        <img src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} alt={movie.title || movie.name} className="w-8 h-8 object-cover rounded" title={`${movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}\n${movie.title || movie.name}`} />
                                     )}
-                                    <span style={{ display: 'flex', flexDirection: 'column' }}>
-                                        <span style={{ fontSize: 11, color: '#aee1f9', fontWeight: 700, lineHeight: 1 }}>{movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}</span>
-                                        <span style={{ color: '#111' }}>{movie.title || movie.name}</span>
+                                    <span className="flex flex-col">
+                                        <span className="text-[11px] text-[#aee1f9] font-bold leading-none">{movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}</span>
+                                        <span className="text-gray-900">{movie.title || movie.name}</span>
                                     </span>
                                 </li>
                             ))}
                         </>
                     )}
                     {startsWith.length > 0 && includes.length > 0 && (
-                        <li style={{ borderTop: '1px solid #eee', padding: '4px 8px', color: '#888', fontSize: 13, background: '#fafafa' }}>
+                        <li className="border-t border-gray-200 py-1 px-2 text-gray-500 text-[13px] bg-gray-50">
                             Autres résultats
                         </li>
                     )}
@@ -211,20 +191,13 @@ const SearchBar = ({ onSelectMovie, onSearch, onToggleFilters }) => {
                                     key={movie.id}
                                     id={`suggestion-${startsWith.length + idx}`}
                                     onClick={() => handleSelect(movie)}
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 8,
-                                        padding: '8px',
-                                        cursor: 'pointer',
-                                        background: activeIndex === (startsWith.length + idx) ? '#e6f7ee' : 'white'
-                                    }}
+                                    className={`flex items-center gap-2 p-2 cursor-pointer ${activeIndex === (startsWith.length + idx) ? 'bg-emerald-50' : 'bg-white'}`}
                                 >
                                     {movie.poster_path && (
-                                        <img src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} alt={movie.title || movie.name} style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 4 }} title={`${movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}\n${movie.title || movie.name}`} />
+                                        <img src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} alt={movie.title || movie.name} className="w-8 h-8 object-cover rounded" title={`${movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}\n${movie.title || movie.name}`} />
                                     )}
-                                    <span style={{ display: 'flex', flexDirection: 'column' }}>
-                                        <span style={{ fontSize: 11, color: '#aee1f9', fontWeight: 700, lineHeight: 1 }}>{movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}</span>
+                                    <span className="flex flex-col">
+                                        <span className="text-[11px] text-[#aee1f9] font-bold leading-none">{movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}</span>
                                         <span>{movie.title || movie.name}</span>
                                     </span>
                                 </li>

@@ -53,8 +53,8 @@ function Movies() {
     if (error) return <div>{error}</div>;
 
     return (
-        <div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'center' }}>
+        <div className="px-2 sm:px-4">
+            <div className="flex flex-wrap gap-4 md:gap-6 justify-center">
                 {movies.map((movie) => (
                     <MovieCard key={movie.id} movie={movie} />
                 ))}

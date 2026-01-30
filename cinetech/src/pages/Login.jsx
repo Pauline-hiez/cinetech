@@ -8,7 +8,7 @@ const darkBlue = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "32px",
+    padding: "16px",
 };
 
 const cardStyle = {
