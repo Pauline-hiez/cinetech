@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const years = Array.from({ length: 2026 - 1950 }, (_, i) => 2025 - i);
 export const genres = [

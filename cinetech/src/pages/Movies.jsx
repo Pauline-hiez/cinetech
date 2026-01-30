@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Spinner from '../components/Spinner';
 import { fetchPopularMovies } from '../services/tmdb';
 import MovieCard from '../components/MovieCard';

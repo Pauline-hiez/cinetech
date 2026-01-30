@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
 import Spinner from "../components/Spinner";
-
-const API_KEY = process.env.REACT_APP_API_KEY;
-const BASE_URL = "https://api.themoviedb.org/3";
+import { getPersonDetails, getPersonCredits } from "../services/tmdb";
 
 export default function PersonFilmography() {
     const { personId } = useParams();
@@ -15,23 +13,16 @@ export default function PersonFilmography() {
     useEffect(() => {
         async function fetchPerson() {
             setLoading(true);
-            const res = await fetch(`${BASE_URL}/person/${personId}?language=fr-FR`, {
-                headers: {
-                    Authorization: `Bearer ${API_KEY}`,
-                    "Content-Type": "application/json",
-                },
-            });
-            const data = await res.json();
-            setPerson(data);
-            const creditsRes = await fetch(`${BASE_URL}/person/${personId}/combined_credits?language=fr-FR`, {
-                headers: {
-                    Authorization: `Bearer ${API_KEY}`,
-                    "Content-Type": "application/json",
-                },
-            });
-            const creditsData = await creditsRes.json();
-            setCredits(creditsData.cast || []);
-            setLoading(false);
+            try {
+                const personData = await getPersonDetails(personId);
+                setPerson(personData);
+                const creditsData = await getPersonCredits(personId);
+                setCredits(creditsData.cast || []);
+            } catch (error) {
+                console.error('Erreur lors du chargement:', error);
+            } finally {
+                setLoading(false);
+            }
         }
         fetchPerson();
     }, [personId]);

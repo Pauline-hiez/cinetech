@@ -1,6 +1,3 @@
-import React from 'react';
-
-
 // Bouton étoile favoris (remplace le coeur)
 export default function FavoriteButton({ isFavorite = false, onClick, size = 'default' }) {
     const sizeClasses = size === 'small' ? 'w-6 h-6' : 'w-8 h-8';

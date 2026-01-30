@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 // Composant d'étoiles interactives
 function StarRating({ rating, setRating }) {

@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
     const pages = [];
     const maxPagesToShow = 5;
@@ -28,8 +26,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
                     key={page}
                     onClick={() => onPageChange(page)}
                     className={`px-2 py-1.5 md:px-3 md:py-2 rounded border-none text-sm md:text-base cursor-pointer transition-all ${page === currentPage
-                            ? 'bg-[#24f7fb] text-slate-900 font-bold shadow-[0_2px_8px_#fbbf2433]'
-                            : 'bg-slate-800 text-white font-normal hover:bg-slate-700'
+                        ? 'bg-[#24f7fb] text-slate-900 font-bold shadow-[0_2px_8px_#fbbf2433]'
+                        : 'bg-slate-800 text-white font-normal hover:bg-slate-700'
                         }`}
                 >
                     {page}

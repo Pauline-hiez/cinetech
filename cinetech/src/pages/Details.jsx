@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CommentSection from "../components/CommentSection";
 import FavoriteButton from "../components/FavoriteButton";
 import MovieCard from "../components/MovieCard";
@@ -8,12 +8,12 @@ import { getMovieVideos } from "../services/tmdb";
 import "../App.tailwind.css";
 
 const Details = () => {
-    const { id, type } = useParams(); // type: 'movie' or 'tv'
+    const { id, type } = useParams();
     const [details, setDetails] = useState(null);
     const [credits, setCredits] = useState(null);
     const [similar, setSimilar] = useState([]);
     const [reviews, setReviews] = useState([]);
-    // Pour stocker les commentaires utilisateurs locaux (persistés par film/série)
+
     const commentsKey = `comments_${type}_${id}`;
     const [userComments, setUserComments] = useState(() => {
         try {
@@ -24,16 +24,11 @@ const Details = () => {
         }
     });
 
-    // Simule un utilisateur connecté (à remplacer par votre auth)
-    // Récupère le pseudo de l'utilisateur connecté (à remplacer par votre logique d'authentification réelle)
-    // Récupère le pseudo de l'utilisateur connecté (ne met pas 'Utilisateur' si vide)
-    // On ne considère l'utilisateur connecté que si 'user' existe dans le localStorage
     const userData = localStorage.getItem('user');
     const user = userData ? JSON.parse(userData) : null;
 
-    // Ajout d'un commentaire
     const handleAddComment = ({ comment, rating, user: userName }) => {
-        if (!user) return; // Sécurité : ne rien faire si non connecté
+        if (!user) return;
         setUserComments(prev => {
             const now = new Date();
             const date = now.toLocaleDateString('fr-FR');
@@ -49,11 +44,9 @@ const Details = () => {
         });
     };
 
-    // Suppression d'un commentaire (par index)
     const handleDeleteComment = (idx) => {
         if (!user) return;
         setUserComments(prev => {
-            // Ne supprimer que si l'utilisateur est propriétaire
             if (prev[idx]?.user !== user.username) return prev;
             const newComments = prev.filter((_, i) => i !== idx);
             try {
@@ -63,11 +56,9 @@ const Details = () => {
         });
     };
 
-    // Modification d'un commentaire (par index)
     const handleEditComment = (idx, updatedComment) => {
         if (!user) return;
         setUserComments(prev => {
-            // Ne modifier que si l'utilisateur est propriétaire
             if (prev[idx]?.user !== user.username) return prev;
             const newComments = prev.map((c, i) => i === idx ? { ...c, ...updatedComment } : c);
             try {
@@ -76,7 +67,7 @@ const Details = () => {
             return newComments;
         });
     };
-    // Synchronise les commentaires si on change de film/série
+
     useEffect(() => {
         try {
             const saved = localStorage.getItem(commentsKey);
@@ -85,6 +76,7 @@ const Details = () => {
             setUserComments([]);
         }
     }, [commentsKey]);
+
     const [videos, setVideos] = useState([]);
     const [selectedRating, setSelectedRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);

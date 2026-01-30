@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fetchPopularMovies, fetchPopularSeries } from "../services/tmdb";
 import FavoriteButton from "./FavoriteButton";
 import { Link } from 'react-router-dom';

@@ -1,5 +1,3 @@
-import React from "react";
-
 const Footer = () => {
     return (
         <footer className="text-[#aee1f9] mt-16 w-full" style={{ background: '#111827', padding: '2rem 0' }}>

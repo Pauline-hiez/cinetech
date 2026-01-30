@@ -1,6 +1,5 @@
 
-
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../App.tailwind.css';
 import FavoriteButton from './FavoriteButton';
 import { Link } from 'react-router-dom';

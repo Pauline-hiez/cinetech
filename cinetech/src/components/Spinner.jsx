@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Spinner() {
     return (
         <div role="status" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, margin: '32px 0' }}>

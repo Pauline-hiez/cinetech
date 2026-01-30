@@ -1,6 +1,5 @@
 
-
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../img/logo.png";
 import homeIcon from "../img/home.png";
@@ -117,7 +116,7 @@ export default function Header() {
                     <div className="flex items-center gap-2 md:gap-3 md:ml-8 shrink-0">
                         <SearchBar
                             onSearch={handleSearch}
-                            onToggleFilters={() => { console.log('Toggle filters, current:', showFilters); setShowFilters(f => !f); }}
+                            onToggleFilters={() => { setShowFilters(f => !f); }}
                             onSuggestionsChange={handleSuggestionsChange}
                             onSelectMovie={handleSelectMovie}
                         />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { genres as GENRES } from '../components/SearchFilters';
 import Spinner from '../components/Spinner';
 import { useLocation } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FilterIcon } from "./FilterIcon";
 import { searchMoviesAndSeries } from "../services/tmdb";
 
@@ -33,7 +33,6 @@ const SearchBar = ({ onSelectMovie, onSearch, onToggleFilters, onSuggestionsChan
             try {
                 const res = await searchMoviesAndSeries(query);
                 const results = res.results || [];
-                console.log('Résultats recherche:', results.length, 'pour query:', query);
                 if (results.length > 0) {
                     // Séparation intelligente
                     const startsWith = [];
@@ -51,7 +50,6 @@ const SearchBar = ({ onSelectMovie, onSearch, onToggleFilters, onSuggestionsChan
                         ...includes
                     ]);
                     setShowSuggestions(true);
-                    console.log('Suggestions définies:', startsWith.length + includes.length, 'showSuggestions:', true);
                 } else {
                     setSuggestions([]);
                     setShowSuggestions(false);
@@ -106,20 +104,6 @@ const SearchBar = ({ onSelectMovie, onSearch, onToggleFilters, onSuggestionsChan
         }
     };
 
-    // Séparation visuelle startsWith/includes
-    let startsWith = [];
-    let includes = [];
-    if (suggestions.length > 0 && query.length >= 2) {
-        suggestions.forEach(movie => {
-            const title = movie.title || movie.name || "";
-            if (title.toLowerCase().startsWith(query.toLowerCase())) {
-                startsWith.push(movie);
-            } else {
-                includes.push(movie);
-            }
-        });
-    }
-
     return (
         <form onSubmit={handleSubmit} className="relative w-[200px] sm:w-[280px] md:w-[320px] lg:w-[380px]" autoComplete="off">
             <div className="relative flex items-center bg-white rounded-full">
@@ -141,7 +125,7 @@ const SearchBar = ({ onSelectMovie, onSearch, onToggleFilters, onSuggestionsChan
                         </svg>
                     </button>
                     {onToggleFilters && (
-                        <button type="button" aria-label="Filtres de recherche" onClick={(e) => { e.preventDefault(); console.log('Filtre cliqué'); onToggleFilters(); }} className="bg-transparent border-none cursor-pointer p-1.5 flex items-center justify-center hover:opacity-70 transition-opacity">
+                        <button type="button" aria-label="Filtres de recherche" onClick={(e) => { e.preventDefault(); onToggleFilters(); }} className="bg-transparent border-none cursor-pointer p-1.5 flex items-center justify-center hover:opacity-70 transition-opacity">
                             <FilterIcon size={20} color="#2563eb" />
                         </button>
                     )}
