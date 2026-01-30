@@ -3,6 +3,7 @@ import './App.tailwind.css';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
+import StarryBackground from './components/StarryBackground';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Movies from './pages/Movies';
@@ -22,7 +23,8 @@ function App() {
   }, []);
   return (
     <Router>
-      <div className="App min-h-screen flex flex-col justify-between bg-gradient-to-b from-[#020617] to-[#1f2937]">
+      <StarryBackground />
+      <div className="App min-h-screen flex flex-col justify-between relative" style={{ position: 'relative', zIndex: 10 }}>
         <Header />
         <main className="flex-1 w-full max-w-[1200px] mx-auto mt-[70px] md:mt-[130px] mb-0 px-3 md:px-6">
           <Routes>
