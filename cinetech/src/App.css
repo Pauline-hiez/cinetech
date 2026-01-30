@@ -1,3 +1,13 @@
+/* Blur arrondi derrière le logo */
+.logo-blur-bg {
+  background: rgba(30, 41, 59, 0.32);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 2.5px solid #4ee1ff;
+  box-shadow: 0 0 12px #4ee1ff99;
+  border-radius: 12px;
+}
+
 /* Force la taille des images Films/Séries dans la navbar comme l'étoile favoris */
 .header-center-group .header-accueil-icon {
   width: 56px !important;
