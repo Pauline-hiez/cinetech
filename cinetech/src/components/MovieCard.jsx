@@ -39,11 +39,11 @@ function MovieCard({ movie }) {
     };
 
     return (
-        <div className="movie-card relative flex flex-col items-center w-[180px] h-[270px] overflow-visible">
-            <div className="movie-card-img-container relative w-[180px] h-[270px] flex items-center justify-center">
-                <Link to={`/${getMediaType(movie)}/${movie.id}`} className="no-underline block">
+        <div className="movie-card relative flex flex-col items-center w-full h-full overflow-visible">
+            <div className="movie-card-img-container relative w-full h-full flex items-center justify-center">
+                <Link to={`/${getMediaType(movie)}/${movie.id}`} className="no-underline block w-full h-full">
                     <img
-                        className="movie-card-img w-full h-[270px] rounded-xl object-cover block cursor-pointer border-[2.5px] border-[#4ee1ff] shadow-[0_0_12px_#4ee1ff99] bg-[#182033]"
+                        className="movie-card-img w-full h-full rounded-xl object-cover block cursor-pointer border-[2.5px] border-[#4ee1ff] shadow-[0_0_12px_#4ee1ff99]"
                         src={movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : require('../img/defaut.jpg')}
                         alt={movie.title || movie.name || movie.original_name || 'Titre inconnu'}
                         title={`${getMediaType(movie) === 'movie' ? 'Film' : 'Série'}\n${movie.title || movie.name || movie.original_name || 'Titre inconnu'}`}

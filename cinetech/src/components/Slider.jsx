@@ -97,13 +97,13 @@ const Slider = ({ type }) => {
                     ‹
                 </button>
                 <div
-                    className="stellar-carousel relative w-[300px] sm:w-[380px] md:w-[600px] lg:w-[800px] xl:w-[1100px] h-[220px] sm:h-[250px] md:h-[280px] lg:h-[320px] flex items-center justify-center perspective-[1200px] overflow-visible"
+                    className="stellar-carousel relative w-[300px] sm:w-[380px] md:w-[600px] lg:w-[800px] xl:w-[1100px] h-[220px] sm:h-[250px] md:h-[280px] lg:h-[400px] xl:h-[450px] flex items-center justify-center perspective-[1200px] overflow-visible"
                     ref={carouselRef}
                 >
                     {items.map((item, idx) => (
                         <div
                             key={item.id}
-                            className={`carousel-slide absolute w-[130px] h-[195px] sm:w-[150px] sm:h-[225px] md:w-[170px] md:h-[255px] lg:w-[190px] lg:h-[285px] shadow-[0_8px_32px_rgba(30,41,59,0.25),0_1.5px_8px_0_rgba(0,0,0,0.12)] rounded-xl sm:rounded-2xl lg:rounded-3xl bg-slate-900/70 outline-none overflow-visible${idx === activeIdx ? " active z-[3]" : ""}`}
+                            className={`carousel-slide absolute w-[130px] h-[195px] sm:w-[150px] sm:h-[225px] md:w-[170px] md:h-[255px] lg:w-[240px] lg:h-[360px] xl:w-[280px] xl:h-[420px] shadow-[0_8px_32px_rgba(30,41,59,0.25),0_1.5px_8px_0_rgba(0,0,0,0.12)] rounded-xl sm:rounded-2xl lg:rounded-3xl outline-none overflow-visible${idx === activeIdx ? " active z-[3]" : ""}`}
                             style={getCarouselStyle(idx, activeIdx, items.length)}
                             tabIndex={idx === activeIdx ? 0 : -1}
                             aria-hidden={idx !== activeIdx}
