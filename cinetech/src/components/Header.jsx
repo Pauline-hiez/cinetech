@@ -20,6 +20,7 @@ export default function Header() {
     // États pour gérer l'interface du header
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Statut de connexion
     const [showFilters, setShowFilters] = useState(false); // Affichage du panneau de filtres
+    const [showMobileSearch, setShowMobileSearch] = useState(false); // Affichage de la search bar sur mobile
     const [searchSuggestions, setSearchSuggestions] = useState({ suggestions: [], showSuggestions: false, query: '' }); // Suggestions de recherche
     const navigate = useNavigate();
 
@@ -100,14 +101,77 @@ export default function Header() {
                     }}
                 />
             </Link>
-            <header className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between md:justify-end bg-gradient-to-t from-[#020617] to-[#1f2937] text-white px-3 md:px-5 py-2 rounded-b-[18px] shadow-[0_8px_32px_0_rgba(30,41,59,0.25),0_1.5px_8px_0_rgba(0,0,0,0.12)] min-h-[60px] md:min-h-[70px]">
-                {/* Mobile logo */}
-                <Link to="/" className="md:hidden flex items-center">
-                    <img src={logo} alt="Logo" className="w-12 h-12" />
-                </Link>
+            <header className="fixed top-0 left-0 right-0 z-[100] bg-gradient-to-t from-[#020617] to-[#1f2937] text-white px-3 md:px-5 py-2 rounded-b-[18px] shadow-[0_8px_32px_0_rgba(30,41,59,0.25),0_1.5px_8px_0_rgba(0,0,0,0.12)] min-h-[80px] md:min-h-[100px]">
+                {/* Layout mobile */}
+                <div className="md:hidden flex items-center justify-between w-full">
+                    {/* Mobile logo */}
+                    <Link to="/" className="flex items-center">
+                        <img
+                            src={logo}
+                            alt="Logo"
+                            className="w-12 h-12 transition-all duration-500 active:scale-110 active:rotate-[360deg]"
+                            style={{
+                                filter: 'drop-shadow(0 0 2px rgba(78, 225, 255, 0.3))',
+                            }}
+                            onTouchStart={(e) => {
+                                e.currentTarget.style.filter = 'drop-shadow(0 0 12px rgba(78, 225, 255, 0.8)) drop-shadow(0 0 24px rgba(78, 225, 255, 0.4))';
+                            }}
+                            onTouchEnd={(e) => {
+                                e.currentTarget.style.filter = 'drop-shadow(0 0 2px rgba(78, 225, 255, 0.3))';
+                            }}
+                        />
+                    </Link>
 
-                {/* Navigation - horizontal scroll on mobile */}
-                <div className="flex items-center gap-2 md:gap-4 lg:gap-8 justify-end flex-1 md:w-full overflow-x-auto scrollbar-hide">
+                    {/* Navigation mobile centrée - conditional */}
+                    {!showMobileSearch && (
+                        <div className="flex items-center gap-3 justify-center flex-1 mx-4">
+                            <Link to="/" className="flex items-center no-underline text-[#aee1f9] shrink-0 hover:text-white transition-colors">
+                                <img src={homeIcon} alt="Home" className="w-8 h-8" />
+                            </Link>
+                            <Link to="/movies" className="flex items-center no-underline text-[#aee1f9] shrink-0 hover:text-white transition-colors">
+                                <img src={cinemaIcon} alt="Films" className="w-8 h-8" />
+                            </Link>
+                            <Link to="/series" className="flex items-center no-underline text-[#aee1f9] shrink-0 hover:text-white transition-colors">
+                                <img src={seriesIcon} alt="Séries" className="w-8 h-8" />
+                            </Link>
+                            {isLoggedIn ? (
+                                <Link to="/favoris" className="flex items-center no-underline text-[#aee1f9] shrink-0 hover:text-white transition-colors">
+                                    <img src={favorisIcon} alt="Favoris" className="w-8 h-8" />
+                                </Link>
+                            ) : (
+                                <Link to="/login" className="flex items-center no-underline text-[#aee1f9] shrink-0 hover:text-white transition-colors">
+                                    <img src={userIcon} alt="Login" className="w-8 h-8" />
+                                </Link>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Search bar mobile - affichée conditionnellement */}
+                    {showMobileSearch && (
+                        <div className="flex items-center gap-2 flex-1 mx-4">
+                            <SearchBar
+                                onSearch={handleSearch}
+                                onToggleFilters={() => { setShowFilters(f => !f); }}
+                                onSuggestionsChange={handleSuggestionsChange}
+                                onSelectMovie={handleSelectMovie}
+                            />
+                        </div>
+                    )}
+
+                    {/* Bouton toggle search sur mobile - à droite */}
+                    <button
+                        onClick={() => setShowMobileSearch(!showMobileSearch)}
+                        className="flex items-center justify-center w-10 h-10 rounded-full bg-[#4ee1ff]/10 hover:bg-[#4ee1ff]/20 transition-colors shrink-0"
+                        aria-label="Toggle search"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-[#4ee1ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </div>
+
+                {/* Layout desktop */}
+                <div className="hidden md:flex items-center gap-2 md:gap-4 lg:gap-8 justify-end flex-1 w-full mt-2">
                     <Link to="/" className="flex items-center no-underline text-[#aee1f9] gap-1 md:gap-2 shrink-0 hover:text-white transition-colors">
                         <img src={homeIcon} alt="Home" className="w-8 h-8 md:w-10 lg:w-12 md:h-10 lg:h-12 block" />
                         <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide hidden sm:inline">Accueil</span>
@@ -148,12 +212,12 @@ export default function Header() {
                 )}
             </header>
             {/* Panneau de filtres - positionné en dehors du header pour éviter l'overflow */}
-            <div className="fixed top-[70px] md:top-[80px] right-4 md:right-8 z-[300] box-border w-[200px] sm:w-[280px] md:w-[320px] lg:w-[380px]">
+            <div className="fixed top-[90px] md:top-[110px] right-4 md:right-8 z-[300] box-border w-[200px] sm:w-[280px] md:w-[320px] lg:w-[380px]">
                 <SearchFilters visible={showFilters} onChange={handleFilterSearch} />
             </div>
             {/* Dropdown de suggestions - positionné en dehors du header */}
             {searchSuggestions.showSuggestions && searchSuggestions.suggestions.length > 0 && (
-                <div className="fixed top-[70px] md:top-[80px] right-4 md:right-8 z-[400] w-[200px] sm:w-[280px] md:w-[320px] lg:w-[380px]">
+                <div className="fixed top-[90px] md:top-[110px] right-4 md:right-8 z-[400] w-[200px] sm:w-[280px] md:w-[320px] lg:w-[380px]">
                     <ul className="bg-white border border-gray-300 rounded-xl list-none m-0 p-0 max-h-80 overflow-y-auto shadow-lg">
                         {(() => {
                             const startsWith = [];

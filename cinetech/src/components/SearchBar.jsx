@@ -120,14 +120,14 @@ const SearchBar = ({ onSelectMovie, onSearch, onToggleFilters, onSuggestionsChan
 
     return (
         <form onSubmit={handleSubmit} className="relative w-[200px] sm:w-[280px] md:w-[320px] lg:w-[380px]" autoComplete="off">
-            <div className="relative flex items-center bg-white rounded-full">
+            <div className="relative flex items-center bg-white/60 backdrop-blur-sm rounded-full">
                 <input
                     type="text"
                     value={query}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
                     placeholder="Rechercher..."
-                    className="flex-1 p-2 md:p-2.5 pl-4 pr-20 md:pr-24 text-sm md:text-base border-none outline-none bg-transparent text-gray-900"
+                    className="flex-1 p-2 md:p-2.5 pl-4 pr-20 md:pr-24 text-sm md:text-base border-none outline-none bg-transparent text-gray-900 placeholder:text-gray-500"
                     ref={inputRef}
                     aria-autocomplete="list"
                     aria-activedescendant={activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined}
