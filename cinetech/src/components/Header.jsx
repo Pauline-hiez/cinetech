@@ -88,7 +88,16 @@ export default function Header() {
                 <img
                     src={logo}
                     alt="Accueil"
-                    className="w-[90px] h-[90px] md:w-[100px] md:h-[100px] lg:w-[130px] lg:h-[130px] pointer-events-auto cursor-pointer object-contain"
+                    className="w-[90px] h-[90px] md:w-[100px] md:h-[100px] lg:w-[130px] lg:h-[130px] pointer-events-auto cursor-pointer object-contain transition-all duration-500 hover:scale-110 hover:rotate-[360deg]"
+                    style={{
+                        filter: 'drop-shadow(0 0 2px rgba(78, 225, 255, 0.3))',
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.filter = 'drop-shadow(0 0 12px rgba(78, 225, 255, 0.8)) drop-shadow(0 0 24px rgba(78, 225, 255, 0.4))';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.filter = 'drop-shadow(0 0 2px rgba(78, 225, 255, 0.3))';
+                    }}
                 />
             </Link>
             <header className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between md:justify-end bg-gradient-to-t from-[#020617] to-[#1f2937] text-white px-3 md:px-5 py-2 rounded-b-[18px] shadow-[0_8px_32px_0_rgba(30,41,59,0.25),0_1.5px_8px_0_rgba(0,0,0,0.12)] min-h-[60px] md:min-h-[70px]">
