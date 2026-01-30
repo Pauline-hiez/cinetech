@@ -83,6 +83,7 @@
 
 .movie-card-info {
     transition: opacity 0.3s;
+    backdrop-filter: blur(12px);
 }
 
 .movie-card:hover .movie-card-info {

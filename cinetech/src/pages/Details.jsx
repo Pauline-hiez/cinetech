@@ -143,7 +143,7 @@ const Details = () => {
                 <FavoriteButton isFavorite={isFavorite} onClick={handleFavoriteClick} />
             </div>
             <div className="flex flex-col md:flex-row gap-6 md:gap-14 items-center md:items-start mb-6 md:mb-10">
-                <div className="w-[180px] h-[270px] md:w-[220px] md:h-[330px] lg:w-[260px] lg:h-[400px] bg-gray-900 rounded-2xl flex items-center justify-center text-2xl text-[#aee1f9] shadow-[0_6px_32px_#000b] text-center mb-2 shrink-0">
+                <div className="w-[180px] h-[270px] md:w-[220px] md:h-[330px] lg:w-[260px] lg:h-[400px] bg-gray-900 rounded-2xl flex items-center justify-center text-2xl text-[#aee1f9] shadow-[0_6px_32px_#000b] text-center mb-2 shrink-0 mt-8 md:mt-12">
                     {details.poster_path ? (
                         <img
                             src={`https://image.tmdb.org/t/p/w780${details.poster_path}`}
@@ -202,30 +202,43 @@ const Details = () => {
                             )}
                         </div>
                         <div className="flex flex-wrap gap-2 md:gap-4 lg:gap-6">
-                            <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)] flex-wrap">
+                            <div className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)] flex-wrap gap-3">
                                 <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">⭐</span>
                                 <span className="font-bold text-[#aee1f9] mr-1">Acteurs :</span>
-                                <span className="flex flex-wrap gap-1">
-                                    {credits.cast?.slice(0, 3).map((a, i, arr) => (
-                                        <React.Fragment key={a.id}>
-                                            <Link to={`/person/${a.id}`} className="text-[#aee1f9] underline cursor-pointer">{a.name}</Link>{i < arr.length - 1 ? ', ' : ''}
-                                        </React.Fragment>
+                                <span className="flex flex-wrap gap-3">
+                                    {credits.cast?.slice(0, 5).map((a) => (
+                                        <Link key={a.id} to={`/person/${a.id}`} className="flex flex-col items-center gap-1 group">
+                                            <img
+                                                src={a.profile_path ? `https://image.tmdb.org/t/p/w185${a.profile_path}` : require('../img/defaut.jpg')}
+                                                alt={a.name}
+                                                className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-[#4ee1ff] cursor-pointer transition-transform group-hover:scale-110"
+                                                title={a.name}
+                                            />
+                                            <span className="text-xs text-[#aee1f9] text-center max-w-[60px] leading-tight group-hover:text-white transition-colors">{a.name}</span>
+                                        </Link>
                                     ))}
                                 </span>
-                            </span>
+                            </div>
                         </div>
                         <div className="flex flex-wrap gap-2 md:gap-4 lg:gap-6">
-                            <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)] flex-wrap">
+                            <div className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)] flex-wrap gap-3">
                                 <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">🛠️</span>
                                 <span className="font-bold text-[#aee1f9] mr-1">Équipe technique :</span>
-                                <span className="flex flex-wrap gap-1">
-                                    {credits.crew?.slice(0, 2).map((c, i, arr) => (
-                                        <React.Fragment key={c.id}>
-                                            <Link to={`/person/${c.id}`} className="text-[#aee1f9] underline cursor-pointer">{c.name}</Link> ({c.job}){i < arr.length - 1 ? ', ' : ''}
-                                        </React.Fragment>
+                                <span className="flex flex-wrap gap-3">
+                                    {credits.crew?.slice(0, 5).map((c) => (
+                                        <Link key={c.id} to={`/person/${c.id}`} className="flex flex-col items-center gap-1 group">
+                                            <img
+                                                src={c.profile_path ? `https://image.tmdb.org/t/p/w185${c.profile_path}` : require('../img/defaut.jpg')}
+                                                alt={c.name}
+                                                className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-[#4ee1ff] cursor-pointer transition-transform group-hover:scale-110"
+                                                title={`${c.name} (${c.job})`}
+                                            />
+                                            <span className="text-xs text-[#aee1f9] text-center max-w-[60px] leading-tight group-hover:text-white transition-colors">{c.name}</span>
+                                            <span className="text-[10px] text-slate-400 text-center max-w-[60px] leading-tight">{c.job}</span>
+                                        </Link>
                                     ))}
                                 </span>
-                            </span>
+                            </div>
                         </div>
                     </div>
 
@@ -266,7 +279,7 @@ const Details = () => {
                 </div>
                 <div className="flex gap-4 md:gap-6 lg:gap-10 flex-wrap justify-center">
                     {similar.map((item) => (
-                        <div key={item.id} className="w-[140px] md:w-[160px] lg:w-[180px]">
+                        <div key={item.id} className="w-[120px] md:w-[140px] lg:w-[150px]">
                             <MovieCard movie={item} />
                         </div>
                     ))}

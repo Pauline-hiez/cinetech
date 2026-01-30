@@ -20,12 +20,12 @@ export default function Favoris() {
 
     return (
         <div>
-            <h1 className="text-white mb-10 mt-0 font-bold text-[2.2rem] text-center">Mes favoris</h1>
+            <h1 className="text-[#aee1f9] mb-10 mt-0 font-bold text-[2.2rem] text-center">Mes favoris</h1>
             {favoris.length === 0 ? (
                 <p className="text-white">Aucun favori pour le moment.</p>
             ) : (
                 <>
-                    <h2 className="mb-6">Films</h2>
+                    <h2 className="mb-6 text-center text-2xl md:text-3xl font-bold text-[#aee1f9]">Films</h2>
                     {favorisFilms.length === 0 ? <p className="text-white">Aucun film en favori.</p> : (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', marginBottom: '3rem', justifyContent: 'center' }}>
                             {[...favorisFilms].reverse().map((media) => (
@@ -33,7 +33,7 @@ export default function Favoris() {
                             ))}
                         </div>
                     )}
-                    <h2 className="mb-6">Séries</h2>
+                    <h2 className="mb-6 text-center text-2xl md:text-3xl font-bold text-[#aee1f9]">Séries</h2>
                     {favorisSeries.length === 0 ? <p className="text-white">Aucune série en favori.</p> : (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'center' }}>
                             {[...favorisSeries].reverse().map((media) => (

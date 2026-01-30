@@ -39,11 +39,11 @@ function MovieCard({ movie }) {
     };
 
     return (
-        <div className="movie-card relative flex flex-col items-center w-full h-full overflow-visible">
-            <div className="movie-card-img-container relative w-full h-full flex items-center justify-center">
-                <Link to={`/${getMediaType(movie)}/${movie.id}`} className="no-underline block w-full h-full">
+        <div className="movie-card relative flex flex-col items-center w-[180px] h-[270px] overflow-visible">
+            <div className="movie-card-img-container relative w-[180px] h-[270px] flex items-center justify-center">
+                <Link to={`/${getMediaType(movie)}/${movie.id}`} className="no-underline block">
                     <img
-                        className="movie-card-img w-full h-full rounded-xl object-cover block cursor-pointer border-[2.5px] border-[#4ee1ff] shadow-[0_0_12px_#4ee1ff99]"
+                        className="movie-card-img w-full h-[270px] rounded-xl object-cover block cursor-pointer border-[2.5px] border-[#4ee1ff] shadow-[0_0_12px_#4ee1ff99]"
                         src={movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : require('../img/defaut.jpg')}
                         alt={movie.title || movie.name || movie.original_name || 'Titre inconnu'}
                         title={`${getMediaType(movie) === 'movie' ? 'Film' : 'Série'}\n${movie.title || movie.name || movie.original_name || 'Titre inconnu'}`}
@@ -54,9 +54,9 @@ function MovieCard({ movie }) {
                     />
                 </Link>
                 <div className="absolute top-2 right-2 z-[2]">
-                    <FavoriteButton isFavorite={isFavorite} onClick={handleFavoriteClick} />
+                    <FavoriteButton isFavorite={isFavorite} onClick={handleFavoriteClick} size="small" />
                 </div>
-                <div className="movie-card-info absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-800/92 text-white opacity-0 flex flex-col items-center justify-center px-[18px] py-4 text-center pointer-events-none rounded-xl z-[2] w-max max-w-[90%] min-w-[120px] shadow-[0_4px_16px_rgba(30,41,59,0.18)]">
+                <div className="movie-card-info absolute bottom-0 left-0 right-0 text-white opacity-0 flex flex-col items-center justify-center px-[18px] py-4 text-center pointer-events-none z-[2]">
                     <div className="text-xs text-[#aee1f9] font-bold mb-0.5">
                         {getMediaType(movie) === 'movie' ? 'Film' : 'Série'}
                     </div>

@@ -91,25 +91,25 @@ export default function Header() {
 
                 {/* Navigation - horizontal scroll on mobile */}
                 <div className="flex items-center gap-2 md:gap-4 lg:gap-8 justify-end flex-1 md:w-full overflow-x-auto scrollbar-hide">
-                    <Link to="/" className="flex items-center no-underline text-inherit gap-1 md:gap-2 shrink-0">
+                    <Link to="/" className="flex items-center no-underline text-[#aee1f9] gap-1 md:gap-2 shrink-0 hover:text-white transition-colors">
                         <img src={homeIcon} alt="Home" className="w-8 h-8 md:w-10 lg:w-12 md:h-10 lg:h-12 block" />
                         <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide hidden sm:inline">Accueil</span>
                     </Link>
-                    <Link to="/movies" className="flex items-center no-underline text-inherit gap-1 md:gap-2 shrink-0">
+                    <Link to="/movies" className="flex items-center no-underline text-[#aee1f9] gap-1 md:gap-2 shrink-0 hover:text-white transition-colors">
                         <img src={cinemaIcon} alt="Films" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" />
                         <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide hidden sm:inline">Films</span>
                     </Link>
-                    <Link to="/series" className="flex items-center no-underline text-inherit gap-1 md:gap-2 shrink-0">
+                    <Link to="/series" className="flex items-center no-underline text-[#aee1f9] gap-1 md:gap-2 shrink-0 hover:text-white transition-colors">
                         <img src={seriesIcon} alt="Séries" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" />
                         <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide hidden sm:inline">Séries</span>
                     </Link>
                     {isLoggedIn ? (
-                        <Link to="/favoris" className="inline-flex items-center no-underline text-inherit gap-1 md:gap-2 min-w-0 shrink-0">
+                        <Link to="/favoris" className="inline-flex items-center no-underline text-[#aee1f9] gap-1 md:gap-2 min-w-0 shrink-0 hover:text-white transition-colors">
                             <img src={favorisIcon} alt="Favoris" className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10" />
                             <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide whitespace-nowrap hidden lg:inline">Mes favoris</span>
                         </Link>
                     ) : (
-                        <Link to="/login" className="inline-flex items-center no-underline text-inherit gap-1 md:gap-2 min-w-0 shrink-0">
+                        <Link to="/login" className="inline-flex items-center no-underline text-[#aee1f9] gap-1 md:gap-2 min-w-0 shrink-0 hover:text-white transition-colors">
                             <img src={userIcon} alt="Login" className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10" />
                             <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide whitespace-nowrap hidden lg:inline">Connexion</span>
                         </Link>
