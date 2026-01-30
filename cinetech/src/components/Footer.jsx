@@ -4,6 +4,10 @@
  * Inclut également un lien vers l'API TMDB
  */
 
+import githubIcon from '../img/github.svg';
+import vscodeIcon from '../img/vscode.svg';
+import reactIcon from '../img/react.svg';
+
 const Footer = () => {
     return (
         <footer className="text-[#aee1f9] mt-16 w-full" style={{ background: '#111827', padding: '2rem 0' }}>
@@ -105,6 +109,48 @@ const Footer = () => {
                         </div>
                     </div>
                 </nav>
+                {/* Section des icônes SVG */}
+                <div className="flex gap-6 items-center justify-center" style={{ marginTop: '0', marginBottom: '0' }}>
+                    <a href="https://github.com/Pauline-hiez" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity duration-200">
+                        <div style={{
+                            width: '32px',
+                            height: '32px',
+                            background: 'linear-gradient(135deg, #00c3ff 0%, #ffe066 80%)',
+                            WebkitMaskImage: `url(${githubIcon})`,
+                            WebkitMaskSize: 'contain',
+                            WebkitMaskRepeat: 'no-repeat',
+                            maskImage: `url(${githubIcon})`,
+                            maskSize: 'contain',
+                            maskRepeat: 'no-repeat'
+                        }} />
+                    </a>
+                    <a href="https://code.visualstudio.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity duration-200">
+                        <div style={{
+                            width: '32px',
+                            height: '32px',
+                            background: 'linear-gradient(135deg, #00c3ff 0%, #ffe066 80%)',
+                            WebkitMaskImage: `url(${vscodeIcon})`,
+                            WebkitMaskSize: 'contain',
+                            WebkitMaskRepeat: 'no-repeat',
+                            maskImage: `url(${vscodeIcon})`,
+                            maskSize: 'contain',
+                            maskRepeat: 'no-repeat'
+                        }} />
+                    </a>
+                    <a href="https://react.dev" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity duration-200">
+                        <div style={{
+                            width: '32px',
+                            height: '32px',
+                            background: 'linear-gradient(135deg, #00c3ff 0%, #ffe066 80%)',
+                            WebkitMaskImage: `url(${reactIcon})`,
+                            WebkitMaskSize: 'contain',
+                            WebkitMaskRepeat: 'no-repeat',
+                            maskImage: `url(${reactIcon})`,
+                            maskSize: 'contain',
+                            maskRepeat: 'no-repeat'
+                        }} />
+                    </a>
+                </div>
                 <div className="text-center font-bold text-white tracking-wide" style={{ marginTop: '2.5rem', marginBottom: '2.5rem', fontSize: '1.5rem' }}>
                     Site n°1 dans le référencement de films et séries !
                 </div>
