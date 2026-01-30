@@ -62,43 +62,144 @@ export default function SearchFilters({ onChange, visible }) {
     if (!visible) return null;
 
     return (
-        <div className="search-filters-panel" style={{
-            background: '#1e293b', color: '#fff', borderRadius: 18, boxShadow: '0 2px 16px #000a', padding: 18, width: '100%', minWidth: 260, maxWidth: 340, boxSizing: 'border-box', overflow: 'hidden'
+        <div style={{
+            background: '#2c3e50',
+            borderRadius: 18,
+            boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
+            padding: '24px 20px',
+            width: '100%',
+            boxSizing: 'border-box'
         }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'stretch' }}>
                 <div style={{ width: '100%' }}>
-                    <label htmlFor="filter-type">Type :</label>
-                    <select id="filter-type" value={selectedType} onChange={handleTypeChange} style={{ width: '100%', marginTop: 4, borderRadius: 24, padding: '10px 18px', border: '1px solid #e2e8f0', fontSize: 16 }}>
+                    <label htmlFor="filter-type" style={{ display: 'block', textAlign: 'center', color: '#fff', fontSize: 15, fontWeight: '500', marginBottom: 8 }}>Type :</label>
+                    <select
+                        id="filter-type"
+                        value={selectedType}
+                        onChange={handleTypeChange}
+                        style={{
+                            width: '100%',
+                            borderRadius: 20,
+                            padding: '12px 16px',
+                            border: 'none',
+                            fontSize: 15,
+                            color: '#000',
+                            background: '#fff',
+                            cursor: 'pointer',
+                            outline: 'none'
+                        }}
+                    >
                         <option value="">Tous</option>
                         <option value="movie">Film</option>
                         <option value="tv">Série</option>
                     </select>
                 </div>
                 <div style={{ width: '100%' }}>
-                    <label htmlFor="filter-year">Année :</label>
-                    <select id="filter-year" value={selectedYear} onChange={handleYearChange} style={{ width: '100%', marginTop: 4, borderRadius: 24, padding: '10px 18px', border: '1px solid #e2e8f0', fontSize: 16 }}>
+                    <label htmlFor="filter-year" style={{ display: 'block', textAlign: 'center', color: '#fff', fontSize: 15, fontWeight: '500', marginBottom: 8 }}>Année :</label>
+                    <select
+                        id="filter-year"
+                        value={selectedYear}
+                        onChange={handleYearChange}
+                        style={{
+                            width: '100%',
+                            borderRadius: 20,
+                            padding: '12px 16px',
+                            border: 'none',
+                            fontSize: 15,
+                            color: '#000',
+                            background: '#fff',
+                            cursor: 'pointer',
+                            outline: 'none'
+                        }}
+                    >
                         <option value="">Toutes</option>
                         {years.map(y => <option key={y} value={y}>{y}</option>)}
                     </select>
                 </div>
                 <div style={{ width: '100%' }}>
-                    <label htmlFor="filter-genre">Genre :</label>
-                    <select id="filter-genre" value={selectedGenre} onChange={handleGenreChange} style={{ width: '100%', marginTop: 4, borderRadius: 24, padding: '10px 18px', border: '1px solid #e2e8f0', fontSize: 16 }}>
+                    <label htmlFor="filter-genre" style={{ display: 'block', textAlign: 'center', color: '#fff', fontSize: 15, fontWeight: '500', marginBottom: 8 }}>Genre :</label>
+                    <select
+                        id="filter-genre"
+                        value={selectedGenre}
+                        onChange={handleGenreChange}
+                        style={{
+                            width: '100%',
+                            borderRadius: 20,
+                            padding: '12px 16px',
+                            border: 'none',
+                            fontSize: 15,
+                            color: '#000',
+                            background: '#fff',
+                            cursor: 'pointer',
+                            outline: 'none'
+                        }}
+                    >
                         <option value="">Tous</option>
                         {genres.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
                     </select>
                 </div>
                 <div style={{ width: '100%' }}>
-                    <label htmlFor="filter-country">Pays d'origine :</label>
-                    <select id="filter-country" value={selectedCountry} onChange={handleCountryChange} style={{ width: '100%', marginTop: 4, borderRadius: 24, padding: '10px 18px', border: '1px solid #e2e8f0', fontSize: 16 }}>
+                    <label htmlFor="filter-country" style={{ display: 'block', textAlign: 'center', color: '#fff', fontSize: 15, fontWeight: '500', marginBottom: 8 }}>Pays d'origine :</label>
+                    <select
+                        id="filter-country"
+                        value={selectedCountry}
+                        onChange={handleCountryChange}
+                        style={{
+                            width: '100%',
+                            borderRadius: 20,
+                            padding: '12px 16px',
+                            border: 'none',
+                            fontSize: 15,
+                            color: '#000',
+                            background: '#fff',
+                            cursor: 'pointer',
+                            outline: 'none'
+                        }}
+                    >
                         <option value="">Tous</option>
                         {countries.map(c => <option key={c.code} value={c.code}>{c.name}</option>)}
                     </select>
                 </div>
-                <button onClick={handleFilterSearch} className="search-filters-btn">
+                <button
+                    onClick={handleFilterSearch}
+                    style={{
+                        width: '100%',
+                        padding: '14px 24px',
+                        background: '#5dade2',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 20,
+                        fontSize: 16,
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        marginTop: 8,
+                        transition: 'all 0.2s',
+                        boxShadow: '0 2px 8px rgba(93, 173, 226, 0.3)'
+                    }}
+                    onMouseEnter={(e) => e.target.style.background = '#4a9fd5'}
+                    onMouseLeave={(e) => e.target.style.background = '#5dade2'}
+                >
                     Rechercher
                 </button>
-                <button onClick={handleResetFilters} className="search-filters-btn" style={{ marginTop: 8, background: '#64748b', color: '#fff' }}>
+                <button
+                    onClick={handleResetFilters}
+                    style={{
+                        width: '100%',
+                        padding: '12px 24px',
+                        background: '#7f8c8d',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 20,
+                        fontSize: 15,
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        marginTop: 8,
+                        transition: 'all 0.2s',
+                        boxShadow: '0 2px 6px rgba(127, 140, 141, 0.2)'
+                    }}
+                    onMouseEnter={(e) => e.target.style.background = '#6d7b7c'}
+                    onMouseLeave={(e) => e.target.style.background = '#7f8c8d'}
+                >
                     Réinitialiser
                 </button>
             </div>

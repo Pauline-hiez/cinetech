@@ -103,9 +103,9 @@ export default function SearchResults() {
     }
 
     return (
-        <div>
-            <h2 style={{ marginBottom: '48px' }}>{titre}</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px' }}>
+        <div className="max-w-[1400px] mx-auto px-4">
+            <h2 className="mb-8 md:mb-12 text-center text-xl md:text-2xl">{titre}</h2>
+            <div className="flex flex-wrap gap-4 md:gap-6 justify-center">
                 {results.map(movie => (
                     <MovieCard key={movie.id} movie={movie} />
                 ))}

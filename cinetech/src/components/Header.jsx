@@ -1,6 +1,6 @@
 
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../img/logo.png";
 import homeIcon from "../img/home.png";
@@ -15,6 +15,7 @@ import SearchFilters from "./SearchFilters";
 export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
+    const [searchSuggestions, setSearchSuggestions] = useState({ suggestions: [], showSuggestions: false, query: '' });
     const navigate = useNavigate();
 
     // Gestion de la recherche globale
@@ -23,6 +24,18 @@ export default function Header() {
             navigate(`/search?q=${encodeURIComponent(query)}`);
         }
     };
+
+    // Callback pour recevoir les suggestions de SearchBar
+    const handleSuggestionsChange = useCallback((suggestionsData) => {
+        setSearchSuggestions(suggestionsData);
+    }, []);
+
+    // Sélection d'un film depuis les suggestions
+    const handleSelectMovie = useCallback((movie) => {
+        const type = movie.media_type === 'tv' || movie.first_air_date ? 'tv' : 'movie';
+        navigate(`/details/${type}/${movie.id}`);
+        setSearchSuggestions({ suggestions: [], showSuggestions: false, query: '' });
+    }, [navigate]);
 
     // Gestion de la recherche par filtres
     const handleFilterSearch = (filters) => {
@@ -61,13 +74,13 @@ export default function Header() {
     return (
         <>
             {/* Logo blur background - hidden on mobile */}
-            <div className="hidden md:block fixed top-[18px] left-9 w-[120px] h-[120px] lg:w-[190px] lg:h-[190px] z-[199] pointer-events-none rounded-full bg-slate-800/30 backdrop-blur-[40px] border-[2.5px] border-[#4ee1ff] shadow-[0_0_12px_#4ee1ff99]" />
+            <div className="hidden md:block fixed top-[18px] left-9 w-[120px] h-[120px] lg:w-[170px] lg:h-[170px] z-[199] pointer-events-none rounded-full bg-slate-800/30 backdrop-blur-[40px] border-[2.5px] border-[#4ee1ff] shadow-[0_0_12px_#4ee1ff99]" />
             {/* Logo - smaller on mobile */}
-            <Link to="/" className="hidden md:block fixed top-[28px] md:top-[38px] left-4 md:left-8 z-[201]">
+            <Link to="/" className="hidden md:block fixed top-[28px] md:top-[36px] left-4 md:left-[52px] lg:left-[62px] z-[201]">
                 <img
                     src={logo}
                     alt="Accueil"
-                    className="w-[90px] h-[90px] md:w-[100px] md:h-[100px] lg:w-[150px] lg:h-[150px] pointer-events-auto cursor-pointer object-contain"
+                    className="w-[90px] h-[90px] md:w-[100px] md:h-[100px] lg:w-[130px] lg:h-[130px] pointer-events-auto cursor-pointer object-contain"
                 />
             </Link>
             <header className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between md:justify-end bg-gradient-to-t from-[#020617] to-[#1f2937] text-white px-3 md:px-5 py-2 rounded-b-[18px] shadow-[0_8px_32px_0_rgba(30,41,59,0.25),0_1.5px_8px_0_rgba(0,0,0,0.12)] min-h-[60px] md:min-h-[70px]">
@@ -79,33 +92,35 @@ export default function Header() {
                 {/* Navigation - horizontal scroll on mobile */}
                 <div className="flex items-center gap-2 md:gap-4 lg:gap-8 justify-end flex-1 md:w-full overflow-x-auto scrollbar-hide">
                     <Link to="/" className="flex items-center no-underline text-inherit gap-1 md:gap-2 shrink-0">
-                        <img src={homeIcon} alt="Home" className="w-8 h-8 md:w-12 lg:w-[70px] md:h-12 lg:h-auto block" />
-                        <span className="text-sm md:text-xl lg:text-[2.2rem] font-bold tracking-wide hidden sm:inline">Accueil</span>
+                        <img src={homeIcon} alt="Home" className="w-8 h-8 md:w-10 lg:w-12 md:h-10 lg:h-12 block" />
+                        <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide hidden sm:inline">Accueil</span>
                     </Link>
                     <Link to="/movies" className="flex items-center no-underline text-inherit gap-1 md:gap-2 shrink-0">
-                        <img src={cinemaIcon} alt="Films" className="w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14" />
-                        <span className="text-sm md:text-xl lg:text-[2.2rem] font-bold tracking-wide hidden sm:inline">Films</span>
+                        <img src={cinemaIcon} alt="Films" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" />
+                        <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide hidden sm:inline">Films</span>
                     </Link>
                     <Link to="/series" className="flex items-center no-underline text-inherit gap-1 md:gap-2 shrink-0">
-                        <img src={seriesIcon} alt="Séries" className="w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14" />
-                        <span className="text-sm md:text-xl lg:text-[2.2rem] font-bold tracking-wide hidden sm:inline">Séries</span>
+                        <img src={seriesIcon} alt="Séries" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" />
+                        <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide hidden sm:inline">Séries</span>
                     </Link>
                     {isLoggedIn ? (
-                        <Link to="/favoris" className="inline-flex items-center no-underline text-inherit gap-1 md:gap-3 min-w-0 shrink-0">
-                            <img src={favorisIcon} alt="Favoris" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" />
-                            <span className="text-sm md:text-xl lg:text-[2.2rem] font-bold tracking-wide whitespace-nowrap hidden lg:inline">Mes favoris</span>
+                        <Link to="/favoris" className="inline-flex items-center no-underline text-inherit gap-1 md:gap-2 min-w-0 shrink-0">
+                            <img src={favorisIcon} alt="Favoris" className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10" />
+                            <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide whitespace-nowrap hidden lg:inline">Mes favoris</span>
                         </Link>
                     ) : (
-                        <Link to="/login" className="inline-flex items-center no-underline text-inherit gap-1 md:gap-3 min-w-0 shrink-0">
-                            <img src={userIcon} alt="Login" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" />
-                            <span className="text-sm md:text-xl lg:text-[2.2rem] font-bold tracking-wide whitespace-nowrap hidden lg:inline">Connexion</span>
+                        <Link to="/login" className="inline-flex items-center no-underline text-inherit gap-1 md:gap-2 min-w-0 shrink-0">
+                            <img src={userIcon} alt="Login" className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10" />
+                            <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide whitespace-nowrap hidden lg:inline">Connexion</span>
                         </Link>
                     )}
-                    <div className="flex items-center gap-2 md:gap-3 relative md:ml-8 shrink-0">
-                        <SearchBar onSearch={handleSearch} onToggleFilters={() => setShowFilters(f => !f)} />
-                        <div className="absolute top-14 left-0 md:left-auto md:right-0 w-[90vw] md:w-full min-w-0 max-w-[340px] z-[200] box-border">
-                            <SearchFilters visible={showFilters} onChange={handleFilterSearch} />
-                        </div>
+                    <div className="flex items-center gap-2 md:gap-3 md:ml-8 shrink-0">
+                        <SearchBar
+                            onSearch={handleSearch}
+                            onToggleFilters={() => { console.log('Toggle filters, current:', showFilters); setShowFilters(f => !f); }}
+                            onSuggestionsChange={handleSuggestionsChange}
+                            onSelectMovie={handleSelectMovie}
+                        />
                     </div>
                 </div>
                 {/* Bouton de déconnexion flottant */}
@@ -115,6 +130,76 @@ export default function Header() {
                     </button>
                 )}
             </header>
+            {/* Panneau de filtres - positionné en dehors du header pour éviter l'overflow */}
+            <div className="fixed top-[70px] md:top-[80px] right-4 md:right-8 z-[300] box-border w-[200px] sm:w-[280px] md:w-[320px] lg:w-[380px]">
+                <SearchFilters visible={showFilters} onChange={handleFilterSearch} />
+            </div>
+            {/* Dropdown de suggestions - positionné en dehors du header */}
+            {searchSuggestions.showSuggestions && searchSuggestions.suggestions.length > 0 && (
+                <div className="fixed top-[70px] md:top-[80px] right-4 md:right-8 z-[400] w-[200px] sm:w-[280px] md:w-[320px] lg:w-[380px]">
+                    <ul className="bg-white border border-gray-300 rounded-xl list-none m-0 p-0 max-h-80 overflow-y-auto shadow-lg">
+                        {(() => {
+                            const startsWith = [];
+                            const includes = [];
+                            searchSuggestions.suggestions.forEach(movie => {
+                                const title = movie.title || movie.name || "";
+                                if (title.toLowerCase().startsWith(searchSuggestions.query.toLowerCase())) {
+                                    startsWith.push(movie);
+                                } else if (title.toLowerCase().includes(searchSuggestions.query.toLowerCase())) {
+                                    includes.push(movie);
+                                }
+                            });
+                            return (
+                                <>
+                                    {startsWith.length > 0 && (
+                                        <>
+                                            {startsWith.map((movie) => (
+                                                <li
+                                                    key={movie.id}
+                                                    onClick={() => handleSelectMovie(movie)}
+                                                    className="flex items-center gap-2 p-2 cursor-pointer font-bold hover:bg-emerald-50"
+                                                >
+                                                    {movie.poster_path && (
+                                                        <img src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} alt={movie.title || movie.name} className="w-8 h-8 object-cover rounded" />
+                                                    )}
+                                                    <span className="flex flex-col">
+                                                        <span className="text-[11px] text-[#aee1f9] font-bold leading-none">{movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}</span>
+                                                        <span className="text-gray-900">{movie.title || movie.name}</span>
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </>
+                                    )}
+                                    {startsWith.length > 0 && includes.length > 0 && (
+                                        <li className="border-t border-gray-200 py-1 px-2 text-gray-500 text-[13px] bg-gray-50">
+                                            Autres résultats
+                                        </li>
+                                    )}
+                                    {includes.length > 0 && (
+                                        <>
+                                            {includes.map((movie) => (
+                                                <li
+                                                    key={movie.id}
+                                                    onClick={() => handleSelectMovie(movie)}
+                                                    className="flex items-center gap-2 p-2 cursor-pointer hover:bg-emerald-50"
+                                                >
+                                                    {movie.poster_path && (
+                                                        <img src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`} alt={movie.title || movie.name} className="w-8 h-8 object-cover rounded" />
+                                                    )}
+                                                    <span className="flex flex-col">
+                                                        <span className="text-[11px] text-[#aee1f9] font-bold leading-none">{movie.media_type === 'movie' || movie.first_air_date === undefined ? 'Film' : 'Série'}</span>
+                                                        <span className="text-gray-900">{movie.title || movie.name}</span>
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </>
+                                    )}
+                                </>
+                            );
+                        })()}
+                    </ul>
+                </div>
+            )}
         </>
     );
 }
