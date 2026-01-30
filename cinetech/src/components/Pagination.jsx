@@ -1,8 +1,21 @@
+/**
+ * Composant Pagination
+ * Affiche les contrôles de pagination avec numéros de page et flèches
+ * 
+ * @param {number} currentPage - Page actuellement affichée
+ * @param {number} totalPages - Nombre total de pages disponibles
+ * @param {function} onPageChange - Fonction appelée lors du changement de page
+ */
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
+    // Calcul des pages à afficher
     const pages = [];
-    const maxPagesToShow = 5;
+    const maxPagesToShow = 5; // Nombre maximum de boutons de page affichés
+
+    // Détermination de la page de départ pour centrer la page actuelle
     let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
     let endPage = startPage + maxPagesToShow - 1;
+
+    // Ajustement si on dépasse le total
     if (endPage > totalPages) {
         endPage = totalPages;
         startPage = Math.max(1, endPage - maxPagesToShow + 1);

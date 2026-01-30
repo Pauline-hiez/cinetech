@@ -1,21 +1,33 @@
+/**
+ * Composant StarryBackground (Fond étoilé animé)
+ * Crée un fond d'étoiles animées avec effet de scintillement
+ * Utilise Canvas pour le rendu et s'adapte au redimensionnement
+ */
+
 import { useEffect, useRef } from 'react';
 
 const StarryBackground = () => {
+    // Référence au canvas HTML
     const canvasRef = useRef(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        let animationFrameId;
-        let stars = [];
+        const ctx = canvas.getContext('2d'); // Contexte 2D pour le dessin
+        let animationFrameId; // ID de l'animation pour nettoyage
+        let stars = []; // Tableau contenant toutes les étoiles
 
-        // Ajuster la taille du canvas
+        /**
+         * Ajuste la taille du canvas à celle de la fenêtre
+         */
         const resizeCanvas = () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         };
 
-        // Créer une étoile
+        /**
+         * Classe représentant une étoile individuelle
+         * Gère sa position, taille, vitesse et effet de scintillement
+         */
         class Star {
             constructor() {
                 this.reset();

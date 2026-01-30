@@ -1,3 +1,8 @@
+/**
+ * Composant MovieCard (Carte de film/série)
+ * Affiche une carte avec affiche, titre, année et note
+ * Inclut un bouton favori et affiche les infos au survol
+ */
 
 import { useState, useEffect } from 'react';
 import '../App.tailwind.css';
@@ -6,19 +11,34 @@ import { Link } from 'react-router-dom';
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
+/**
+ * Détermine le type de média (film ou série)
+ * @param {Object} movie - Objet contenant les données du film/série
+ * @returns {string} 'movie' ou 'tv'
+ */
 function getMediaType(movie) {
     return movie.media_type || (movie.first_air_date ? 'tv' : 'movie');
 }
 
+/**
+ * @param {Object} movie - Objet contenant toutes les informations du film/série
+ */
 function MovieCard({ movie }) {
-    // Utilisation du localStorage pour stocker les favoris
+    // Gestion de l'état favori via localStorage
     const [isFavorite, setIsFavorite] = useState(false);
 
+    /**
+     * Vérifie si le film/série est dans les favoris au montage
+     */
     useEffect(() => {
         const favoris = JSON.parse(localStorage.getItem('favoris') || '[]');
         setIsFavorite(favoris.some((fav) => fav.id === movie.id));
     }, [movie.id]);
 
+    /**
+     * Gestion du clic sur le bouton favori
+     * Vérifie l'authentification et ajoute/retire des favoris
+     */
     const handleFavoriteClick = (e) => {
         e.stopPropagation();
         // Vérifie si l'utilisateur est connecté (clé 'user' dans localStorage)

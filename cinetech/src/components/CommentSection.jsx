@@ -1,25 +1,40 @@
+/**
+ * Composant Section de Commentaires
+ * Gère l'affichage et la gestion des commentaires/avis utilisateurs
+ * Permet d'ajouter, modifier et supprimer des commentaires avec notation par étoiles
+ */
 
 import { useState } from "react";
 
-// Composant d'étoiles interactives
+/**
+ * Sous-composant StarRating
+ * Affiche et gère la sélection d'une note par étoiles (1 à 5)
+ * 
+ * @param {number} rating - Note actuelle sélectionnée
+ * @param {function} setRating - Fonction pour modifier la note
+ */
 function StarRating({ rating, setRating }) {
+    // État local pour l'effet de survol sur les étoiles
     const [hovered, setHovered] = useState(0);
+
     return (
         <div style={{ display: "flex", gap: 4 }}>
+            {/* Génération des 5 étoiles */}
             {[1, 2, 3, 4, 5].map((star) => {
+                // Détermine si l'étoile doit être remplie (survolée ou sélectionnée)
                 const filled = hovered ? star <= hovered : star <= rating;
                 return (
                     <span
                         key={star}
                         style={{
                             cursor: "pointer",
-                            color: filled ? "#4ee1ff" : "#233a4d",
+                            color: filled ? "#4ee1ff" : "#233a4d", // Couleur selon l'état
                             textShadow: filled ? "0 0 8px #4ee1ff, 0 0 2px #fff" : "none",
                             fontSize: 24,
                             transition: 'color 0.18s, text-shadow 0.18s',
                         }}
-                        onClick={() => setRating(star)}
-                        onMouseEnter={() => setHovered(star)}
+                        onClick={() => setRating(star)} // Sélection de la note
+                        onMouseEnter={() => setHovered(star)} // Effet de survol
                         onMouseLeave={() => setHovered(0)}
                         data-testid={`star-${star}`}
                     >
@@ -31,35 +46,52 @@ function StarRating({ rating, setRating }) {
     );
 }
 
-// Section commentaires/avis
-
+/**
+ * Composant principal CommentSection
+ * 
+ * @param {Array} comments - Liste des commentaires à afficher
+ * @param {function} onSubmit - Fonction appelée lors de l'ajout d'un commentaire
+ * @param {function} onDelete - Fonction appelée lors de la suppression
+ * @param {function} onEdit - Fonction appelée lors de la modification
+ * @param {Object} user - Objet utilisateur connecté
+ */
 const CommentSection = ({ comments = [], onSubmit, onDelete, onEdit, user }) => {
-    const [comment, setComment] = useState("");
-    const [rating, setRating] = useState(0);
-    const [error, setError] = useState("");
-    // Toujours utiliser le pseudo de l'utilisateur connecté si présent
-    // Suppression du champ nom pour les non-connectés : seuls les connectés peuvent commenter
+    // États pour gérer le formulaire de nouveau commentaire
+    const [comment, setComment] = useState(""); // Texte du commentaire
+    const [rating, setRating] = useState(0); // Note sélectionnée
+    const [error, setError] = useState(""); // Message d'erreur
 
+    /**
+     * Gestion de la soumission d'un nouveau commentaire
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        // Vérification que l'utilisateur est connecté
         if (!user) {
             setError("Vous devez être connecté pour publier un avis.");
             return;
         }
+
+        // Vérification qu'une note a été donnée (obligatoire)
         if (rating === 0) {
             setError("Veuillez donner une note.");
             return;
         }
-        // Le commentaire est optionnel, seule la note est obligatoire
+
+        // Appel de la fonction parent avec les données du commentaire
         onSubmit && onSubmit({ comment, rating, user: user.username });
+
+        // Réinitialisation du formulaire
         setComment("");
         setRating(0);
         setError("");
     };
 
-    const [editIdx, setEditIdx] = useState(null);
-    const [editComment, setEditComment] = useState("");
-    const [editRating, setEditRating] = useState(0);
+    // États pour gérer l'édition d'un commentaire existant
+    const [editIdx, setEditIdx] = useState(null); // Index du commentaire en cours d'édition
+    const [editComment, setEditComment] = useState(""); // Texte temporaire lors de l'édition
+    const [editRating, setEditRating] = useState(0); // Note temporaire lors de l'édition
 
     return (
         <section

@@ -1,3 +1,8 @@
+/**
+ * Composant Header (En-tête du site)
+ * Barre de navigation principale avec logo, liens, barre de recherche et filtres
+ * Gère l'authentification, les favoris et la recherche avec suggestions
+ */
 
 import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,12 +17,16 @@ import SearchBar from "./SearchBar";
 import { FilterIcon } from "./FilterIcon";
 import SearchFilters from "./SearchFilters";
 export default function Header() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [showFilters, setShowFilters] = useState(false);
-    const [searchSuggestions, setSearchSuggestions] = useState({ suggestions: [], showSuggestions: false, query: '' });
+    // États pour gérer l'interface du header
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Statut de connexion
+    const [showFilters, setShowFilters] = useState(false); // Affichage du panneau de filtres
+    const [searchSuggestions, setSearchSuggestions] = useState({ suggestions: [], showSuggestions: false, query: '' }); // Suggestions de recherche
     const navigate = useNavigate();
 
-    // Gestion de la recherche globale
+    /**
+     * Gestion de la recherche globale
+     * @param {string} query - Terme recherché
+     */
     const handleSearch = (query) => {
         if (query && query.length > 1) {
             navigate(`/search?q=${encodeURIComponent(query)}`);

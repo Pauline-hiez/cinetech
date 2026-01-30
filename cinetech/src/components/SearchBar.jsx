@@ -1,17 +1,31 @@
+/**
+ * Composant SearchBar (Barre de recherche)
+ * Barre de recherche avec suggestions intelligentes en temps réel
+ * Utilise un debounce pour limiter les appels API
+ * Affiche les suggestions triées (commençant par / contenant le terme)
+ */
+
 import { useState, useRef, useEffect } from "react";
 import { FilterIcon } from "./FilterIcon";
 import { searchMoviesAndSeries } from "../services/tmdb";
 
+/**
+ * @param {function} onSelectMovie - Callback lors de la sélection d'une suggestion
+ * @param {function} onSearch - Callback lors de la validation de la recherche
+ * @param {function} onToggleFilters - Callback pour basculer l'affichage des filtres
+ * @param {function} onSuggestionsChange - Callback pour notifier le parent des changements
+ */
 const SearchBar = ({ onSelectMovie, onSearch, onToggleFilters, onSuggestionsChange }) => {
-    const [query, setQuery] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [activeIndex, setActiveIndex] = useState(-1);
-    const [showSuggestions, setShowSuggestions] = useState(false);
-    const inputRef = useRef(null);
-    const debounceTimeout = useRef(null);
+    // États pour gérer la recherche et les suggestions
+    const [query, setQuery] = useState(""); // Terme de recherche saisi
+    const [suggestions, setSuggestions] = useState([]); // Liste des suggestions
+    const [loading, setLoading] = useState(false); // Indicateur de chargement
+    const [activeIndex, setActiveIndex] = useState(-1); // Index de la suggestion sélectionnée au clavier
+    const [showSuggestions, setShowSuggestions] = useState(false); // Affichage du dropdown
+    const inputRef = useRef(null); // Référence au champ de saisie
+    const debounceTimeout = useRef(null); // Timer pour le debounce
 
-    // Notifier le parent des changements de suggestions
+    // Notification du parent des changements de suggestions
     useEffect(() => {
         if (onSuggestionsChange) {
             onSuggestionsChange({ suggestions, showSuggestions, query });

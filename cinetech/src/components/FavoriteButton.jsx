@@ -1,6 +1,15 @@
-// Bouton étoile favoris (remplace le coeur)
+/**
+ * Composant Bouton Favori
+ * Affiche une étoile animée pour ajouter/retirer des films/séries des favoris
+ * 
+ * @param {boolean} isFavorite - Indique si l'élément est déjà en favori
+ * @param {function} onClick - Fonction appelée lors du clic sur le bouton
+ * @param {string} size - Taille du bouton ('default' ou 'small')
+ */
 export default function FavoriteButton({ isFavorite = false, onClick, size = 'default' }) {
+    // Classes CSS pour la taille de l'icône selon le paramètre size
     const sizeClasses = size === 'small' ? 'w-6 h-6' : 'w-8 h-8';
+    // Classes CSS pour la taille du conteneur du bouton
     const buttonSize = size === 'small' ? 'w-9 h-9' : 'w-11 h-11';
     return (
         <button

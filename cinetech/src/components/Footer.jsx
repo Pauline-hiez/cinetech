@@ -1,3 +1,9 @@
+/**
+ * Composant Footer (Pied de page)
+ * Affiche les liens du pied de page avec modales pour Contact et "Qui sommes-nous ?"
+ * Inclut également un lien vers l'API TMDB
+ */
+
 const Footer = () => {
     return (
         <footer className="text-[#aee1f9] mt-16 w-full" style={{ background: '#111827', padding: '2rem 0' }}>

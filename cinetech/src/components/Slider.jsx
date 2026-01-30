@@ -1,3 +1,8 @@
+/**
+ * Composant Slider (Carrousel 3D)
+ * Carrousel 3D interactif affichant les films/séries populaires
+ * Avec effet de perspective, rotation et animations fluides
+ */
 
 import { useEffect, useState, useRef } from "react";
 import { fetchPopularMovies, fetchPopularSeries } from "../services/tmdb";
@@ -6,6 +11,14 @@ import { Link } from 'react-router-dom';
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
+/**
+ * Calcule les styles CSS pour positionner une carte dans le carrousel 3D
+ * 
+ * @param {number} idx - Index de la carte
+ * @param {number} activeIdx - Index de la carte active (centrale)
+ * @param {number} total - Nombre total de cartes
+ * @returns {Object} Objet de styles CSS pour transform, z-index, opacity, etc.
+ */
 function getCarouselStyle(idx, activeIdx, total) {
     let offset = idx - activeIdx;
     if (offset > total / 2) offset -= total;
@@ -58,12 +71,19 @@ function getCarouselStyle(idx, activeIdx, total) {
     };
 }
 
+/**
+ * @param {string} type - Type de contenu à afficher ('movie' ou 'series')
+ */
 const Slider = ({ type }) => {
-    const [items, setItems] = useState([]);
-    const [activeIdx, setActiveIdx] = useState(0);
-    const [favorites, setFavorites] = useState([]);
-    const carouselRef = useRef();
+    // États pour gérer le carrousel
+    const [items, setItems] = useState([]); // Liste des films/séries à afficher (max 7)
+    const [activeIdx, setActiveIdx] = useState(0); // Index de la carte centrale
+    const [favorites, setFavorites] = useState([]); // Liste des favoris de l'utilisateur
+    const carouselRef = useRef(); // Référence au conteneur du carrousel
 
+    /**
+     * Effect pour charger les données au montage et à chaque changement de type
+     */
     useEffect(() => {
         async function fetchData() {
             let data;

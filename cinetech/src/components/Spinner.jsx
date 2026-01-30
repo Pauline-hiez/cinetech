@@ -1,3 +1,8 @@
+/**
+ * Composant Spinner (Indicateur de chargement)
+ * Affiche une animation de chargement circulaire avec texte
+ * Utilisé pendant les requêtes API ou les transitions
+ */
 export default function Spinner() {
     return (
         <div role="status" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, margin: '32px 0' }}>

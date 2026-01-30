@@ -1,73 +1,117 @@
+/**
+ * Page de détails d'un film ou d'une série
+ * Affiche toutes les informations détaillées : synopsis, casting, bande-annonce, avis, commentaires
+ */
+
+// Importation des hooks React nécessaires
 import { useEffect, useState } from "react";
+// Importation des composants utilisés
 import CommentSection from "../components/CommentSection";
 import FavoriteButton from "../components/FavoriteButton";
 import MovieCard from "../components/MovieCard";
+// Importation des hooks de routing pour récupérer les paramètres d'URL et créer des liens
 import { useParams, Link } from "react-router-dom";
+// Importation des services API pour récupérer les données depuis TMDB
 import { getMovieDetails, getSimilarMovies, getMovieCredits, getMovieReviews } from "../services/tmdb";
 import { getMovieVideos } from "../services/tmdb";
+// Importation des styles Tailwind
 import "../App.tailwind.css";
 
 const Details = () => {
+    // Récupération des paramètres d'URL (id du film/série et type: movie ou tv)
     const { id, type } = useParams();
-    const [details, setDetails] = useState(null);
-    const [credits, setCredits] = useState(null);
-    const [similar, setSimilar] = useState([]);
-    const [reviews, setReviews] = useState([]);
 
+    // États pour stocker les données récupérées de l'API
+    const [details, setDetails] = useState(null); // Détails du film/série
+    const [credits, setCredits] = useState(null); // Casting et équipe technique
+    const [similar, setSimilar] = useState([]); // Films/séries similaires
+    const [reviews, setReviews] = useState([]); // Avis de l'API TMDB
+
+    // Génération de la clé unique pour stocker les commentaires dans le localStorage
     const commentsKey = `comments_${type}_${id}`;
+
+    // État pour les commentaires utilisateurs avec initialisation depuis le localStorage
+    // État pour les commentaires utilisateurs avec initialisation depuis le localStorage
     const [userComments, setUserComments] = useState(() => {
         try {
+            // Tentative de récupération des commentaires sauvegardés
             const saved = localStorage.getItem(commentsKey);
             return saved ? JSON.parse(saved) : [];
         } catch {
+            // En cas d'erreur, retourner un tableau vide
             return [];
         }
     });
 
+    // Récupération des données de l'utilisateur connecté depuis le localStorage
     const userData = localStorage.getItem('user');
     const user = userData ? JSON.parse(userData) : null;
 
+    /**
+     * Fonction pour ajouter un nouveau commentaire
+     * @param {Object} param - Objet contenant le commentaire, la note et le nom d'utilisateur
+     */
     const handleAddComment = ({ comment, rating, user: userName }) => {
-        if (!user) return;
+        if (!user) return; // Vérification que l'utilisateur est connecté
         setUserComments(prev => {
+            // Création de l'horodatage pour le commentaire
             const now = new Date();
             const date = now.toLocaleDateString('fr-FR');
             const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            // Ajout du nouveau commentaire en début de liste
             const newComments = [
                 { comment, rating, user: user.username, date, time },
                 ...prev
             ];
             try {
+                // Sauvegarde dans le localStorage
                 localStorage.setItem(commentsKey, JSON.stringify(newComments));
             } catch { }
             return newComments;
         });
     };
 
+    /**
+     * Fonction pour supprimer un commentaire
+     * @param {number} idx - Index du commentaire à supprimer
+     */
     const handleDeleteComment = (idx) => {
-        if (!user) return;
+        if (!user) return; // Vérification que l'utilisateur est connecté
         setUserComments(prev => {
+            // Vérification que le commentaire appartient bien à l'utilisateur
             if (prev[idx]?.user !== user.username) return prev;
+            // Filtrage du commentaire à supprimer
             const newComments = prev.filter((_, i) => i !== idx);
             try {
+                // Mise à jour du localStorage
                 localStorage.setItem(commentsKey, JSON.stringify(newComments));
             } catch { }
             return newComments;
         });
     };
 
+    /**
+     * Fonction pour modifier un commentaire existant
+     * @param {number} idx - Index du commentaire à modifier
+     * @param {Object} updatedComment - Objet contenant les nouvelles valeurs
+     */
     const handleEditComment = (idx, updatedComment) => {
-        if (!user) return;
+        if (!user) return; // Vérification que l'utilisateur est connecté
         setUserComments(prev => {
+            // Vérification que le commentaire appartient bien à l'utilisateur
             if (prev[idx]?.user !== user.username) return prev;
+            // Mise à jour du commentaire
             const newComments = prev.map((c, i) => i === idx ? { ...c, ...updatedComment } : c);
             try {
+                // Sauvegarde dans le localStorage
                 localStorage.setItem(commentsKey, JSON.stringify(newComments));
             } catch { }
             return newComments;
         });
     };
 
+    // Effect pour synchroniser les commentaires avec le localStorage
+    // Effect pour synchroniser les commentaires avec le localStorage
     useEffect(() => {
         try {
             const saved = localStorage.getItem(commentsKey);
@@ -75,68 +119,104 @@ const Details = () => {
         } catch {
             setUserComments([]);
         }
-    }, [commentsKey]);
+    }, [commentsKey]); // Se déclenche quand l'id ou le type change
 
-    const [videos, setVideos] = useState([]);
-    const [selectedRating, setSelectedRating] = useState(0);
-    const [hoverRating, setHoverRating] = useState(0);
+    // États pour les vidéos et les notes utilisateur
+    const [videos, setVideos] = useState([]); // Bandes-annonces et vidéos
+    const [selectedRating, setSelectedRating] = useState(0); // Note sélectionnée par l'utilisateur
+    const [hoverRating, setHoverRating] = useState(0); // Note survolée (pour l'effet visuel)
 
+    /**
+     * Effect pour charger toutes les données du film/série au montage
+     * et à chaque changement d'id ou de type
+     */
     useEffect(() => {
         async function fetchData() {
+            // Récupération des détails du film/série
             const det = await getMovieDetails(id, type);
             setDetails(det);
+            // Récupération du casting et de l'équipe technique
             const cred = await getMovieCredits(id, type);
             setCredits(cred);
+            // Récupération des films/séries similaires (limité à 6)
             const sim = await getSimilarMovies(id, type);
             setSimilar(sim?.results?.slice(0, 6) || []);
+            // Récupération des avis de l'API TMDB
             const rev = await getMovieReviews(id, type);
             setReviews(rev?.results || []);
+            // Récupération des vidéos (bandes-annonces)
             const vid = await getMovieVideos(id, type);
             setVideos(vid?.results || []);
         }
         fetchData();
-    }, [id, type]);
+    }, [id, type]); // Se déclenche à chaque changement d'id ou de type
 
-    // Gestion réelle des favoris dans le localStorage
+    // Gestion des favoris : état et vérification
     const [isFavorite, setIsFavorite] = useState(false);
-    // Vérifie si le film/série est déjà en favori au chargement
+
+    /**
+     * Effect pour vérifier si le film/série est déjà dans les favoris
+     * Se déclenche quand les détails sont chargés
+     */
+    /**
+     * Effect pour vérifier si le film/série est déjà dans les favoris
+     * Se déclenche quand les détails sont chargés
+     */
     useEffect(() => {
+        // Récupération de la liste des favoris depuis le localStorage
         const favoris = JSON.parse(localStorage.getItem('favoris') || '[]');
+        // Vérification si le film/série actuel est dans les favoris
         const exists = favoris.some(f => f.id === details?.id && (f.media_type === type || f.media_type === details?.media_type));
         setIsFavorite(exists);
     }, [details, type]);
 
+    /**
+     * Fonction pour ajouter/retirer un film/série des favoris
+     * Nécessite que l'utilisateur soit connecté
+     */
     const handleFavoriteClick = () => {
-        // Vérifie si l'utilisateur est connecté (clé 'user' dans localStorage)
+        // Vérification si l'utilisateur est connecté
         const user = localStorage.getItem('user');
         if (!user) {
             alert('Vous devez être connecté pour ajouter ou retirer un favori.');
             return;
         }
         if (!details) return;
+
+        // Récupération des favoris actuels
         let favoris = JSON.parse(localStorage.getItem('favoris') || '[]');
         const exists = favoris.some(f => f.id === details.id && (f.media_type === type || f.media_type === details.media_type));
+
         if (exists) {
+            // Si déjà en favori, on le retire
             favoris = favoris.filter(f => !(f.id === details.id && (f.media_type === type || f.media_type === details.media_type)));
             setIsFavorite(false);
         } else {
-            // Ajoute le type si absent
+            // Sinon, on l'ajoute avec le type correct
             const toSave = { ...details, media_type: type };
             favoris.push(toSave);
             setIsFavorite(true);
         }
+
+        // Sauvegarde dans le localStorage
         localStorage.setItem('favoris', JSON.stringify(favoris));
+        // Déclenchement d'un événement pour notifier les autres composants
         window.dispatchEvent(new Event('storage'));
     };
 
+    // Affichage d'un loader tant que les données ne sont pas chargées
     if (!details || !credits) return <div className="text-center text-xl my-20 animate-spin">⏳</div>;
 
     return (
         <div className="relative bg-gradient-to-br from-[#232f4b] to-[#1a2340] rounded-[18px] shadow-[0_8px_48px_#000a] pt-6 md:pt-10 px-4 md:px-8 pb-8 md:pb-16 mx-auto mb-8 md:mb-12 max-w-[1100px] text-white">
+            {/* Bouton favori positionné en haut à droite */}
             <div className="absolute top-4 md:top-6 right-4 md:right-8 z-10">
                 <FavoriteButton isFavorite={isFavorite} onClick={handleFavoriteClick} />
             </div>
+
+            {/* Section principale : affiche et informations */}
             <div className="flex flex-col md:flex-row gap-6 md:gap-14 items-center md:items-start mb-6 md:mb-10">
+                {/* Affiche du film/série */}
                 <div className="w-[180px] h-[270px] md:w-[220px] md:h-[330px] lg:w-[260px] lg:h-[400px] bg-gray-900 rounded-2xl flex items-center justify-center text-2xl text-[#aee1f9] shadow-[0_6px_32px_#000b] text-center mb-2 shrink-0 mt-8 md:mt-12">
                     {details.poster_path ? (
                         <img
@@ -146,6 +226,7 @@ const Details = () => {
                             title={`Affiche de ${details.title || details.name} (${type === 'movie' ? 'film' : 'série'})`}
                         />
                     ) : (
+                        // Image par défaut si pas d'affiche disponible
                         <img
                             src={require('../img/defaut.jpg')}
                             alt="Image par défaut"
@@ -154,15 +235,25 @@ const Details = () => {
                         />
                     )}
                 </div>
+
+                {/* Informations détaillées */}
                 <div className="flex-1 text-left w-full">
+                    {/* Titre du film/série */}
                     <h2 className="text-xl md:text-2xl lg:text-[2.1rem] mb-2 md:mb-2.5 text-[#aee1f9]">{details.title || details.name}</h2>
+
+                    {/* Synopsis */}
                     <p className="text-sm md:text-base lg:text-[1.1rem] mb-3 md:mb-[18px]"><strong>Synopsis :</strong> {details.original_language === 'fr' ? details.overview : (details.overview_fr || details.overview)}</p>
+
+                    {/* Badges d'informations (genre, date, durée, etc.) */}
                     <div className="mt-4 md:mt-6 mb-3 md:mb-4 flex flex-col gap-2 md:gap-3">
+                        {/* Ligne 1: Genre, Date de sortie, Durée */}
                         <div className="flex flex-wrap gap-2 md:gap-4 lg:gap-6">
+                            {/* Genre */}
                             <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)]">
                                 <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">🎬</span>
                                 <span className="font-bold text-[#aee1f9] mr-1">Genre :</span> {details.genres?.map(g => g.name).join(', ')}
                             </span>
+                            {/* Date de sortie */}
                             <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)]">
                                 <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">📅</span>
                                 <span className="font-bold text-[#aee1f9] mr-1">Année :</span> {
@@ -173,12 +264,14 @@ const Details = () => {
                                             : ''
                                 }
                             </span>
+                            {/* Durée (uniquement pour les films) */}
                             {type === 'movie' && details.runtime && (
                                 <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)]">
                                     <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">⏱️</span>
                                     <span className="font-bold text-[#aee1f9] mr-1">Durée :</span> {details.runtime} min
                                 </span>
                             )}
+                            {/* Informations spécifiques aux séries (saisons et épisodes) */}
                             {type === 'tv' && (
                                 <>
                                     <span className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)]">
@@ -195,11 +288,14 @@ const Details = () => {
                                 </>
                             )}
                         </div>
+
+                        {/* Ligne 2: Acteurs principaux avec photos */}
                         <div className="flex flex-wrap gap-2 md:gap-4 lg:gap-6">
                             <div className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)] flex-wrap gap-3">
                                 <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">⭐</span>
                                 <span className="font-bold text-[#aee1f9] mr-1">Acteurs :</span>
                                 <span className="flex flex-wrap gap-3">
+                                    {/* Affichage des 5 premiers acteurs avec liens vers leur filmographie */}
                                     {credits.cast?.slice(0, 5).map((a) => (
                                         <Link key={a.id} to={`/person/${a.id}`} className="flex flex-col items-center gap-1 group">
                                             <img
@@ -214,11 +310,14 @@ const Details = () => {
                                 </span>
                             </div>
                         </div>
+
+                        {/* Ligne 3: Équipe technique (réalisateurs, producteurs, etc.) */}
                         <div className="flex flex-wrap gap-2 md:gap-4 lg:gap-6">
                             <div className="bg-slate-800 text-[#aee1f9] rounded-lg px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base lg:text-[1.08rem] font-medium flex items-center mb-1 md:mb-1.5 shadow-[0_2px_8px_rgba(30,41,59,0.18)] flex-wrap gap-3">
                                 <span className="mr-1.5 md:mr-2 text-base md:text-[1.15em]">🛠️</span>
                                 <span className="font-bold text-[#aee1f9] mr-1">Équipe technique :</span>
                                 <span className="flex flex-wrap gap-3">
+                                    {/* Affichage des 5 premiers membres de l'équipe technique */}
                                     {credits.crew?.slice(0, 5).map((c) => (
                                         <Link key={c.id} to={`/person/${c.id}`} className="flex flex-col items-center gap-1 group">
                                             <img
@@ -238,15 +337,17 @@ const Details = () => {
 
                 </div>
             </div>
-            {/* Vidéo du film ou de la série */}
+
+            {/* Section vidéo : Bande-annonce du film/série */}
             {videos && videos.length > 0 && (
                 <div className="my-6 md:my-8 text-center">
                     <h3 className="text-white mb-3 md:mb-4 text-lg md:text-xl">Bande-annonce</h3>
                     {(() => {
-                        // On cherche une vidéo YouTube de type Trailer ou Teaser
+                        // Recherche d'une vidéo YouTube de type Trailer ou Teaser
                         const yt = videos.find(v => v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser'))
                             || videos.find(v => v.site === 'YouTube');
                         return yt ? (
+                            // Affichage de la vidéo YouTube via iframe
                             <div className="flex justify-center px-2">
                                 <iframe
                                     width="100%"
@@ -260,19 +361,24 @@ const Details = () => {
                                 ></iframe>
                             </div>
                         ) : (
+                            // Message si aucune vidéo n'est disponible
                             <div className="text-[#aee1f9] text-base md:text-lg">Aucune vidéo disponible</div>
                         );
                     })()}
                 </div>
             )}
+
+            {/* Section "Vous aimerez peut-être" : Films/séries similaires */}
             <div className="mt-6 md:mt-9">
                 <div className="w-full flex justify-center items-center mb-6 md:mb-10">
                     <h3 className="bg-slate-800/95 inline-block py-1.5 px-4 md:py-2 md:px-[22px] rounded-xl font-bold text-[#aee1f9] text-base md:text-lg lg:text-xl m-0 z-[2] text-center">
                         Vous aimerez peut-être :
                     </h3>
                 </div>
+                {/* Grille des films/séries similaires */}
                 <div className="grid grid-cols-2 gap-3 md:flex md:gap-6 lg:gap-10 md:flex-wrap justify-center px-2">
                     {similar.map((item, index) => (
+                        // Masquage du 6e élément sur mobile (index 5)
                         <div key={item.id} className={`w-full md:w-[140px] lg:w-[150px] ${index === 5 ? 'md:hidden' : ''}`}>
                             <MovieCard movie={item} />
                         </div>
@@ -280,7 +386,7 @@ const Details = () => {
                 </div>
             </div>
 
-            {/* Section avis et commentaires */}
+            {/* Section commentaires et avis */}
             <section
                 className="comment-section"
                 style={{

@@ -1,11 +1,22 @@
+/**
+ * Composant LastAddedTable (Tableau des derniers ajouts)
+ * Affiche deux tableaux côte à côte :
+ * - Derniers films ajoutés
+ * - Dernières séries ajoutées
+ */
+
 import { useEffect, useState } from "react";
 import { fetchAllMovies, fetchAllSeries } from "../services/tmdb";
 import { Link } from 'react-router-dom';
 
 const LastAddedTable = () => {
-    const [latestMovies, setLatestMovies] = useState([]);
-    const [latestSeries, setLatestSeries] = useState([]);
+    // États pour stocker les derniers films et séries
+    const [latestMovies, setLatestMovies] = useState([]); // 8 derniers films
+    const [latestSeries, setLatestSeries] = useState([]); // 8 dernières séries
 
+    /**
+     * Effect pour charger les données au montage du composant
+     */
     useEffect(() => {
         async function fetchData() {
             const movies = await fetchAllMovies(1);

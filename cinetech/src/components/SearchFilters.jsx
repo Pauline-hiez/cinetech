@@ -1,6 +1,15 @@
+/**
+ * Composant SearchFilters (Panneau de filtres de recherche)
+ * Permet de filtrer les films/séries par type, année, genre et pays d'origine
+ * Affichable/masquable via le bouton dans la SearchBar
+ */
+
 import { useState } from "react";
 
+// Génération des années de 1950 à 2026
 const years = Array.from({ length: 2026 - 1950 }, (_, i) => 2025 - i);
+
+// Liste des genres disponibles (correspond aux IDs de TMDB)
 export const genres = [
     { id: 28, name: "Action" },
     { id: 35, name: "Comédie" },
@@ -14,6 +23,7 @@ export const genres = [
     { id: 878, name: "Science-Fiction" },
 ];
 
+// Liste des pays disponibles avec codes ISO
 const countries = [
     { code: "FR", name: "France" },
     { code: "US", name: "États-Unis" },
@@ -27,12 +37,18 @@ const countries = [
     { code: "CA", name: "Canada" },
 ];
 
+/**
+ * @param {function} onChange - Callback appelée lors de l'application des filtres
+ * @param {boolean} visible - Contrôle l'affichage du panneau
+ */
 export default function SearchFilters({ onChange, visible }) {
-    const [selectedType, setSelectedType] = useState("");
-    const [selectedYear, setSelectedYear] = useState("");
-    const [selectedGenre, setSelectedGenre] = useState("");
-    const [selectedCountry, setSelectedCountry] = useState("");
+    // États pour chaque filtre sélectionné
+    const [selectedType, setSelectedType] = useState(""); // Type: film ou série
+    const [selectedYear, setSelectedYear] = useState(""); // Année de sortie
+    const [selectedGenre, setSelectedGenre] = useState(""); // Genre (ID TMDB)
+    const [selectedCountry, setSelectedCountry] = useState(""); // Pays (code ISO)
 
+    // Handlers pour chaque filtre
     const handleTypeChange = (e) => {
         setSelectedType(e.target.value);
     };
