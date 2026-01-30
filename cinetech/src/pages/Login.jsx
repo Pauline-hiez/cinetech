@@ -37,18 +37,17 @@ const inputStyle = {
 const buttonStyle = {
     width: "100%",
     padding: "12px 0",
-    background: "#223366",
-    backgroundImage: "linear-gradient(90deg, #223366 0%, #1e293b 100%)",
+    background: "#06b6d4",
     color: "#fff",
     fontWeight: 600,
     border: "none",
-    borderRadius: "0.75rem",
+    borderRadius: "12px",
     fontSize: "1.1rem",
     marginTop: 8,
     marginBottom: 8,
-    boxShadow: "0 2px 8px #22336633",
     cursor: "pointer",
-    transition: "background 0.2s",
+    transition: "all 0.3s ease",
+    boxShadow: "0 0 0 rgba(6, 182, 212, 0)",
 };
 
 const linkStyle = {
@@ -178,7 +177,18 @@ export default function Login() {
                         )}
                         {error && <div style={{ color: "#f87171", marginBottom: 12, textAlign: "center" }}>{error}</div>}
                         {success && <div style={{ color: "#34d399", marginBottom: 12, textAlign: "center" }}>{success}</div>}
-                        <button type="submit" style={buttonStyle}>
+                        <button
+                            type="submit"
+                            style={buttonStyle}
+                            onMouseEnter={(e) => {
+                                e.target.style.background = '#0e7490';
+                                e.target.style.boxShadow = '0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.3)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.background = '#06b6d4';
+                                e.target.style.boxShadow = '0 0 0 rgba(6, 182, 212, 0)';
+                            }}
+                        >
                             {isLogin ? "Se connecter" : "S'inscrire"}
                         </button>
                     </form>

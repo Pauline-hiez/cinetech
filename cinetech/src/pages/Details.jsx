@@ -86,6 +86,8 @@ const Details = () => {
         }
     }, [commentsKey]);
     const [videos, setVideos] = useState([]);
+    const [selectedRating, setSelectedRating] = useState(0);
+    const [hoverRating, setHoverRating] = useState(0);
 
     useEffect(() => {
         async function fetchData() {
@@ -94,7 +96,7 @@ const Details = () => {
             const cred = await getMovieCredits(id, type);
             setCredits(cred);
             const sim = await getSimilarMovies(id, type);
-            setSimilar(sim?.results?.slice(0, 5) || []);
+            setSimilar(sim?.results?.slice(0, 6) || []);
             const rev = await getMovieReviews(id, type);
             setReviews(rev?.results || []);
             const vid = await getMovieVideos(id, type);
@@ -277,22 +279,252 @@ const Details = () => {
                         Vous aimerez peut-être :
                     </h3>
                 </div>
-                <div className="flex gap-4 md:gap-6 lg:gap-10 flex-wrap justify-center">
-                    {similar.map((item) => (
-                        <div key={item.id} className="w-[120px] md:w-[140px] lg:w-[150px]">
+                <div className="grid grid-cols-2 gap-3 md:flex md:gap-6 lg:gap-10 md:flex-wrap justify-center px-2">
+                    {similar.map((item, index) => (
+                        <div key={item.id} className={`w-full md:w-[140px] lg:w-[150px] ${index === 5 ? 'md:hidden' : ''}`}>
                             <MovieCard movie={item} />
                         </div>
                     ))}
                 </div>
             </div>
+
             {/* Section avis et commentaires */}
-            <CommentSection
-                comments={userComments}
-                onSubmit={handleAddComment}
-                onDelete={handleDeleteComment}
-                onEdit={handleEditComment}
-                user={user}
-            />
+            <section
+                className="comment-section"
+                style={{
+                    margin: "48px 0 0 0",
+                    padding: 24,
+                    background: "#1a2636",
+                    borderRadius: 12,
+                    border: "2.5px solid #4ee1ff",
+                    boxShadow: "0 0 16px 4px #4ee1ff, 0 0 32px 8px #1a2636 inset",
+                    outline: "none",
+                    transition: "box-shadow 0.2s, border 0.2s"
+                }}
+            >
+                <h3 style={{ marginBottom: 16 }}>Avis et commentaires</h3>
+
+                {/* Formulaire pour ajouter un commentaire */}
+                {user ? (
+                    <form onSubmit={(e) => {
+                        e.preventDefault();
+                        if (!user) {
+                            return;
+                        }
+                        const formData = new FormData(e.target);
+                        const comment = formData.get('comment');
+                        if (selectedRating === 0) {
+                            alert("Veuillez donner une note.");
+                            return;
+                        }
+                        handleAddComment({ comment, rating: selectedRating, user: user.username });
+                        e.target.reset();
+                        setSelectedRating(0);
+                    }} style={{ marginBottom: 24 }}>
+                        <div style={{ marginBottom: 8, display: "flex", gap: 4 }}>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    style={{
+                                        color: star <= (hoverRating || selectedRating) ? "#4ee1ff" : "#233a4d",
+                                        textShadow: star <= (hoverRating || selectedRating) ? "0 0 8px #4ee1ff, 0 0 2px #fff" : "none",
+                                        fontSize: 24,
+                                        cursor: "pointer",
+                                        transition: 'color 0.18s, text-shadow 0.18s',
+                                    }}
+                                    onMouseEnter={() => setHoverRating(star)}
+                                    onMouseLeave={() => setHoverRating(0)}
+                                    onClick={() => setSelectedRating(star)}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                        </div>
+                        <textarea
+                            name="comment"
+                            rows={3}
+                            placeholder="Votre commentaire..."
+                            required
+                            style={{
+                                width: "100%",
+                                minWidth: 0,
+                                borderRadius: 8,
+                                padding: 12,
+                                fontSize: 16,
+                                background: '#22304a',
+                                color: '#fff',
+                                border: '1.5px solid #4ee1ff',
+                                boxSizing: 'border-box',
+                                boxShadow: '0 0 8px #4ee1ff44',
+                                outline: 'none',
+                                marginBottom: 8,
+                                resize: 'vertical',
+                                transition: 'border 0.2s, box-shadow 0.2s'
+                            }}
+                        />
+                        <button
+                            type="submit"
+                            style={{
+                                maxWidth: 220,
+                                margin: '12px auto 0 auto',
+                                display: 'block',
+                                borderRadius: '12px',
+                                padding: '10px 24px',
+                                fontSize: '16px',
+                                fontWeight: '600',
+                                background: '#06b6d4',
+                                color: '#fff',
+                                border: 'none',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                boxShadow: '0 0 0 rgba(6, 182, 212, 0)'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.target.style.background = '#0e7490';
+                                e.target.style.boxShadow = '0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.3)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.background = '#06b6d4';
+                                e.target.style.boxShadow = '0 0 0 rgba(6, 182, 212, 0)';
+                            }}
+                        >
+                            Publier
+                        </button>
+                    </form>
+                ) : (
+                    <div style={{ color: '#aee1f9', marginBottom: 24, textAlign: 'center', fontSize: 17 }}>
+                        Connectez-vous pour publier un commentaire.
+                    </div>
+                )}
+
+                {/* Liste des avis API et commentaires utilisateurs */}
+                <div>
+                    {(() => {
+                        const allComments = [];
+
+                        // Ajouter les avis de l'API TMDB
+                        if (reviews && reviews.length > 0) {
+                            reviews.slice(0, 5).forEach(review => {
+                                allComments.push({
+                                    type: 'api',
+                                    id: review.id,
+                                    author: review.author,
+                                    avatar: review.author_details?.avatar_path,
+                                    rating: review.author_details?.rating ? Math.round(review.author_details.rating / 2) : null,
+                                    content: review.content,
+                                    date: new Date(review.created_at).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }),
+                                    time: new Date(review.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+                                });
+                            });
+                        }
+
+                        // Ajouter les commentaires utilisateurs
+                        userComments.forEach((c, idx) => {
+                            allComments.push({
+                                type: 'user',
+                                index: idx,
+                                author: c.user,
+                                rating: c.rating,
+                                content: c.comment,
+                                date: c.date,
+                                time: c.time,
+                                canEdit: user && c.user === user.username
+                            });
+                        });
+
+                        if (allComments.length === 0) {
+                            return <div style={{ color: "#aaa" }}>Aucun commentaire pour l'instant.</div>;
+                        }
+
+                        return allComments.map((comment, idx) => (
+                            <div key={`${comment.type}-${comment.id || comment.index}`} style={{
+                                marginBottom: 18,
+                                padding: 18,
+                                background: "#22304a",
+                                borderRadius: 10,
+                                width: '100%',
+                                boxSizing: 'border-box',
+                                boxShadow: '0 0 8px #4ee1ff22',
+                                textAlign: 'left',
+                            }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                                    {comment.type === 'api' && comment.avatar && (
+                                        <img
+                                            src={comment.avatar.startsWith('/https')
+                                                ? comment.avatar.substring(1)
+                                                : `https://image.tmdb.org/t/p/w185${comment.avatar}`}
+                                            alt={comment.author}
+                                            style={{
+                                                width: 32,
+                                                height: 32,
+                                                borderRadius: '50%',
+                                                objectFit: 'cover',
+                                                border: '2px solid #4ee1ff'
+                                            }}
+                                        />
+                                    )}
+                                    <span style={{ fontWeight: 600, fontSize: 18 }}>{comment.author}</span>
+                                    {comment.rating && (
+                                        <div style={{ display: "flex", gap: 4, marginLeft: 8 }}>
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                <span
+                                                    key={star}
+                                                    style={{
+                                                        color: star <= comment.rating ? "#4ee1ff" : "#233a4d",
+                                                        textShadow: star <= comment.rating ? "0 0 8px #4ee1ff, 0 0 2px #fff" : "none",
+                                                        fontSize: 24,
+                                                    }}
+                                                >
+                                                    ★
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                                <div style={{ fontSize: 13, color: '#aee1f9', marginBottom: 6, marginLeft: 2 }}>
+                                    {comment.date} à {comment.time}
+                                </div>
+                                <div style={{ marginTop: 6 }}>
+                                    {comment.type === 'api' && comment.content.length > 500
+                                        ? comment.content.substring(0, 500) + '...'
+                                        : comment.content}
+                                </div>
+                                {comment.type === 'user' && comment.canEdit && (
+                                    <div style={{ marginTop: 8 }}>
+                                        <button
+                                            style={{
+                                                maxWidth: 100,
+                                                padding: '8px 16px',
+                                                fontSize: 14,
+                                                borderRadius: '12px',
+                                                background: '#dc2626',
+                                                color: '#fff',
+                                                display: 'inline-block',
+                                                border: 'none',
+                                                cursor: 'pointer',
+                                                fontWeight: '600',
+                                                transition: 'all 0.3s ease',
+                                                boxShadow: '0 0 0 rgba(220, 38, 38, 0)'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.target.style.background = '#991b1b';
+                                                e.target.style.boxShadow = '0 0 20px rgba(220, 38, 38, 0.6), 0 0 40px rgba(220, 38, 38, 0.3)';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.target.style.background = '#dc2626';
+                                                e.target.style.boxShadow = '0 0 0 rgba(220, 38, 38, 0)';
+                                            }}
+                                            onClick={() => handleDeleteComment(comment.index)}
+                                        >
+                                            Supprimer
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ));
+                    })()}
+                </div>
+            </section>
         </div>
     );
 };

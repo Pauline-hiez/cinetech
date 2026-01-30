@@ -21,7 +21,7 @@ const Footer = () => {
                     </a>
                     {/* Modal de contact */}
                     <div id="contact-modal" style={{ display: 'none', position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.6)', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
-                        <div style={{ background: '#1e293b', padding: '2rem', borderRadius: '12px', minWidth: 320, maxWidth: 400, color: '#fff', position: 'relative' }}>
+                        <div style={{ background: '#1a2636', padding: '2rem', borderRadius: '12px', minWidth: 320, maxWidth: 400, color: '#fff', position: 'relative', border: '2.5px solid #4ee1ff', boxShadow: '0 0 16px 4px #4ee1ff, 0 0 32px 8px #1a2636 inset' }}>
                             <button onClick={() => { document.getElementById('contact-modal').style.display = 'none'; }} style={{ position: 'absolute', top: 8, right: 12, background: 'none', border: 'none', color: '#fff', fontSize: 22, cursor: 'pointer' }}>&times;</button>
                             <h2 className="text-lg font-bold mb-4" style={{ color: '#aee1f9' }}>Contactez-nous</h2>
                             <form>
@@ -33,7 +33,32 @@ const Footer = () => {
                                     <label htmlFor="contact-message" className="block mb-1">Message</label>
                                     <textarea id="contact-message" required className="w-full px-2 py-1 rounded text-black" rows={4} style={{ width: '100%' }} />
                                 </div>
-                                <button type="submit" className="bg-[#4e8fae] hover:bg-[#aee1f9] text-[#111827] font-bold py-2 px-4 rounded transition-colors w-full">Envoyer</button>
+                                <button
+                                    type="submit"
+                                    style={{
+                                        width: '100%',
+                                        borderRadius: '12px',
+                                        padding: '10px 24px',
+                                        fontSize: '16px',
+                                        fontWeight: '600',
+                                        background: '#06b6d4',
+                                        color: '#fff',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.3s ease',
+                                        boxShadow: '0 0 0 rgba(6, 182, 212, 0)'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.target.style.background = '#0e7490';
+                                        e.target.style.boxShadow = '0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.3)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.target.style.background = '#06b6d4';
+                                        e.target.style.boxShadow = '0 0 0 rgba(6, 182, 212, 0)';
+                                    }}
+                                >
+                                    Envoyer
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -62,7 +87,7 @@ const Footer = () => {
                     </a>
                     {/* Modal Qui sommes-nous ? */}
                     <div id="quisommes-modal" style={{ display: 'none', position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.6)', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
-                        <div style={{ background: '#1e293b', padding: '2rem', borderRadius: '12px', minWidth: 320, maxWidth: 500, color: '#fff', position: 'relative', maxHeight: '80vh', overflowY: 'auto' }}>
+                        <div style={{ background: '#1a2636', padding: '2rem', borderRadius: '12px', minWidth: 320, maxWidth: 500, color: '#fff', position: 'relative', maxHeight: '80vh', overflowY: 'auto', border: '2.5px solid #4ee1ff', boxShadow: '0 0 16px 4px #4ee1ff, 0 0 32px 8px #1a2636 inset' }}>
                             <button onClick={() => { document.getElementById('quisommes-modal').style.display = 'none'; }} style={{ position: 'absolute', top: 8, right: 12, background: 'none', border: 'none', color: '#fff', fontSize: 22, cursor: 'pointer' }}>&times;</button>
                             <h2 className="text-lg font-bold mb-4" style={{ color: '#aee1f9' }}>Qui sommes-nous ?</h2>
                             <div style={{ lineHeight: '1.7', fontSize: '1rem', color: '#e0e0e0' }}>
