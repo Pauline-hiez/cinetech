@@ -343,8 +343,7 @@ const Details = () => {
                         <textarea
                             name="comment"
                             rows={3}
-                            placeholder="Votre commentaire..."
-                            required
+                            placeholder="Votre commentaire (optionnel)..."
                             style={{
                                 width: "100%",
                                 minWidth: 0,

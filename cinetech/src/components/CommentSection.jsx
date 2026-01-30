@@ -43,13 +43,14 @@ const CommentSection = ({ comments = [], onSubmit, onDelete, onEdit, user }) => 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!user) {
-            setError("Vous devez être connecté pour publier un commentaire.");
+            setError("Vous devez être connecté pour publier un avis.");
             return;
         }
         if (rating === 0) {
             setError("Veuillez donner une note.");
             return;
         }
+        // Le commentaire est optionnel, seule la note est obligatoire
         onSubmit && onSubmit({ comment, rating, user: user.username });
         setComment("");
         setRating(0);
@@ -84,7 +85,7 @@ const CommentSection = ({ comments = [], onSubmit, onDelete, onEdit, user }) => 
                         value={comment}
                         onChange={e => setComment(e.target.value)}
                         rows={3}
-                        placeholder="Votre commentaire..."
+                        placeholder="Votre commentaire (optionnel)..."
                         style={{
                             width: "100%",
                             minWidth: 0,
@@ -113,7 +114,7 @@ const CommentSection = ({ comments = [], onSubmit, onDelete, onEdit, user }) => 
                 </form>
             ) : (
                 <div style={{ color: '#aee1f9', marginBottom: 24, textAlign: 'center', fontSize: 17 }}>
-                    Connectez-vous pour publier un commentaire.
+                    Connectez-vous pour publier un avis.
                 </div>
             )}
             <div>
@@ -168,7 +169,7 @@ const CommentSection = ({ comments = [], onSubmit, onDelete, onEdit, user }) => 
                                                 {c.date} à {c.time}
                                             </div>
                                         )}
-                                        <div style={{ marginTop: 6 }}>{c.comment}</div>
+                                        {c.comment && <div style={{ marginTop: 6 }}>{c.comment}</div>}
                                         {isOwner && user && (
                                             <div style={{ marginTop: 8 }}>
                                                 <button

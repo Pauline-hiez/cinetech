@@ -28,7 +28,7 @@ const StarryBackground = () => {
                 const isMobile = window.innerWidth < 768;
                 this.size = isMobile
                     ? Math.random() * 1 + 0.3
-                    : Math.random() * 2.5 + 1;
+                    : Math.random() * 1 + 0.5;
                 this.speedX = (Math.random() - 0.5) * 0.3;
                 this.speedY = (Math.random() - 0.5) * 0.3;
                 // Opacité minimale plus élevée
