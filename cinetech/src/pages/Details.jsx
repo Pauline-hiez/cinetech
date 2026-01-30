@@ -39,7 +39,7 @@ const Details = () => {
             const date = now.toLocaleDateString('fr-FR');
             const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             const newComments = [
-                { comment, rating, user: user.name, date, time },
+                { comment, rating, user: user.username, date, time },
                 ...prev
             ];
             try {
@@ -54,7 +54,7 @@ const Details = () => {
         if (!user) return;
         setUserComments(prev => {
             // Ne supprimer que si l'utilisateur est propriétaire
-            if (prev[idx]?.user !== user.name) return prev;
+            if (prev[idx]?.user !== user.username) return prev;
             const newComments = prev.filter((_, i) => i !== idx);
             try {
                 localStorage.setItem(commentsKey, JSON.stringify(newComments));
@@ -68,7 +68,7 @@ const Details = () => {
         if (!user) return;
         setUserComments(prev => {
             // Ne modifier que si l'utilisateur est propriétaire
-            if (prev[idx]?.user !== user.name) return prev;
+            if (prev[idx]?.user !== user.username) return prev;
             const newComments = prev.map((c, i) => i === idx ? { ...c, ...updatedComment } : c);
             try {
                 localStorage.setItem(commentsKey, JSON.stringify(newComments));

@@ -102,10 +102,15 @@ export default function Header() {
                         <img src={seriesIcon} alt="Séries" className="header-accueil-icon" />
                         <span className="header-accueil">Séries</span>
                     </Link>
-                    {isLoggedIn && (
+                    {isLoggedIn ? (
                         <Link to="/favoris" className="header-link" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', gap: 12, minWidth: 0 }}>
                             <img src={favorisIcon} alt="Favoris" className="header-accueil-icon favoris-large" style={{ flexShrink: 0 }} />
                             <span className="header-accueil" style={{ whiteSpace: 'nowrap' }}>Mes favoris</span>
+                        </Link>
+                    ) : (
+                        <Link to="/login" className="header-link" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', color: 'inherit', gap: 12, minWidth: 0 }}>
+                            <img src={userIcon} alt="Login" className="header-accueil-icon favoris-large" style={{ flexShrink: 0 }} />
+                            <span className="header-accueil" style={{ whiteSpace: 'nowrap' }}>Connexion</span>
                         </Link>
                     )}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative', marginLeft: 32 }}>
@@ -114,11 +119,7 @@ export default function Header() {
                             <SearchFilters visible={showFilters} onChange={handleFilterSearch} />
                         </div>
                     </div>
-                    {!isLoggedIn && (
-                        <Link to="/login">
-                            <img src={userIcon} alt="User" className="header-accueil-icon" />
-                        </Link>
-                    )}
+                    {/* Lien login déplacé à la place de l'étoile favoris */}
                 </div>
                 {/* Bouton de déconnexion flottant */}
                 {isLoggedIn && (

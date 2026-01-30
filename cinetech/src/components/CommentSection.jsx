@@ -50,7 +50,7 @@ const CommentSection = ({ comments = [], onSubmit, onDelete, onEdit, user }) => 
             setError("Veuillez donner une note.");
             return;
         }
-        onSubmit && onSubmit({ comment, rating, user: user.name });
+        onSubmit && onSubmit({ comment, rating, user: user.username });
         setComment("");
         setRating(0);
         setError("");
@@ -121,7 +121,7 @@ const CommentSection = ({ comments = [], onSubmit, onDelete, onEdit, user }) => 
                     <div style={{ color: "#aaa" }}>Aucun commentaire pour l'instant.</div>
                 ) : (
                     comments.map((c, idx) => {
-                        const isOwner = user && c.user === user.name;
+                        const isOwner = user && c.user === user.username;
                         const isEditing = editIdx === idx;
                         return (
                             <div key={idx} style={{
