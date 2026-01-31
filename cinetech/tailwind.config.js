@@ -4,7 +4,12 @@ module.exports = {
         "./public/index.html"
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                'cinzel': ['Cinzel', 'serif'],
+                'mystery': ['Mystery Quest', 'cursive'],
+            },
+        },
     },
     plugins: [],
 };
