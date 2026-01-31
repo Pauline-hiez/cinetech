@@ -56,6 +56,8 @@ function StarRating({ rating, setRating }) {
  * @param {Object} user - Objet utilisateur connecté
  */
 const CommentSection = ({ comments = [], onSubmit, onDelete, onEdit, user }) => {
+    console.log('🔴🔴🔴 COMMENTSECTION CHARGÉ !', { comments, user });
+
     // États pour gérer le formulaire de nouveau commentaire
     const [comment, setComment] = useState(""); // Texte du commentaire
     const [rating, setRating] = useState(0); // Note sélectionnée
@@ -93,6 +95,10 @@ const CommentSection = ({ comments = [], onSubmit, onDelete, onEdit, user }) => 
     const [editComment, setEditComment] = useState(""); // Texte temporaire lors de l'édition
     const [editRating, setEditRating] = useState(0); // Note temporaire lors de l'édition
 
+    // États pour gérer les réponses aux commentaires
+    const [replyToIdx, setReplyToIdx] = useState(null); // Index du commentaire auquel on répond
+    const [replyText, setReplyText] = useState(""); // Texte de la réponse
+
     return (
         <section
             className="comment-section"
@@ -107,7 +113,7 @@ const CommentSection = ({ comments = [], onSubmit, onDelete, onEdit, user }) => 
                 transition: "box-shadow 0.2s, border 0.2s"
             }}
         >
-            <h3 style={{ marginBottom: 16 }}>Avis et commentaires</h3>
+            <h3 style={{ marginBottom: 16, background: 'red', padding: 20, fontSize: 40 }}>🔴 TEST - MODIFIÉ 🔴 Avis et commentaires</h3>
             {user ? (
                 <form onSubmit={handleSubmit} style={{ marginBottom: 24 }}>
                     <div style={{ marginBottom: 8 }}>
@@ -202,26 +208,135 @@ const CommentSection = ({ comments = [], onSubmit, onDelete, onEdit, user }) => 
                                             </div>
                                         )}
                                         {c.comment && <div style={{ marginTop: 6 }}>{c.comment}</div>}
-                                        {isOwner && user && (
-                                            <div style={{ marginTop: 8 }}>
-                                                <button
-                                                    className="search-filters-btn"
-                                                    style={{ maxWidth: 80, padding: '6px 0', fontSize: 14, borderRadius: 16, marginRight: 8, display: 'inline-block' }}
-                                                    onClick={() => {
-                                                        setEditIdx(idx);
-                                                        setEditComment(c.comment);
-                                                        setEditRating(c.rating);
+
+                                        <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap', border: '2px solid yellow' }}>
+                                            TEST USER: {user ? 'CONNECTÉ' : 'NON CONNECTÉ'}
+                                            <button
+                                                onClick={() => {
+                                                    console.log('Bouton Répondre cliqué!');
+                                                    setReplyToIdx(replyToIdx === idx ? null : idx);
+                                                }}
+                                                style={{
+                                                    background: '#4ee1ff',
+                                                    border: '2px solid red',
+                                                    color: '#000',
+                                                    cursor: 'pointer',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 6,
+                                                    fontSize: 14,
+                                                    padding: '8px 12px',
+                                                    fontWeight: 'bold'
+                                                }}
+                                            >
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                                </svg>
+                                                RÉPONDRE
+                                            </button>
+                                            {isOwner && user && (
+                                                <>
+                                                    <button
+                                                        className="search-filters-btn"
+                                                        style={{ maxWidth: 80, padding: '6px 0', fontSize: 14, borderRadius: 16, marginRight: 8, display: 'inline-block' }}
+                                                        onClick={() => {
+                                                            setEditIdx(idx);
+                                                            setEditComment(c.comment);
+                                                            setEditRating(c.rating);
+                                                        }}
+                                                    >
+                                                        Modifier
+                                                    </button>
+                                                    <button
+                                                        className="search-filters-btn"
+                                                        style={{ maxWidth: 80, padding: '6px 0', fontSize: 14, borderRadius: 16, background: '#e53e3e', color: '#fff', display: 'inline-block' }}
+                                                        onClick={() => onDelete && onDelete(idx)}
+                                                    >
+                                                        Supprimer
+                                                    </button>
+                                                </>
+                                            )}
+                                        </div>
+
+                                        {replyToIdx === idx && user && (
+                                            <div style={{
+                                                marginTop: 12,
+                                                padding: 12,
+                                                background: '#1a2636',
+                                                borderRadius: 8,
+                                                borderLeft: '3px solid #4ee1ff'
+                                            }}>
+                                                <div style={{ fontSize: 13, color: '#4ee1ff', marginBottom: 8 }}>
+                                                    Répondre à <strong>{c.user}</strong>
+                                                </div>
+                                                <textarea
+                                                    value={replyText}
+                                                    onChange={(e) => setReplyText(e.target.value)}
+                                                    rows={3}
+                                                    placeholder="Votre réponse..."
+                                                    style={{
+                                                        width: '100%',
+                                                        borderRadius: 6,
+                                                        padding: 10,
+                                                        fontSize: 14,
+                                                        background: '#22304a',
+                                                        color: '#fff',
+                                                        border: '1px solid #4ee1ff',
+                                                        boxSizing: 'border-box',
+                                                        outline: 'none',
+                                                        marginBottom: 8,
+                                                        resize: 'vertical'
                                                     }}
-                                                >
-                                                    Modifier
-                                                </button>
-                                                <button
-                                                    className="search-filters-btn"
-                                                    style={{ maxWidth: 80, padding: '6px 0', fontSize: 14, borderRadius: 16, background: '#e53e3e', color: '#fff', display: 'inline-block' }}
-                                                    onClick={() => onDelete && onDelete(idx)}
-                                                >
-                                                    Supprimer
-                                                </button>
+                                                />
+                                                <div style={{ display: 'flex', gap: 8 }}>
+                                                    <button
+                                                        className="search-filters-btn"
+                                                        style={{ maxWidth: 100, padding: '6px 12px', fontSize: 14, borderRadius: 16 }}
+                                                        onClick={() => {
+                                                            if (replyText.trim()) {
+                                                                onSubmit && onSubmit({
+                                                                    comment: replyText,
+                                                                    rating: 0,
+                                                                    user: user.username,
+                                                                    replyTo: c.user,
+                                                                    isReply: true
+                                                                });
+                                                                setReplyText('');
+                                                                setReplyToIdx(null);
+                                                            }
+                                                        }}
+                                                    >
+                                                        Envoyer
+                                                    </button>
+                                                    <button
+                                                        className="search-filters-btn"
+                                                        style={{
+                                                            maxWidth: 80,
+                                                            padding: '6px 12px',
+                                                            fontSize: 14,
+                                                            borderRadius: 16,
+                                                            background: '#64748b',
+                                                            color: '#fff'
+                                                        }}
+                                                        onClick={() => {
+                                                            setReplyToIdx(null);
+                                                            setReplyText('');
+                                                        }}
+                                                    >
+                                                        Annuler
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {c.isReply && c.replyTo && (
+                                            <div style={{
+                                                marginTop: 8,
+                                                fontSize: 13,
+                                                color: '#4ee1ff',
+                                                fontStyle: 'italic'
+                                            }}>
+                                                ↳ En réponse à <strong>{c.replyTo}</strong>
                                             </div>
                                         )}
                                     </>

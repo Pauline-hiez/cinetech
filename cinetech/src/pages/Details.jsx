@@ -51,7 +51,7 @@ const Details = () => {
      * Fonction pour ajouter un nouveau commentaire
      * @param {Object} param - Objet contenant le commentaire, la note et le nom d'utilisateur
      */
-    const handleAddComment = ({ comment, rating, user: userName }) => {
+    const handleAddComment = ({ comment, rating, user: userName, replyTo, isReply }) => {
         if (!user) return; // Vérification que l'utilisateur est connecté
         setUserComments(prev => {
             // Création de l'horodatage pour le commentaire
@@ -59,8 +59,18 @@ const Details = () => {
             const date = now.toLocaleDateString('fr-FR');
             const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             // Ajout du nouveau commentaire en début de liste
+            const newComment = { comment, user: user.username, date, time };
+            // Ajouter rating uniquement si ce n'est pas une réponse
+            if (!isReply && rating) {
+                newComment.rating = rating;
+            }
+            // Ajouter les propriétés de réponse si nécessaire
+            if (isReply && replyTo) {
+                newComment.isReply = true;
+                newComment.replyTo = replyTo;
+            }
             const newComments = [
-                { comment, rating, user: user.username, date, time },
+                newComment,
                 ...prev
             ];
             try {
@@ -125,6 +135,10 @@ const Details = () => {
     const [videos, setVideos] = useState([]); // Bandes-annonces et vidéos
     const [selectedRating, setSelectedRating] = useState(0); // Note sélectionnée par l'utilisateur
     const [hoverRating, setHoverRating] = useState(0); // Note survolée (pour l'effet visuel)
+
+    // États pour gérer les réponses aux commentaires
+    const [replyToIdx, setReplyToIdx] = useState(null); // Index du commentaire auquel on répond
+    const [replyText, setReplyText] = useState(''); // Texte de la réponse
 
     /**
      * Effect pour charger toutes les données du film/série au montage
@@ -510,14 +524,16 @@ const Details = () => {
                                     rating: review.author_details?.rating ? Math.round(review.author_details.rating / 2) : null,
                                     content: review.content,
                                     date: new Date(review.created_at).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }),
-                                    time: new Date(review.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+                                    time: new Date(review.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+                                    replies: []
                                 });
                             });
                         }
 
-                        // Ajouter les commentaires utilisateurs
+                        // Ajouter les commentaires utilisateurs et organiser les réponses
+                        const mainComments = [];
                         userComments.forEach((c, idx) => {
-                            allComments.push({
+                            const commentData = {
                                 type: 'user',
                                 index: idx,
                                 author: c.user,
@@ -525,25 +541,72 @@ const Details = () => {
                                 content: c.comment,
                                 date: c.date,
                                 time: c.time,
-                                canEdit: user && c.user === user.username
-                            });
+                                canEdit: user && c.user === user.username,
+                                isReply: c.isReply,
+                                replyTo: c.replyTo,
+                                replies: []
+                            };
+
+                            if (!c.isReply) {
+                                mainComments.push(commentData);
+                            }
+                        });
+
+                        // Ajouter les commentaires principaux
+                        allComments.push(...mainComments);
+
+                        // Organiser les réponses sous leurs commentaires parents
+                        userComments.forEach((c, idx) => {
+                            if (c.isReply && c.replyTo) {
+                                const replyData = {
+                                    type: 'user',
+                                    index: idx,
+                                    author: c.user,
+                                    rating: c.rating,
+                                    content: c.comment,
+                                    date: c.date,
+                                    time: c.time,
+                                    canEdit: user && c.user === user.username,
+                                    isReply: true,
+                                    replyTo: c.replyTo
+                                };
+
+                                // Trouver le commentaire parent et ajouter la réponse
+                                const parentComment = allComments.find(comment => comment.author === c.replyTo);
+                                if (parentComment) {
+                                    parentComment.replies.push(replyData);
+                                }
+                            }
                         });
 
                         if (allComments.length === 0) {
                             return <div style={{ color: "#aaa" }}>Aucun commentaire pour l'instant.</div>;
                         }
 
-                        return allComments.map((comment, idx) => (
-                            <div key={`${comment.type}-${comment.id || comment.index}`} style={{
-                                marginBottom: 18,
+                        // Fonction pour afficher un commentaire et ses réponses
+                        const renderComment = (comment, idx, isReply = false) => (
+                            <div key={`${comment.type}-${comment.id || comment.index}-${isReply ? 'reply' : 'main'}`} style={{
+                                marginBottom: isReply ? 12 : 18,
+                                marginLeft: isReply ? 40 : 0,
                                 padding: 18,
-                                background: "#22304a",
+                                background: isReply ? "#1a2636" : "#22304a",
                                 borderRadius: 10,
                                 width: '100%',
                                 boxSizing: 'border-box',
-                                boxShadow: '0 0 8px #4ee1ff22',
+                                boxShadow: isReply ? '0 0 6px #4ee1ff11' : '0 0 8px #4ee1ff22',
                                 textAlign: 'left',
+                                borderLeft: isReply ? '3px solid #4ee1ff' : 'none'
                             }}>
+                                {isReply && (
+                                    <div style={{
+                                        marginBottom: 8,
+                                        fontSize: 13,
+                                        color: '#4ee1ff',
+                                        fontStyle: 'italic'
+                                    }}>
+                                        ↳ En réponse à <strong>{comment.replyTo}</strong>
+                                    </div>
+                                )}
                                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
                                     {comment.type === 'api' && comment.avatar && (
                                         <img
@@ -561,7 +624,7 @@ const Details = () => {
                                         />
                                     )}
                                     <span style={{ fontWeight: 600, fontSize: 18 }}>{comment.author}</span>
-                                    {comment.rating && (
+                                    {comment.rating && comment.rating > 0 && (
                                         <div style={{ display: "flex", gap: 4, marginLeft: 8 }}>
                                             {[1, 2, 3, 4, 5].map((star) => (
                                                 <span
@@ -586,6 +649,134 @@ const Details = () => {
                                         ? comment.content.substring(0, 500) + '...'
                                         : comment.content}
                                 </div>
+
+                                {/* Bouton Répondre */}
+                                {user && (
+                                    <button
+                                        onClick={() => {
+                                            if (replyToIdx === idx) {
+                                                setReplyToIdx(null);
+                                                setReplyText('');
+                                            } else {
+                                                setReplyToIdx(idx);
+                                                setReplyText('');
+                                            }
+                                        }}
+                                        style={{
+                                            marginTop: 12,
+                                            background: replyToIdx === idx ? '#4ee1ff' : 'transparent',
+                                            border: 'none',
+                                            color: replyToIdx === idx ? '#1a2636' : '#4ee1ff',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 6,
+                                            fontSize: 14,
+                                            padding: '6px 12px',
+                                            borderRadius: '8px',
+                                            fontWeight: replyToIdx === idx ? '600' : '400',
+                                            transition: 'all 0.2s'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            if (replyToIdx !== idx) {
+                                                e.target.style.opacity = '0.7';
+                                            }
+                                        }}
+                                        onMouseLeave={(e) => e.target.style.opacity = '1'}
+                                    >
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                        </svg>
+                                        {replyToIdx === idx ? 'Annuler' : 'Répondre'}
+                                    </button>
+                                )}
+
+                                {/* Formulaire de réponse */}
+                                {replyToIdx === idx && user && (
+                                    <div style={{
+                                        marginTop: 12,
+                                        padding: 12,
+                                        background: '#1a2636',
+                                        borderRadius: 8,
+                                        borderLeft: '3px solid #4ee1ff'
+                                    }}>
+                                        <div style={{ fontSize: 13, color: '#4ee1ff', marginBottom: 8 }}>
+                                            Répondre à <strong>{comment.author}</strong>
+                                        </div>
+                                        <textarea
+                                            value={replyText}
+                                            onChange={(e) => setReplyText(e.target.value)}
+                                            rows={3}
+                                            placeholder="Votre réponse..."
+                                            style={{
+                                                width: '100%',
+                                                borderRadius: 6,
+                                                padding: 10,
+                                                fontSize: 14,
+                                                background: '#22304a',
+                                                color: '#fff',
+                                                border: '1px solid #4ee1ff',
+                                                boxSizing: 'border-box',
+                                                outline: 'none',
+                                                marginBottom: 8,
+                                                resize: 'vertical'
+                                            }}
+                                        />
+                                        <div style={{ display: 'flex', gap: 8 }}>
+                                            <button
+                                                onClick={() => {
+                                                    if (replyText.trim()) {
+                                                        handleAddComment({
+                                                            comment: replyText,
+                                                            user: user.username,
+                                                            replyTo: comment.author,
+                                                            isReply: true
+                                                        });
+                                                        setReplyText('');
+                                                        setReplyToIdx(null);
+                                                    }
+                                                }}
+                                                style={{
+                                                    padding: '8px 16px',
+                                                    fontSize: 14,
+                                                    borderRadius: '8px',
+                                                    background: '#06b6d4',
+                                                    color: '#fff',
+                                                    border: 'none',
+                                                    cursor: 'pointer',
+                                                    fontWeight: '600',
+                                                    transition: 'all 0.2s'
+                                                }}
+                                                onMouseEnter={(e) => e.target.style.background = '#0e7490'}
+                                                onMouseLeave={(e) => e.target.style.background = '#06b6d4'}
+                                            >
+                                                Envoyer
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setReplyToIdx(null);
+                                                    setReplyText('');
+                                                }}
+                                                style={{
+                                                    padding: '8px 16px',
+                                                    fontSize: 14,
+                                                    borderRadius: '8px',
+                                                    background: '#64748b',
+                                                    color: '#fff',
+                                                    border: 'none',
+                                                    cursor: 'pointer',
+                                                    fontWeight: '600',
+                                                    transition: 'all 0.2s'
+                                                }}
+                                                onMouseEnter={(e) => e.target.style.background = '#475569'}
+                                                onMouseLeave={(e) => e.target.style.background = '#64748b'}
+                                            >
+                                                Annuler
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
                                 {comment.type === 'user' && comment.canEdit && (
                                     <div style={{ marginTop: 8 }}>
                                         <button
@@ -617,8 +808,17 @@ const Details = () => {
                                         </button>
                                     </div>
                                 )}
+
+                                {/* Afficher les réponses sous le commentaire */}
+                                {comment.replies && comment.replies.length > 0 && (
+                                    <div style={{ marginTop: 16 }}>
+                                        {comment.replies.map((reply, replyIdx) => renderComment(reply, replyIdx, true))}
+                                    </div>
+                                )}
                             </div>
-                        ));
+                        );
+
+                        return allComments.map((comment, idx) => renderComment(comment, idx));
                     })()}
                 </div>
             </section>
