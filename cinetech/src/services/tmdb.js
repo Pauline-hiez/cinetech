@@ -68,7 +68,8 @@ export async function getMovieReviews(id, type = 'movie') {
 
 // Récupérer toutes les séries (discover, triées par date de première diffusion décroissante)
 export async function fetchAllSeries(page = 1) {
-  const response = await fetch(`${BASE_URL}/discover/tv?page=${page}&sort_by=first_air_date.desc`, {
+  const today = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
+  const response = await fetch(`${BASE_URL}/discover/tv?page=${page}&sort_by=first_air_date.desc&first_air_date.lte=${today}`, {
     headers: {
       Authorization: `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
@@ -148,7 +149,8 @@ export async function fetchPopularSeries(page = 1) {
 
 // Récupérer tous les films (discover, triés par date de sortie décroissante)
 export async function fetchAllMovies(page = 1) {
-  const response = await fetch(`${BASE_URL}/discover/movie?page=${page}&sort_by=release_date.desc`, {
+  const today = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
+  const response = await fetch(`${BASE_URL}/discover/movie?page=${page}&sort_by=release_date.desc&release_date.lte=${today}`, {
     headers: {
       Authorization: `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
