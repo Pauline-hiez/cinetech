@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import CommentSection from "../components/CommentSection";
 import FavoriteButton from "../components/FavoriteButton";
 import MovieCard from "../components/MovieCard";
+import Spinner from "../components/Spinner";
 // Importation des hooks de routing pour récupérer les paramètres d'URL et créer des liens
 import { useParams, Link } from "react-router-dom";
 // Importation des services API pour récupérer les données depuis TMDB
@@ -214,7 +215,7 @@ const Details = () => {
     };
 
     // Affichage d'un loader tant que les données ne sont pas chargées
-    if (!details || !credits) return <div className="text-center text-xl my-20 animate-spin">⏳</div>;
+    if (!details || !credits) return <Spinner />;
 
     return (
         <div className="relative bg-gradient-to-br from-[#232f4b] to-[#1a2340] rounded-[18px] shadow-[0_8px_48px_#000a] pt-6 md:pt-10 px-4 md:px-8 pb-8 md:pb-16 mx-auto mb-8 md:mb-12 max-w-[1100px] text-white">
