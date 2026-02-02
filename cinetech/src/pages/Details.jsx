@@ -121,7 +121,6 @@ const Details = () => {
     };
 
     // Effect pour synchroniser les commentaires avec le localStorage
-    // Effect pour synchroniser les commentaires avec le localStorage
     useEffect(() => {
         try {
             const saved = localStorage.getItem(commentsKey);
@@ -168,10 +167,6 @@ const Details = () => {
     // Gestion des favoris : état et vérification
     const [isFavorite, setIsFavorite] = useState(false);
 
-    /**
-     * Effect pour vérifier si le film/série est déjà dans les favoris
-     * Se déclenche quand les détails sont chargés
-     */
     /**
      * Effect pour vérifier si le film/série est déjà dans les favoris
      * Se déclenche quand les détails sont chargés
@@ -624,7 +619,7 @@ const Details = () => {
                                         />
                                     )}
                                     <span style={{ fontWeight: 600, fontSize: 18 }}>{comment.author}</span>
-                                    {comment.rating && comment.rating > 0 && (
+                                    {!isReply && comment.rating && comment.rating > 0 && (
                                         <div style={{ display: "flex", gap: 4, marginLeft: 8 }}>
                                             {[1, 2, 3, 4, 5].map((star) => (
                                                 <span
