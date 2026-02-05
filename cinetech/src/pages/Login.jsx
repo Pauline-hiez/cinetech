@@ -1,7 +1,6 @@
 /**
  * Page de connexion et d'inscription
- * Permet aux utilisateurs de créer un compte ou de se connecter
- * Les comptes sont stockés dans le localStorage
+ * Permet aux utilisateurs de créer un compte ou de se connecter via l'API backend
  */
 
 // Importation des hooks React
@@ -9,6 +8,7 @@ import { useState } from "react";
 // Importation de l'icône et du hook de navigation
 import userIcon from '../img/cadenas.png';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../hook/useAuth';
 
 // Styles CSS en objets JavaScript
 // Style du fond dégradé bleu foncé
@@ -74,78 +74,74 @@ const linkStyle = {
 export default function Login() {
     // États pour gérer le formulaire
     const [isLogin, setIsLogin] = useState(true); // true = connexion, false = inscription
-    const [username, setUsername] = useState(""); // Pseudo saisi
+    const [email, setEmail] = useState(""); // Email saisi
     const [password, setPassword] = useState(""); // Mot de passe saisi
     const [confirmPassword, setConfirmPassword] = useState(""); // Confirmation du mot de passe
     const [error, setError] = useState(""); // Message d'erreur
     const [success, setSuccess] = useState(""); // Message de succès
+    const [isLoading, setIsLoading] = useState(false); // État de chargement
     const navigate = useNavigate(); // Hook pour naviguer vers une autre page
-
-    /**
-     * Fonctions helpers pour gérer les utilisateurs dans le localStorage
-     */
-
-    // Sauvegarde un nouvel utilisateur
-    const saveUser = (username, password) => {
-        let users = JSON.parse(localStorage.getItem("users")) || [];
-        users.push({ username, password });
-        localStorage.setItem("users", JSON.stringify(users));
-    };
-
-    // Recherche un utilisateur par son pseudo
-    const findUser = (username) => {
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        return users.find(u => u.username === username);
-    };
+    const { login, register } = useAuth(); // Hook d'authentification
 
     /**
      * Gestion de la soumission du formulaire (connexion ou inscription)
      */
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
         setSuccess("");
+        setIsLoading(true);
 
         if (isLogin) {
             // Mode connexion
-            const user = findUser(username);
-            if (!user || user.password !== password) {
-                setError("Pseudo ou mot de passe incorrect.");
+            if (!email || !password) {
+                setError("Veuillez remplir tous les champs.");
+                setIsLoading(false);
                 return;
             }
-            setSuccess("Connexion réussie !");
-            // Nettoyage et enregistrement de l'utilisateur connecté
-            localStorage.removeItem("pseudo");
-            localStorage.setItem("user", JSON.stringify(user)); // Utilisateur courant
-            localStorage.setItem("pseudo", user.username); // Pseudo pour l'affichage
-            // Redirection vers la page des favoris après 500ms
-            setTimeout(() => {
-                window.dispatchEvent(new Event("storage")); // Notification des autres composants
-                navigate("/favoris");
-            }, 500);
+
+            const result = await login(email, password);
+            setIsLoading(false);
+
+            if (result.success) {
+                setSuccess("Connexion réussie !");
+                // Redirection vers la page des favoris après 500ms
+                setTimeout(() => {
+                    navigate("/favoris");
+                }, 500);
+            } else {
+                setError(result.error || "Erreur lors de la connexion.");
+            }
         } else {
             // Mode inscription
-            if (!username || !password || !confirmPassword) {
+            if (!email || !password || !confirmPassword) {
                 setError("Veuillez remplir tous les champs.");
+                setIsLoading(false);
                 return;
             }
             if (password !== confirmPassword) {
                 setError("Les mots de passe ne correspondent pas.");
+                setIsLoading(false);
                 return;
             }
-            if (findUser(username)) {
-                setError("Ce pseudo existe déjà.");
+            if (password.length < 6) {
+                setError("Le mot de passe doit contenir au moins 6 caractères.");
+                setIsLoading(false);
                 return;
             }
-            // Création du nouveau compte
-            saveUser(username, password);
-            localStorage.setItem("pseudo", username); // Enregistrement du pseudo
-            setSuccess("Inscription réussie ! Vous pouvez vous connecter.");
-            // Basculement vers le mode connexion
-            setIsLogin(true);
-            setUsername("");
-            setPassword("");
-            setConfirmPassword("");
+
+            const result = await register(email, password);
+            setIsLoading(false);
+
+            if (result.success) {
+                setSuccess("Inscription réussie ! Redirection...");
+                // Redirection vers la page des favoris après 1s
+                setTimeout(() => {
+                    navigate("/favoris");
+                }, 1000);
+            } else {
+                setError(result.error || "Erreur lors de l'inscription.");
+            }
         }
     };
 
@@ -163,24 +159,25 @@ export default function Login() {
                         {isLogin ? "Connexion" : "Inscription"}
                     </h2>
                     <p style={{ color: "#60a5fa", marginBottom: 0 }}>
-                        {isLogin ? "Connectez-vous avec votre pseudo" : "Créez un nouveau compte avec un pseudo"}
+                        {isLogin ? "Connectez-vous avec votre email" : "Créez un nouveau compte"}
                     </p>
                 </div>
 
                 {/* Formulaire */}
                 <div style={{ background: "#1e293b", borderTop: "1px solid #223366", padding: 32 }}>
                     <form onSubmit={handleSubmit}>
-                        {/* Champ Pseudo */}
+                        {/* Champ Email */}
                         <div style={{ marginBottom: 18 }}>
-                            <label htmlFor="username" style={{ color: "#cbd5e1", fontWeight: 500, marginBottom: 6, display: "block" }}>Pseudo</label>
+                            <label htmlFor="email" style={{ color: "#cbd5e1", fontWeight: 500, marginBottom: 6, display: "block" }}>Email</label>
                             <input
-                                type="text"
-                                id="username"
-                                value={username}
-                                onChange={e => setUsername(e.target.value)}
+                                type="email"
+                                id="email"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
                                 style={inputStyle}
-                                placeholder="Votre pseudo"
-                                autoComplete="username"
+                                placeholder="votre@email.com"
+                                autoComplete="email"
+                                disabled={isLoading}
                             />
                         </div>
 
@@ -195,6 +192,7 @@ export default function Login() {
                                 style={inputStyle}
                                 placeholder="••••••••"
                                 autoComplete={isLogin ? "current-password" : "new-password"}
+                                disabled={isLoading}
                             />
                         </div>
 
@@ -210,6 +208,7 @@ export default function Login() {
                                     style={inputStyle}
                                     placeholder="••••••••"
                                     autoComplete="new-password"
+                                    disabled={isLoading}
                                 />
                             </div>
                         )}
@@ -221,17 +220,22 @@ export default function Login() {
                         {/* Bouton de soumission avec effets hover */}
                         <button
                             type="submit"
-                            style={buttonStyle}
+                            style={{ ...buttonStyle, opacity: isLoading ? 0.7 : 1, cursor: isLoading ? 'not-allowed' : 'pointer' }}
                             onMouseEnter={(e) => {
-                                e.target.style.background = '#0e7490';
-                                e.target.style.boxShadow = '0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.3)';
+                                if (!isLoading) {
+                                    e.target.style.background = '#0e7490';
+                                    e.target.style.boxShadow = '0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.3)';
+                                }
                             }}
                             onMouseLeave={(e) => {
-                                e.target.style.background = '#06b6d4';
-                                e.target.style.boxShadow = '0 0 0 rgba(6, 182, 212, 0)';
+                                if (!isLoading) {
+                                    e.target.style.background = '#06b6d4';
+                                    e.target.style.boxShadow = '0 0 0 rgba(6, 182, 212, 0)';
+                                }
                             }}
+                            disabled={isLoading}
                         >
-                            {isLogin ? "Se connecter" : "S'inscrire"}
+                            {isLoading ? "Chargement..." : (isLogin ? "Se connecter" : "S'inscrire")}
                         </button>
                     </form>
 

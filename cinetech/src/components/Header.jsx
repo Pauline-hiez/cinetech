@@ -6,6 +6,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hook/useAuth";
 import logo from "../img/logo.png";
 import homeIcon from "../img/home.png";
 import cinemaIcon from "../img/cinema.png";
@@ -17,8 +18,8 @@ import SearchBar from "./SearchBar";
 import { FilterIcon } from "./FilterIcon";
 import SearchFilters from "./SearchFilters";
 export default function Header() {
+    const { user, logout: authLogout, isAuthenticated } = useAuth();
     // États pour gérer l'interface du header
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Statut de connexion
     const [showFilters, setShowFilters] = useState(false); // Affichage du panneau de filtres
     const [showMobileSearch, setShowMobileSearch] = useState(false); // Affichage de la search bar sur mobile
     const [searchSuggestions, setSearchSuggestions] = useState({ suggestions: [], showSuggestions: false, query: '' }); // Suggestions de recherche
@@ -62,21 +63,8 @@ export default function Header() {
         navigate(`/search?${params.toString()}`);
     };
 
-    useEffect(() => {
-        const checkLogin = () => {
-            const user = localStorage.getItem("user");
-            setIsLoggedIn(!!user);
-        };
-        checkLogin();
-        window.addEventListener("storage", checkLogin);
-        return () => window.removeEventListener("storage", checkLogin);
-    }, []);
-
     const handleLogout = () => {
-        localStorage.removeItem("user");
-        localStorage.removeItem("pseudo"); // Supprime aussi le pseudo
-        setIsLoggedIn(false);
-        window.dispatchEvent(new Event("storage"));
+        authLogout();
         navigate("/login");
     };
 
@@ -134,7 +122,7 @@ export default function Header() {
                             <Link to="/series" className="flex items-center no-underline text-[#aee1f9] shrink-0 hover:text-white transition-colors">
                                 <img src={seriesIcon} alt="Séries" className="w-8 h-8" />
                             </Link>
-                            {isLoggedIn ? (
+                            {isAuthenticated() ? (
                                 <Link to="/favoris" className="flex items-center no-underline text-[#aee1f9] shrink-0 hover:text-white transition-colors">
                                     <img src={favorisIcon} alt="Favoris" className="w-8 h-8" />
                                 </Link>
@@ -184,7 +172,7 @@ export default function Header() {
                         <img src={seriesIcon} alt="Séries" className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" />
                         <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide hidden sm:inline">Séries</span>
                     </Link>
-                    {isLoggedIn ? (
+                    {isAuthenticated() ? (
                         <Link to="/favoris" className="inline-flex items-center no-underline text-[#aee1f9] gap-1 md:gap-2 min-w-0 shrink-0 hover:text-white transition-colors">
                             <img src={favorisIcon} alt="Favoris" className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10" />
                             <span className="text-sm md:text-base lg:text-lg font-bold tracking-wide whitespace-nowrap hidden lg:inline">Mes favoris</span>
@@ -205,7 +193,7 @@ export default function Header() {
                     </div>
                 </div>
                 {/* Bouton de déconnexion flottant */}
-                {isLoggedIn && (
+                {isAuthenticated() && (
                     <button onClick={handleLogout} className="fixed right-4 md:right-8 bottom-4 md:bottom-8 bg-gray-900 text-white border-none rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center shadow-[0_4px_24px_#000a] cursor-pointer z-[9999] transition-all duration-200 hover:bg-gray-800 hover:shadow-[0_0_32px_#11182799] hover:scale-110" title="Déconnexion">
                         <img src={logoutIcon} alt="Déconnexion" className="w-8 h-8 md:w-11 md:h-11" />
                     </button>
